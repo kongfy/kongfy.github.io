@@ -1,0 +1,26 @@
+# Jekyll 生成的文件
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+
+# Ruby
+Gemfile.lock
+*.gem
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 编辑器
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# 备份文件
+*.bak
+*.backup
+
