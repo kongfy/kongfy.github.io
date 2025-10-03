@@ -1,39 +1,169 @@
-# Jekyll 配置文件
-title: Kongfy's Blog
-description: good good code, day day up!
+# Minimal Mistakes 主题配置
+# 文档: https://mmistakes.github.io/minimal-mistakes/docs/configuration/
+
+# 主题设置
+theme: minimal-mistakes-jekyll
+minimal_mistakes_skin: "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+
+# 站点设置
+locale: "zh-CN"
+title: "Kongfy's Blog"
+title_separator: "-"
+subtitle: "good good code, day day up!"
+name: "Fanyu Kong"
+description: "技术博客 - 分享编程、系统设计和算法相关内容"
 url: "https://your-domain.com" # 请替换为你的实际域名
 baseurl: ""
+repository: # GitHub username/repo-name
+teaser: # 默认的缩略图，可以设置一个默认图片路径
+logo: # 站点 logo 路径
+masthead_title: # 覆盖站点标题，留空则显示 site.title
+breadcrumbs: true # 启用面包屑导航
+words_per_minute: 200
+
+# 评论系统
+comments:
+  provider: "disqus" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom"
+  disqus:
+    shortname: "your-disqus-shortname" # 请替换为你的 Disqus shortname
+
+# 搜索
+search: true # 启用搜索功能
+search_full_content: true # 搜索完整内容
+search_provider: lunr # lunr (default), algolia, google
+
+# SEO 相关
+social:
+  type: Person
+  name: Fanyu Kong
+  links:
+    # - "https://twitter.com/yourhandle"
+    # - "https://github.com/yourusername"
+
+# 分析工具
+analytics:
+  provider: false # false (default), "google", "google-universal", "google-gtag", "custom"
+  google:
+    tracking_id: # 你的 Google Analytics ID
+    anonymize_ip: false
 
 # 作者信息
 author:
-  name: Fanyu Kong
-  email: njukongfy@gmail.com
+  name: "Fanyu Kong"
+  avatar: # 头像图片路径
+  bio: "good good code, day day up!"
+  location: "China"
+  email: "njukongfy@gmail.com"
+  links:
+    # - label: "Email"
+    #   icon: "fas fa-fw fa-envelope-square"
+    #   url: "mailto:your.name@email.com"
+    # - label: "Website"
+    #   icon: "fas fa-fw fa-link"
+    #   url: "https://your-website.com"
+    # - label: "Twitter"
+    #   icon: "fab fa-fw fa-twitter-square"
+    #   url: "https://twitter.com/"
+    # - label: "GitHub"
+    #   icon: "fab fa-fw fa-github"
+    #   url: "https://github.com/"
 
-# 构建设置
-markdown: kramdown
-permalink: /posts/:year/:month/:title/
-timezone: Asia/Shanghai
+# 页脚链接
+footer:
+  links:
+    # - label: "Twitter"
+    #   icon: "fab fa-fw fa-twitter-square"
+    #   url: "https://twitter.com/"
+    # - label: "GitHub"
+    #   icon: "fab fa-fw fa-github"
+    #   url: "https://github.com/"
 
-# 插件
-plugins:
-  - jekyll-feed
-  - jekyll-sitemap
-  - jekyll-seo-tag
+# 阅读文件
+include:
+  - _pages
 
 # 排除文件
 exclude:
-  - Gemfile
-  - Gemfile.lock
-  - node_modules
+  - "*.sublime-project"
+  - "*.sublime-workspace"
   - vendor
+  - .asset-cache
+  - .bundle
+  - .jekyll-assets-cache
+  - .sass-cache
+  - assets/js/plugins
+  - assets/js/_main.js
+  - assets/js/vendor
+  - Capfile
+  - CHANGELOG
+  - config
+  - Gemfile
+  - Gruntfile.js
+  - gulpfile.js
+  - LICENSE
+  - log
+  - node_modules
+  - package.json
+  - package-lock.json
+  - Rakefile
+  - README
+  - tmp
+  - backup
 
-# Disqus 评论系统
-disqus:
-  shortname: your-disqus-shortname  # 请替换为你的 Disqus shortname
+# 插件
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jekyll-include-cache
+  - jekyll-seo-tag
 
-# 显示设置
-show_excerpts: true
+# 归档设置
+category_archive:
+  type: liquid
+  path: /categories/
+tag_archive:
+  type: liquid
+  path: /tags/
 
-# 语言设置
-lang: zh-CN
+# HTML 压缩
+compress_html:
+  clippings: all
+  ignore:
+    envs: development
 
+# 默认 Front Matter
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: true
+      related: true
+      show_date: true
+      toc: true # 启用目录
+      toc_sticky: true # 目录固定
+
+# Markdown 处理
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+  enable_coderay: false
+
+# 固定链接
+permalink: /:categories/:title/
+paginate: 10 # 每页文章数
+paginate_path: /page:num/
+timezone: Asia/Shanghai
