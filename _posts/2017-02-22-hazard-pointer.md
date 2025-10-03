@@ -19,7 +19,6 @@ PS：因为hazard pointer完整代码略有些长，不适合贴在文章内部�
 
 <!--more-->
 
-\[mathjax\]\[/mathjax\]
 
 ## 解决了什么问题
 

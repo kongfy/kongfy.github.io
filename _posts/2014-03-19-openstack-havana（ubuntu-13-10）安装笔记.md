@@ -5,6 +5,7 @@ categories:
   - "cloud-computing"
 tags: 
   - "openstack"
+mathjax: true
 ---
 
 安装配置OpenStack最好的资料是OpenStack的[官方安装指南](http://docs.openstack.org/havana/install-guide/install/apt/content/)，我就是按照官方指南一步一步进行的，虽然基于的操作系统版本不同（指南中使用的是Ubuntu 12.04），所幸没有遇到什么诡异的问题，不废话了，整个过程记录如下。

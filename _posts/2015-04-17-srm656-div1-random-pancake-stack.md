@@ -7,6 +7,7 @@ tags:
   - "srm"
   - "topcoder"
   - "动态规划"
+mathjax: true
 ---
 
 被虐了......这个题目其实不难，但是从一开始想法有个漏洞没有发现...一直没有转过弯来...还是需要训练训练...
@@ -36,22 +37,22 @@ tags:
 > 
 > Summing this up, we get the expected deliciousness to be 1/3 \* (1) + 1/3 \* (1/2 \* 1 + 1/2 \* 2) + 1/3 \* (1/2 \* 2 + 1/2 \* 3) = 5/3 = 1.666...
 
-仔细分析规则，发现有子问题结构，令\[latex\]f\[i,j\]\[/latex\]表示序列前\[latex\]i\[/latex\]块饼干美味值总和的期望，而状态\[latex\]j\[/latex\]表示剩余的饼干总数（\[latex\]i \\le j \\le N\[/latex\]），不难写出如下的状态转移方程：
+仔细分析规则，发现有子问题结构，令$f\[i,j\]$表示序列前$i$块饼干美味值总和的期望，而状态$j$表示剩余的饼干总数（$i \\le j \\le N$），不难写出如下的状态转移方程：
 
-\[latex\]\\displaystyle f\[i,j\] = \\frac{1}{i} \\sum\_{k=1}^{i}{\\left( (d\[k\]+f\[k-1,j-1\]) \\times \\frac{k-1}{j-1} + d\[k\] \\times \\frac{j-k}{j-1}\\right) }\\quad (1 \\le i \\le j \\le N)\[/latex\]
+$\\displaystyle f\[i,j\] = \\frac{1}{i} \\sum\_{k=1}^{i}{\\left( (d\[k\]+f\[k-1,j-1\]) \\times \\frac{k-1}{j-1} + d\[k\] \\times \\frac{j-k}{j-1}\\right) }\\quad (1 \\le i \\le j \\le N)$
 
 边界条件非常自然：
 
-\[latex\]\\displaystyle f\[1,i\] = d\[1\]\\qquad (1 \\le i \\le N)\[/latex\]
+$\\displaystyle f\[1,i\] = d\[1\]\\qquad (1 \\le i \\le N)$
 
 所求结果为：
 
-\[latex\]\\displaystyle f\[N,N\]\[/latex\]
+$\\displaystyle f\[N,N\]$
 
 有了状态转移方尺和边界条件后就可以非常轻松的写出动态规划代码了，如下（注意：上述方程中从1开始计数，在转换为C++程序时要留心）：
 
 `#include  using namespace std;  class RandomPancakeStack { public: double expectedDeliciousness(vector d) { int n = d.size(); vector > f(n + 1, vector (n + 1, 0));  // base case for (int i = 1; i <= n; ++i) { f[1][i] = d[0]; } // dp for (int i = 2; i <= n; ++i) { for (int j = i; j <= n; ++j) { double temp = 0; for (int k = 1; k <= i; ++k) { temp += (d[k - 1] + f[k - 1][j - 1]) * (k - 1) / (double)(j - 1); temp += d[k - 1] * (j - k) / (double)(j - 1); } temp *= 1.0 / i; f[i][j] = temp; } }  return f[n][n]; } };`
 
-算法运行时间复杂度为\[latex\]O(n^{2})\[/latex\]，空间复杂度为\[latex\]O(n^{2})\[/latex\]，通过滚动数组可以将空间复杂度优化到\[latex\]O(n)\[/latex\]（和背包问题一样）。房间里有一个Red(3000+)的俄罗斯大神写了时间复杂度为\[latex\]O(n)\[/latex\]，空间复杂度为\[latex\]O(1)\[/latex\]的方法...令人汗颜...
+算法运行时间复杂度为$O(n^{2})$，空间复杂度为$O(n^{2})$，通过滚动数组可以将空间复杂度优化到$O(n)$（和背包问题一样）。房间里有一个Red(3000+)的俄罗斯大神写了时间复杂度为$O(n)$，空间复杂度为$O(1)$的方法...令人汗颜...
 
 保持按时被虐的好习惯！

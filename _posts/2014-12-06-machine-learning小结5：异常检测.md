@@ -5,6 +5,7 @@ categories:
   - "machine-learning"
 tags: 
   - "异常检测"
+mathjax: true
 ---
 
 写这篇小结的时候，Ng的课程已经结束了（期待SoA哈哈哈），回顾整个课程内容，虽然Ng有意的屏蔽了大部分的数学内容，但是提纲挈领的为我们展现了常见机器学习算法的基本容貌和**应用技巧**，令人受益良多。从视频、课后问答到编程作业，都完美的示范了一门在线课程应该是什么样子的，不能感谢更多。
@@ -24,11 +25,11 @@ tags:
   <figcaption>Gaussion distribution</figcaption>
 </figure>
 
-对于均值为\[latex\]\\mu\[/latex\]方差为\[latex\]\\sigma^{2}\[/latex\]的随机变量\[latex\]X\[/latex\]，若其服从正态分布，称\[latex\]X\\sim N(\\mu,\\sigma^{2})\[/latex\]，概率密度函数为：
+对于均值为$\\mu$方差为$\\sigma^{2}$的随机变量$X$，若其服从正态分布，称$X\\sim N(\\mu,\\sigma^{2})$，概率密度函数为：
 
-\[latex\]\\displaystyle p(x;\\mu,\\sigma)=\\frac{1}{\\sigma \\sqrt{2\\pi}}\\exp\\left(-\\frac{(x-\\mu)^{2}}{2\\sigma^{2}}\\right) \[/latex\]
+$\\displaystyle p(x;\\mu,\\sigma)=\\frac{1}{\\sigma \\sqrt{2\\pi}}\\exp\\left(-\\frac{(x-\\mu)^{2}}{2\\sigma^{2}}\\right) $
 
-基于高斯模型的异常检测idea非常的简单：假设样本特征服从高斯分布（分单变量和多变量两种），通过训练集（正常样本）拟合出高斯分布的参数\[latex\]\\mu,\\sigma^{2}\[/latex\]，然后对于预测样本计算出该分布中的概率密度，如果概率小于\[latex\]\\epsilon\[/latex\]则认为是异常样本。
+基于高斯模型的异常检测idea非常的简单：假设样本特征服从高斯分布（分单变量和多变量两种），通过训练集（正常样本）拟合出高斯分布的参数$\\mu,\\sigma^{2}$，然后对于预测样本计算出该分布中的概率密度，如果概率小于$\\epsilon$则认为是异常样本。
 
 下图是对两个特征的样本进行异常检测的结果，红色圈出的是检测出的异常样本：
 
@@ -41,11 +42,11 @@ tags:
 
 使用单变量高斯模型的异常检测中，我们认为样本的每个特征都服从独立的高斯分布，为这些特征单独拟合参数：
 
-\[latex\]\\displaystyle \\mu\_j=\\frac{1}{m}\\sum\_{i=1}^{m}x\_j^{(i)} \\\\ \\displaystyle \\sigma\_j^2=\\frac{1}{m}\\sum\_{i=1}^{m}(x\_j^{(i)}-\\mu\_j)^2 \[/latex\]
+$\\displaystyle \\mu\_j=\\frac{1}{m}\\sum\_{i=1}^{m}x\_j^{(i)} \\\\ \\displaystyle \\sigma\_j^2=\\frac{1}{m}\\sum\_{i=1}^{m}(x\_j^{(i)}-\\mu\_j)^2 $
 
-对于样本\[latex\]x\[/latex\]，因为我们已经假设特征之间是独立的，则可以计算出样本概率：
+对于样本$x$，因为我们已经假设特征之间是独立的，则可以计算出样本概率：
 
-\[latex\]\\displaystyle p(x)=\\prod\_{j=1}^{n}p(x\_j;\\mu\_j,\\sigma\_j^2) \[/latex\]
+$\\displaystyle p(x)=\\prod\_{j=1}^{n}p(x\_j;\\mu\_j,\\sigma\_j^2) $
 
 当\\(p(x)<\\epsilon\\)时，我们认为该样本是异常的。
 
@@ -77,7 +78,7 @@ tags:
 
 F1 score实际上另外两种评价标准：精度（precision）和召回率（recall）的一种结合使用。精度是算法**精确性**的度量（即标记为正类的元组中实际为正类的元组所占的百分比），召回率是算法**完全性**的度量（即正元组被标记为正的百分比）。
 
-\[latex\] \\displaystyle precision=\\frac{TP}{TP+FP} \\\\ \\displaystyle recall=\\frac{TP}{TP+FN}=\\frac{TP}{P} \[/latex\]
+$ \\displaystyle precision=\\frac{TP}{TP+FP} \\\\ \\displaystyle recall=\\frac{TP}{TP+FN}=\\frac{TP}{P} $
 
 两种度量存在Trade off的关系，有可能通过降低其中一个为代价来提高另一个：
 
@@ -88,9 +89,9 @@ F1 score实际上另外两种评价标准：精度（precision）和召回率（
 
 F1 score是精度和召回率的[调和均值](http://en.wikipedia.org/wiki/Harmonic_mean "Harmonic mean")，它赋予精度和召回率相等的权重：
 
-\[latex\] \\displaystyle F\_1 = \\frac{2 \\times precision \\times recall}{precision + recall} \[/latex\]
+$ \\displaystyle F\_1 = \\frac{2 \\times precision \\times recall}{precision + recall} $
 
-在异常检测算法中，我们通过在验证集上尝试\[latex\]\\epsilon\[/latex\]，并通过F1 score对模型进行评估来得到较好的参数\[latex\]\\epsilon\[/latex\]。
+在异常检测算法中，我们通过在验证集上尝试$\\epsilon$，并通过F1 score对模型进行评估来得到较好的参数$\\epsilon$。
 
 * * *
 

@@ -6,6 +6,7 @@ categories:
 tags: 
   - "多核"
   - "多线程"
+mathjax: true
 ---
 
 先看一段代码：

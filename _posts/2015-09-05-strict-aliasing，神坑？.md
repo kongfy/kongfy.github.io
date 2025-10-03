@@ -3,6 +3,7 @@ title: "Strict Aliasing，神坑？"
 date: 2015-09-05
 categories: 
   - "c-cpp"
+mathjax: true
 ---
 
 先来看一段代码：

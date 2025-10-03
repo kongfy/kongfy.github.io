@@ -3,6 +3,7 @@ title: "博弈论笔记:Normal form game and Nash equilibrium"
 date: 2015-10-10
 tags: 
   - "博弈论"
+mathjax: true
 ---
 
 斯坦福在coursera上的博弈论课程又开放了，这么高大上的课程怎么能错过呢？现在课程已经过半，回过头来对前几周的内容做个小结。
@@ -58,7 +59,7 @@ tags:
 
 因为有了strategy的概念，我们需要一个新的能够针对给定strategy profile计算回报的utility function，由于不是单一Action，我们需要将头脑切换至概率模式研究下面的公式：
 
-\[latex\] \\begin{aligned} u\_i(s)=&\\sum\_{a \\in A}u\_i(a)Pr(a|s)\\\\ Pr(a|s)=&\\prod\_{j \\in N}s\_j(a\_j) \\end{aligned} \[/latex\]
+$ \\begin{aligned} u\_i(s)=&\\sum\_{a \\in A}u\_i(a)Pr(a|s)\\\\ Pr(a|s)=&\\prod\_{j \\in N}s\_j(a\_j) \\end{aligned} $
 
 看上去很复杂，实际上可以按照概率论中期望值的感觉来理解：如果用这样的strategy profile进行大量试验，某个Player期望获得的Payoff是多少？
 
