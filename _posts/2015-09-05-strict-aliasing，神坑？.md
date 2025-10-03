@@ -64,7 +64,6 @@ PS:似乎有必要注明用来测试的g++版本，我测试用的版本是4.4.7
 
 ## strict-aliasing
 
-* * *
 
 难道是编译器优化有问题么？但怀着对GNU的景仰...不，一定是我的使用方式有问题！
 
@@ -110,7 +109,6 @@ test.cpp:8: note: initialized from here
 
 ## 来点汇编
 
-* * *
 
 明白了问题出现的原因，不妨看看编译器最终生成的汇编代码是怎样的：
 
@@ -148,12 +146,10 @@ test.cpp:8: note: initialized from here
 
 ## 怎么办？
 
-* * *
 
 那么这样的问题该如何避免呢？显然的，如果你告诉编译器遵循strict-aliasing规则，那在写代码的过程中就不应该尝试去打破这样的规则。但是我们在写C/C++代码的过程中常常需要编写这样一些打破规则的trick代码，与其让自己不自在，不如在编译时不要和编译器做这样的约定（使用\-fno-strict-aliasing编译参数），虽然不能让编译器做一些更加高效的优化，但安全总是第一位的，不是么？
 
 ## 参考资料
 
-* * *
 
 - [Understanding C/C++ Strict Aliasing](http://dbp-consulting.com/tutorials/StrictAliasing.html)

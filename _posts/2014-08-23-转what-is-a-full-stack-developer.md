@@ -19,7 +19,6 @@ To me, a Full Stack Developer is someone with familiarity in each layer, if not 
 
 ## Layers of the Full Stack:
 
-* * *
 
 1. **Server, Network, and Hosting Environment.**
     1. This involves understanding what can break and why, taking no resource for granted.

@@ -22,7 +22,6 @@ PS：因为hazard pointer完整代码略有些长，不适合贴在文章内部�
 
 ## 解决了什么问题
 
-* * *
 
 在并发编程中，当我们在操作共享的内存对象时，需要考虑到其他线程是否有可能也正在访问同一对象，如果要释放该内存对象时不考虑这个问题，会引发严重的后果（访问悬空指针）。
 
@@ -32,19 +31,16 @@ PS：因为hazard pointer完整代码略有些长，不适合贴在文章内部�
 
 ### 和GC有什么区别？
 
-* * *
 
 一种你可能最为熟悉的解决内存回收问题的方案是GC（垃圾回收）。GC的确可以解决内存回收问题，也可以解决大部分的ABA问题（先释放后重用的使用模式），但是却不能解决所有的ABA问题。例如两个链表实现的栈，不断在两个栈之间交换节点（弹出到对面），这样做内存并没有被回收，但是却面临重用问题，有ABA风险。而Hazard Pointer可以结合数据结构解决这一问题。
 
 ### 和智能指针有什么区别？
 
-* * *
 
 另一种C++中常见的内存管理机制是智能指针，惭愧的是我对智能指针实践有限，只能谈谈粗浅的理解。智能指针也是用来解决内存回收问题的，其本质是自动引用计数，通过智能指针对象的复制和销毁来维护引用计数。但智能指针和Hazard Pointer所解决问题的场景有很大差别：智能指针并不是线程安全的（多线程访问同一智能指针），用时髦点的话说，智能指针是一个语法糖（让你写起来很爽，但其实没有解决什么问题）。
 
 ## 基本原理
 
-* * *
 
 在我看来，hazard pointer的原理真的非常简单直接，而且易于理解。
 
@@ -63,7 +59,6 @@ PS：因为hazard pointer完整代码略有些长，不适合贴在文章内部�
 
 ## 怎么用
 
-* * *
 
 hazard pointer的使用是要结合具体的数据结构的，我们需要分析所要保护的数据结构的每一步操作，找出需要保护的内存对象并使用hazard pointer替换普通指针对危险的内存访问进行保护。还是以上次的lock-free队列来说，使用了hazard pointer后代码变为下面的样子：
 
@@ -139,7 +134,6 @@ bool Queue<T>::dequeue(T &data)
 
 ## 正确性保证
 
-* * *
 
 hazard pointer的正确性在论文[1](#fn-1645-hp)中有非常完整的论述，我就挑其中一个我认为非常重要的点来解释为什么hazard pointer可以正确的工作。
 
@@ -190,7 +184,6 @@ bool HazardPointer<T>::acquire(const T* const *node)
 
 ## retire过程“优化”
 
-* * *
 
 另一个值得一提的点是对论文中对retire list执行扫描的过程可以做一点小小的“优化”：论文中的做法是先将所有线程的pointers组织成一个有序数组，然后在扫描retire list时对该数组做二分查找（时间复杂度为\\(O(\\log{n})\\)）；实际实现中可以采用一个更加激进的方法，把所有线程的pointers无视冲突的哈希到一个布尔数组上，然后对retire list中的每个元素都可以以\\(O(1)\\)的时间复杂度确认是否可以被释放，代码如下：
 
@@ -231,7 +224,6 @@ void HazardManager::scan(threadlocal &rdata)
 
 ## 其他方法
 
-* * *
 
 Hazard Pointer虽然很好，但并不是解决这一问题的唯一方法。McKenney在论文[2](#fn-1645-fast)中将这类算法分为两类：阻塞和非阻塞的(McKenney只讨论lockless的概念，lockfree算法属于其中非阻塞类)。
 
@@ -241,7 +233,6 @@ McKenney作为RCU维护者，必然要指出Hazard Pointer的痛处：需要的�
 
 ## 参考资料
 
-* * *
 
 2. Michael M M. Hazard pointers: Safe memory reclamation for lock-free objects\[J\]. IEEE Transactions on Parallel and Distributed Systems, 2004, 15(6): 491-504. [↩](#fnref-1645-hp)
 

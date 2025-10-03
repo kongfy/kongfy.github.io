@@ -11,7 +11,6 @@ tags:
 
 ## Megastore
 
-* * *
 
 Megastore相对来说是一个比较老的系统了，是在Spanner大规模运用之前构建在Bigtable之上，支持跨行事务的一套过渡解决方案。
 
@@ -55,7 +54,6 @@ Percolator并不解决可用性问题，提出了一种利用单行事务来实�
 
 ## PaxosStore
 
-* * *
 
 PaxosStore是WeChat的分布式KV存储，论文中提到其设计受了Megastore设计比较大的影响，整体看下来也确实如此。
 
@@ -82,7 +80,6 @@ PaxosStore中的Paxos实现和Megastore如出一辙，同样使用了"Fast Write
 
 ## 参考资料
 
-* * *
 
 \[1\] Baker J, Bond C, Corbett J C, et al. Megastore: Providing scalable, highly available storage for interactive services\[C\]//CIDR. 2011, 11: 223-234.
 

@@ -121,6 +121,5 @@ final: FFFFFFFF00000000
 
 ## 参考资料
 
-* * *
 
 2. Intel® 64 Architecture Memory Ordering White Paper [↩](#fnref-1610-intel)
