@@ -10,7 +10,7 @@ mathjax: true
 ---
 
 <figure style="text-align: center;">
-  <img src="/assets/images/IMG_5155.jpg" alt=""一团糟" - 我对OpenStack网络实现的第一感觉" />
+  <img src="/assets/images/IMG_5155.jpg" alt="一团糟 - 我对OpenStack网络实现的第一感觉" />
   <figcaption>"一团糟" - 我对OpenStack网络实现的第一感觉</figcaption>
 </figure>
 

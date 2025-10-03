@@ -7,6 +7,7 @@ tags:
   - "consensus"
   - "paxos"
   - "raft"
+mathjax: true
 ---
 
 
@@ -126,17 +127,17 @@ VR算法适用于允许故障-停止的异步系统中，并且VR不要求可靠
 
 ### 原理介绍
 
-从整体上来看，正常运行中的VR副本中一个作为_primary_，其余副本都作为_backup_，正如上文所说的，Replicated state machine最关键的问题在于让所有副本状态机按照相同的顺序执行命令，VR中_primary_副本决定命令的顺序，所有其他的_backup_副本仅仅接受_primary_所决定好的顺序。当_primary_出现故障时，VR执行一个称为_view change_的过程，在VR中每个_view_中都有且仅有一个固定的_primary_，通过执行_view change_，可以使系统进入下一个_view_，并选出新的_primary_取代故障的旧_primary_副本。
+从整体上来看，正常运行中的VR副本中一个作为*primary*，其余副本都作为*backup*，正如上文所说的，Replicated state machine最关键的问题在于让所有副本状态机按照相同的顺序执行命令，VR中*primary*副本决定命令的顺序，所有其他的*backup*副本仅仅接受*primary*所决定好的顺序。当*primary*出现故障时，VR执行一个称为*view change*的过程，在VR中每个*view*中都有且仅有一个固定的*primary*，通过执行*view change*，可以使系统进入下一个*view*，并选出新的*primary*取代故障的旧*primary*副本。
 
-当_primary_没有发生故障时，VR在一个稳定的_view_中运行，副本之间通过消息通信，每个消息中都包含了自己当前所处的_view-number_，仅当收到的消息包含和自己所知吻合的_view-number_时副本才会处理该消息，如果收到来自旧_view_的消息，副本简单丢弃该消息，而如果收到更新的_view_的消息，则副本知道自己落后了，这时需要执行一套特殊的_state transfer_过程来赶上系统的最新状态。在正常运行中，VR按以下过程执行用户请求：
+当*primary*没有发生故障时，VR在一个稳定的*view*中运行，副本之间通过消息通信，每个消息中都包含了自己当前所处的*view-number*，仅当收到的消息包含和自己所知吻合的*view-number*时副本才会处理该消息，如果收到来自旧*view*的消息，副本简单丢弃该消息，而如果收到更新的*view*的消息，则副本知道自己落后了，这时需要执行一套特殊的*state transfer*过程来赶上系统的最新状态。在正常运行中，VR按以下过程执行用户请求：
 
-1. client向_primary_发出请求\\(\\langle \\text{REQUEST } op, c, s\\rangle\\)，其中\\(op\\)代表需要运行的操作，\\(c\\)代表_client-id_，\\(s\\)代表对于每个client单调递增的_request-number_。
-2. _primary_接收到请求后，会对比收到的_request-number_和本地记录中该client最近的一次请求，如果新请求不比之前本地记录的请求更新，则拒绝执行该请求，并将之前请求的应答再次返回给client。（每个client同时只能发出一个请求）
-3. 否则，_primary_为接收到的请求确定_op-number_（在_view_中递增），将该请求添加到本地_log_中，并用它来更新本地记录中该client的最新请求。然后，_primary_向所有_backup_副本发送消息\\(\\langle \\text{PREPARE }v, m, n, k\\rangle\\)，\\(v\\)是当前的_view-number_，\\(m\\)是client发出的请求消息，\\(n\\)是_op-number_，\\(k\\)是_commit-number_，代表最近的已提交_op-number_。
-4. _backup_收到_PREPARE_消息后，严格按照顺序处理所有_PREPARE_消息（和第2步中_primary_定序结合，相当于构造了全序组播），当该请求的所有前置请求都处理过后，_backup_副本与_primary_一样，递增本地_op-number_、将请求添加到本地_log_、更新本地对该client的请求记录，最后向_primary_回复\\(\\langle\\text{PREPAREOK }v, n, i\\rangle\\)来确认准备完成。
-5. _primary_在收到超过\\(f\\)个来自不同_backup_的_PREPAREOK_消息后，对该消息（及之前的所有消息，如果有）执行提交操作：执行client提交的操作，并递增_commit-number_，最后向client返回应答\\(\\langle \\text{REPLY }v, s, x\\rangle\\)，\\(x\\)是操作的执行结果，同时_primary_会将该结果保存在本地，用于防止client故障产生的重复请求（见2）
-6. _primary_可以通过_PREPARE_消息或\\(\\langle \\text{COMMIT }v, k\\rangle\\)消息通知_backup_已确认提交的请求。
-7. 当_backup_副本收到提交确认消息后，如果该消息已经在本地_log_中（有可能有落后的副本），则它执行操作、递增_commit-number_，然后更新本地client请求结果。
+1. client向*primary*发出请求\\(\\langle \\text{REQUEST } op, c, s\\rangle\\)，其中\\(op\\)代表需要运行的操作，\\(c\\)代表*client-id*，\\(s\\)代表对于每个client单调递增的*request-number*。
+2. *primary*接收到请求后，会对比收到的*request-number*和本地记录中该client最近的一次请求，如果新请求不比之前本地记录的请求更新，则拒绝执行该请求，并将之前请求的应答再次返回给client。（每个client同时只能发出一个请求）
+3. 否则，*primary*为接收到的请求确定*op-number*（在*view*中递增），将该请求添加到本地*log*中，并用它来更新本地记录中该client的最新请求。然后，*primary*向所有*backup*副本发送消息\\(\\langle \\text{PREPARE }v, m, n, k\\rangle\\)，\\(v\\)是当前的*view-number*，\\(m\\)是client发出的请求消息，\\(n\\)是*op-number*，\\(k\\)是*commit-number*，代表最近的已提交*op-number*。
+4. *backup*收到*PREPARE*消息后，严格按照顺序处理所有*PREPARE*消息（和第2步中*primary*定序结合，相当于构造了全序组播），当该请求的所有前置请求都处理过后，*backup*副本与*primary*一样，递增本地*op-number*、将请求添加到本地*log*、更新本地对该client的请求记录，最后向*primary*回复\\(\\langle\\text{PREPAREOK }v, n, i\\rangle\\)来确认准备完成。
+5. *primary*在收到超过\\(f\\)个来自不同*backup*的*PREPAREOK*消息后，对该消息（及之前的所有消息，如果有）执行提交操作：执行client提交的操作，并递增*commit-number*，最后向client返回应答\\(\\langle \\text{REPLY }v, s, x\\rangle\\)，\\(x\\)是操作的执行结果，同时*primary*会将该结果保存在本地，用于防止client故障产生的重复请求（见2）
+6. *primary*可以通过*PREPARE*消息或\\(\\langle \\text{COMMIT }v, k\\rangle\\)消息通知*backup*已确认提交的请求。
+7. 当*backup*副本收到提交确认消息后，如果该消息已经在本地*log*中（有可能有落后的副本），则它执行操作、递增*commit-number*，然后更新本地client请求结果。
 
 这个处理过程如下图所示：
 
@@ -145,29 +146,29 @@ VR算法适用于允许故障-停止的异步系统中，并且VR不要求可靠
   <figcaption>VR正常执行流程</figcaption>
 </figure>
 
-另外，在整个过程中，在没有收到回复时发送方会重复发送消息，以此来对抗可能出现的消息丢失。在VR中只有_primary_副本可以响应client请求，_backup_对client请求仅仅是简单的丢弃，如果_primary_发生了变化，当请求超时后client会向所有副本发送请求以找到新的_primary_。
+另外，在整个过程中，在没有收到回复时发送方会重复发送消息，以此来对抗可能出现的消息丢失。在VR中只有*primary*副本可以响应client请求，*backup*对client请求仅仅是简单的丢弃，如果*primary*发生了变化，当请求超时后client会向所有副本发送请求以找到新的*primary*。
 
-如果_primary_故障，_backup_就无法收到来自_primary_的_PREPARE_和_COMMIT_（当没有请求是被周期发送，相当于心跳的作用）消息，当触发一个超时后，_backup_认为_primary_发生了故障，此时进入了_view change_阶段，如下：
+如果*primary*故障，*backup*就无法收到来自*primary*的*PREPARE*和*COMMIT*（当没有请求是被周期发送，相当于心跳的作用）消息，当触发一个超时后，*backup*认为*primary*发生了故障，此时进入了*view change*阶段，如下：
 
-1. 对于副本\\(i\\)，当它发现_primary_发生了故障（超时）或着收到了来自其他副本的_STARTVIEWCHANGE_或_DOVIEWCHANGE_消息，进入_view-change_状态，它将递增_view-number_，并且向其他副本发出\\(\\langle \\text{STARTVIEWCHANGE }v, i\\rangle\\)消息。
-2. 当副本\\(i\\)收到来自超过\\(f\\)个不同副本的吻合它_view-number_的_STARTVIEWCHANGE_消息后，它向新的_primary_副本（VR中选主过程非常简单，所有进程根据IP地址排序获得编号，在每次_view change_过程中按顺序轮流当_primary_）发送\\(\\langle \\text{DOVIEWCHANGE }v, l, v',n ,k ,i\\rangle\\)，\\(l\\)是它的日志，\\(v'\\)是它转为_view change_状态之前的_view-number_。
-3. 当新的_primary_副本收到超过\\(f+1\\)个来自不同副本的_DOVIEWCHANGE_消息后，它将自己的_view-number_修改为消息中携带的值，并选择具有最大的\\(v'\\)的消息中的\\(l\\)作为新的_log_，如果多条消息具有同样的\\(v'\\)，则选择具有最大\\(n\\)的那个。同时，它将_op-number_设置为_log_中尾部请求的序号，将_commit-number_设置为收到所有消息中最大的。然后将自身状态修改回_normal_，并向其他副本发送\\(\\langle \\text{STARTVIEW }v, l, n, k\\rangle\\)以通知他们_view change_完成。
-4. 新的_primary_开始正常响应client的请求，并且同时执行任何之前没有执行完的命令（根据新获得的_log_）。
-5. 其他副本在收到_STARTVIEW_消息后，根据消息的内容修改本地状态和_log_，执行本地没有提交的操作（由于该副本有落后），并将自身状态修改回_normal_，另外，如果_log_中包含未提交的操作（当旧_primary_还没来得及向其他副本确认提交成功就故障了），则向新_primary_发送\\(\\langle \\text{PREPAREOK }v, n, i\\rangle\\)消息。
+1. 对于副本\\(i\\)，当它发现*primary*发生了故障（超时）或着收到了来自其他副本的*STARTVIEWCHANGE*或*DOVIEWCHANGE*消息，进入*view-change*状态，它将递增*view-number*，并且向其他副本发出\\(\\langle \\text{STARTVIEWCHANGE }v, i\\rangle\\)消息。
+2. 当副本\\(i\\)收到来自超过\\(f\\)个不同副本的吻合它*view-number*的*STARTVIEWCHANGE*消息后，它向新的*primary*副本（VR中选主过程非常简单，所有进程根据IP地址排序获得编号，在每次*view change*过程中按顺序轮流当*primary*）发送\\(\\langle \\text{DOVIEWCHANGE }v, l, v',n ,k ,i\\rangle\\)，\\(l\\)是它的日志，\\(v'\\)是它转为*view change*状态之前的*view-number*。
+3. 当新的*primary*副本收到超过\\(f+1\\)个来自不同副本的*DOVIEWCHANGE*消息后，它将自己的*view-number*修改为消息中携带的值，并选择具有最大的\\(v'\\)的消息中的\\(l\\)作为新的*log*，如果多条消息具有同样的\\(v'\\)，则选择具有最大\\(n\\)的那个。同时，它将*op-number*设置为*log*中尾部请求的序号，将*commit-number*设置为收到所有消息中最大的。然后将自身状态修改回*normal*，并向其他副本发送\\(\\langle \\text{STARTVIEW }v, l, n, k\\rangle\\)以通知他们*view change*完成。
+4. 新的*primary*开始正常响应client的请求，并且同时执行任何之前没有执行完的命令（根据新获得的*log*）。
+5. 其他副本在收到*STARTVIEW*消息后，根据消息的内容修改本地状态和*log*，执行本地没有提交的操作（由于该副本有落后），并将自身状态修改回*normal*，另外，如果*log*中包含未提交的操作（当旧*primary*还没来得及向其他副本确认提交成功就故障了），则向新*primary*发送\\(\\langle \\text{PREPAREOK }v, n, i\\rangle\\)消息。
 
-到这里已经完成了VR算法核心流程的叙述：包括正常状态下的执行和_primary_副本故障后的_view change_过程，VR算法还包括了故障进程恢复协议以及动态修改副本配置的_Reconfiguration_协议，限于篇幅和精力，就不再展开叙述了。
+到这里已经完成了VR算法核心流程的叙述：包括正常状态下的执行和*primary*副本故障后的*view change*过程，VR算法还包括了故障进程恢复协议以及动态修改副本配置的*Reconfiguration*协议，限于篇幅和精力，就不再展开叙述了。
 
 ### 正确性
 
 那么VR算法是正确的么？前文中描述过了共识算法正确性的标准，那么对于VR来说，其共识算法需要保证所有状态机副本以相同的顺序执行操作。
 
-我们分两部分来讨论VR算法的正确性。首先，在正常运行过程中（无_primary_故障）VR算法显然是正确的，_primary_决定了统一的操作顺序并将其传播到_backup_副本上，因此在_primary_发生故障时的_view change_协议必须可以保障整体VR算法的正确性。
+我们分两部分来讨论VR算法的正确性。首先，在正常运行过程中（无*primary*故障）VR算法显然是正确的，*primary*决定了统一的操作顺序并将其传播到*backup*副本上，因此在*primary*发生故障时的*view change*协议必须可以保障整体VR算法的正确性。
 
-**从Safety的角度来讲**，_view change_必须保证每一个在先前_view_中已经提交的操作必须能够传递到新的_view_中，并且处于操作序列中完全相同的位置。理解这个正确性的关键在于注意到VR算法中的两个细节：_primary_只有在超过\\(f+1\\)个副本已经收到某操作的前提下才会提交该操作，而在_view change_过程中，新的_primary_必须收到来自超过\\(f+1\\)个副本的_log_才能开始工作。由于VR最多只容忍\\(f\\)个副本同时故障，则必然有至少一个了解该操作的副本向新的_primary_提交了自己的_log_。
+**从Safety的角度来讲**，*view change*必须保证每一个在先前*view*中已经提交的操作必须能够传递到新的*view*中，并且处于操作序列中完全相同的位置。理解这个正确性的关键在于注意到VR算法中的两个细节：*primary*只有在超过\\(f+1\\)个副本已经收到某操作的前提下才会提交该操作，而在*view change*过程中，新的*primary*必须收到来自超过\\(f+1\\)个副本的*log*才能开始工作。由于VR最多只容忍\\(f\\)个副本同时故障，则必然有至少一个了解该操作的副本向新的*primary*提交了自己的*log*。
 
-另一个对Safety非常非常关键的点在于：副本一旦进入_view-change_状态，就不会再响应任何来自旧_view_的_PREPARE_消息。这是因为VR算法应用于异步系统，当_primary_出现超时并不代表_primary_真正故障了，有可能它只是运行缓慢或者网络延迟严重，随后有可能会出现延时到达的_PREPARE_消息，这样的消息是非常致命的，为了保证_DOVIEWCHANGE_消息中包含了所有的已提交操作，必须保证屏蔽掉旧_view_中的_primary_。**这种方式实际上相当于使用故障检测器屏蔽超时进程，将异步系统改造成为了半同步系统，绕过了FLP不可能性结论。**
+另一个对Safety非常非常关键的点在于：副本一旦进入*view-change*状态，就不会再响应任何来自旧*view*的*PREPARE*消息。这是因为VR算法应用于异步系统，当*primary*出现超时并不代表*primary*真正故障了，有可能它只是运行缓慢或者网络延迟严重，随后有可能会出现延时到达的*PREPARE*消息，这样的消息是非常致命的，为了保证*DOVIEWCHANGE*消息中包含了所有的已提交操作，必须保证屏蔽掉旧*view*中的*primary*。**这种方式实际上相当于使用故障检测器屏蔽超时进程，将异步系统改造成为了半同步系统，绕过了FLP不可能性结论。**
 
-**至于Liveness**，论文证明了_view change_满足liveness，这也是我的一个疑问，不是说异步系统不能确保达到共识么（后文中的两个算法在Liveness上都有些缺陷）...
+**至于Liveness**，论文证明了*view change*满足liveness，这也是我的一个疑问，不是说异步系统不能确保达到共识么（后文中的两个算法在Liveness上都有些缺陷）...
 
 ## Raft
 
@@ -185,43 +186,43 @@ Raft同样运行在允许故障-停止的异步系统中，并且不要求可靠
 
 ### 原理介绍
 
-Raft的整体思路与VR基本相似，在Raft中有存在唯一的_leader_，由_leader_全权负责响应用户的请求，_leader_对用户请求的操作确定顺序并传递给其他_follower_，并在可以提交操作时通知其他_follower_。如果_leader_发生了故障，则执行_leader election_过程选出新的_leader_。
+Raft的整体思路与VR基本相似，在Raft中有存在唯一的*leader*，由*leader*全权负责响应用户的请求，*leader*对用户请求的操作确定顺序并传递给其他*follower*，并在可以提交操作时通知其他*follower*。如果*leader*发生了故障，则执行*leader election*过程选出新的*leader*。
 
-从上述整体思路可以看出，Raft中最为核心的部分是_leader election_和_log replication_。
+从上述整体思路可以看出，Raft中最为核心的部分是*leader election*和*log replication*。
 
-_leader election_用来选出新的_leader_，Raft将运行过程划分为不同的_term_（类似于VR中的_view_），每个_term_都由_leader election_开始，且每个_term_中最多只存在一个_leader_，Raft中所有的通信消息都包含有副本本地的_current term_，相当于整个系统的逻辑时钟。
+*leader election*用来选出新的*leader*，Raft将运行过程划分为不同的*term*（类似于VR中的*view*），每个*term*都由*leader election*开始，且每个*term*中最多只存在一个*leader*，Raft中所有的通信消息都包含有副本本地的*current term*，相当于整个系统的逻辑时钟。
 
-Raft中所有的_follower_需要定期接收到来自_leader_的心跳消息，并各自维护一个超时计时器，如果在计时器完结时没有收到心跳消息，该_follower_认为_leader_发生了故障，开始执行_leader election_，具体流程如下：
+Raft中所有的*follower*需要定期接收到来自*leader*的心跳消息，并各自维护一个超时计时器，如果在计时器完结时没有收到心跳消息，该*follower*认为*leader*发生了故障，开始执行*leader election*，具体流程如下：
 
-1. 该副本增加自己的_current term_并转换为_candidate_状态，它将为自己投票并向其他副本发出请求投票的消息。
-2. 如果_candidate_收到来自于更新_term_（_current term_大于或等于自己的值）的_leader_发来的消息，则认同该_leader_，转换为_follower_继续运行。
-3. 当副本接收到来自其他副本请求投票的消息时，如果该投票请求的_current term_大于自己的_term_，则首先更新自己的_current term_，然后它将**对比本地_log_与发出请求投票消息的_candidate_的_log_哪个比较新（比较_log_最后条目的_index_和_term_，见下文），如果本地的比较新，则拒绝为该_candidate_投票，反之对_candidate_投票。**另外，每个副本在每个_term_中仅能投出一票。
-4. 当_candidate_收集到超过总数一半的投票时，它将变为新的_leader_并作为_leader_开始工作。
+1. 该副本增加自己的*current term*并转换为*candidate*状态，它将为自己投票并向其他副本发出请求投票的消息。
+2. 如果*candidate*收到来自于更新*term*（*current term*大于或等于自己的值）的*leader*发来的消息，则认同该*leader*，转换为*follower*继续运行。
+3. 当副本接收到来自其他副本请求投票的消息时，如果该投票请求的*current term*大于自己的*term*，则首先更新自己的*current term*，然后它将**对比本地*log*与发出请求投票消息的*candidate*的*log*哪个比较新（比较*log*最后条目的*index*和*term*，见下文），如果本地的比较新，则拒绝为该*candidate*投票，反之对*candidate*投票。**另外，每个副本在每个*term*中仅能投出一票。
+4. 当*candidate*收集到超过总数一半的投票时，它将变为新的*leader*并作为*leader*开始工作。
 
-在_leader election_的过程中有可能出现一种情况，称为"split vote"：多个_follower_几乎同时转换为_candidate_并发起投票，结果最后没有任何一个_candidate_获得了足够的投票，当出现这种情况时，_candidate_会在等待超时后进入下一个_term_重新开始_leader election_，为了避免这种的情形重复发生，**Raft中每个副本随机选择超时时间（论文中例子为在150-300ms中），降低了冲突发生的可能性。**
+在*leader election*的过程中有可能出现一种情况，称为"split vote"：多个*follower*几乎同时转换为*candidate*并发起投票，结果最后没有任何一个*candidate*获得了足够的投票，当出现这种情况时，*candidate*会在等待超时后进入下一个*term*重新开始*leader election*，为了避免这种的情形重复发生，**Raft中每个副本随机选择超时时间（论文中例子为在150-300ms中），降低了冲突发生的可能性。**
 
-当完成_leader election_后，Raft进入新的_term_开始工作， _leader_接受到client的请求后，会为该操作生成一条_log_项，并同时记录该项的_index_（表明该项在_log_中的位置）和_term_，如下图：
+当完成*leader election*后，Raft进入新的*term*开始工作， *leader*接受到client的请求后，会为该操作生成一条*log*项，并同时记录该项的*index*（表明该项在*log*中的位置）和*term*，如下图：
 
 <figure style="text-align: center;">
   <img src="/assets/images/raft1.jpg" alt="Raft中的log" />
   <figcaption>Raft中的log</figcaption>
 </figure>
 
-然后，_leader_会向所有_follower_发送该请求，将该_log_项传播出去，如果有副本失败的情况，_leader_会不断执行重传。当_leader_成功将该_log_项复制到超过一半的副本上后，_leader_认为该_log_项（及其之前的所有_log_项）可以被提交了（**仅限于当前_term_的_log_项，见下文**），它将在本地状态机执行对应操作，并向client返回执行结果，_leader_记录已提交的最高_index_，并告知_follower_，_follower_据此知晓已确认提交的操作并在本地执行。
+然后，*leader*会向所有*follower*发送该请求，将该*log*项传播出去，如果有副本失败的情况，*leader*会不断执行重传。当*leader*成功将该*log*项复制到超过一半的副本上后，*leader*认为该*log*项（及其之前的所有*log*项）可以被提交了（**仅限于当前*term*的*log*项，见下文**），它将在本地状态机执行对应操作，并向client返回执行结果，*leader*记录已提交的最高*index*，并告知*follower*，*follower*据此知晓已确认提交的操作并在本地执行。
 
-在正常运行中以上的过程就足够了，然而在考虑到各类故障的影响，各个副本上的_log_可能会出现各种不一致的情况，如下图：
+在正常运行中以上的过程就足够了，然而在考虑到各类故障的影响，各个副本上的*log*可能会出现各种不一致的情况，如下图：
 
 <figure style="text-align: center;">
   <img src="/assets/images/raft2.jpg" alt="log不一致" />
   <figcaption>log不一致</figcaption>
 </figure>
 
-Raft用来处理这种情况的对策很简单：以_leader_上的日志为准，将与_leader_不一致的日志进行重写（这个过程比较繁琐，但思路是简单的，通过不断向前检查_follower_上_log_项，直到找到分叉点，然后进行修正）。这样的重写使得旧_term_中遗留的_log_项可能出现被覆盖丢失的情况，如下图：
+Raft用来处理这种情况的对策很简单：以*leader*上的日志为准，将与*leader*不一致的日志进行重写（这个过程比较繁琐，但思路是简单的，通过不断向前检查*follower*上*log*项，直到找到分叉点，然后进行修正）。这样的重写使得旧*term*中遗留的*log*项可能出现被覆盖丢失的情况，如下图：
 
 <figure style="text-align: center;">
   <img src="/assets/images/raft3.jpg" alt="Raft中旧term日志覆盖问题" />
   <figcaption>Raft中旧term日志覆盖问题</figcaption>
-</figure> 因此，Raft约束**对于来自旧_term_的_log_项不能根据多数原则提交，而只能随着当前_term_的_log_项一起提交。**
+</figure> 因此，Raft约束**对于来自旧*term*的*log*项不能根据多数原则提交，而只能随着当前*term*的*log*项一起提交。**
 
 ### 正确性
 
@@ -232,11 +233,11 @@ Raft的完整的正确性证明在论文中推倒的非常详细，我实在做�
   <figcaption>Raft中的Safety保证</figcaption>
 </figure>
 
-可以看到通过这几点性质，Raft满足了**Safety**要求，但其在**Liveness**上是有缺陷的，例如_leader election_过程可能会出现无法完成的情况，虽然出现概率非常非常低，在实践中可以忽略不计，但从理论证明角度是无法确保Liveness的。
+可以看到通过这几点性质，Raft满足了**Safety**要求，但其在**Liveness**上是有缺陷的，例如*leader election*过程可能会出现无法完成的情况，虽然出现概率非常非常低，在实践中可以忽略不计，但从理论证明角度是无法确保Liveness的。
 
-其中有一点非常值得注意，在VR中任何副本都可以作为新的_primary_，而Raft则不同，Raft的_leader election_过程保证了只有包含原_term_中所有已提交_log_项的_candidate_才能够被选为_leader_（因为要获取一半以上投票），这样通过对_leader_的选择过程做出了限制，Raft做到了_log_的单向传递：仅从_leader_传递到_follower_，而没有相反方向。
+其中有一点非常值得注意，在VR中任何副本都可以作为新的*primary*，而Raft则不同，Raft的*leader election*过程保证了只有包含原*term*中所有已提交*log*项的*candidate*才能够被选为*leader*（因为要获取一半以上投票），这样通过对*leader*的选择过程做出了限制，Raft做到了*log*的单向传递：仅从*leader*传递到*follower*，而没有相反方向。
 
-另外，Raft和VR一样，通过屏蔽旧_term_的消息，将异步系统改造成为了半同步系统，绕过了FLP不可能性结论。
+另外，Raft和VR一样，通过屏蔽旧*term*的消息，将异步系统改造成为了半同步系统，绕过了FLP不可能性结论。
 
 ## Paxos
 
@@ -274,56 +275,56 @@ Paxos算法的设计过程就是从正确性开始的，对于分布式共识问
 - 只有**一个**值会被选定（chosen）。
 - 进程只会获知到已经确认被选定（chosen）的值。
 
-Paxos以这几条约束作为出发点进行设计，只要算法最终满足这几点，正确性就不需要证明了。Paxos算法中共分为三种参与者：_proposers_、_acceptors_以及_learners_，**通常实现中每个进程都同时扮演这三个角色**。
+Paxos以这几条约束作为出发点进行设计，只要算法最终满足这几点，正确性就不需要证明了。Paxos算法中共分为三种参与者：*proposers*、*acceptors*以及*learners*，**通常实现中每个进程都同时扮演这三个角色**。
 
-_proposers_向_acceptors_提出_proposal_，为了保证最多只有**一个**值被选定（chosen），_proposal_必须被超过一半的_acceptors_所接受（accept），且每个_acceptor_只能接受一个值（Paxos算法的出发点，易于理解但难以实现，后面会被修改）。
+*proposers*向*acceptors*提出*proposal*，为了保证最多只有**一个**值被选定（chosen），*proposal*必须被超过一半的*acceptors*所接受（accept），且每个*acceptor*只能接受一个值（Paxos算法的出发点，易于理解但难以实现，后面会被修改）。
 
 为了保证正常运行（必须有值被接受），所以Paxos算法中：
 
-**P1：acceptor必须接受（accept）它所收到的第一个_proposal_。**
+**P1：acceptor必须接受（accept）它所收到的第一个*proposal*。**
 
-先来先服务，合情合理。但这样产生一个问题，如果多个_proposers_同时提出_proposal_，很可能会导致无法达成一致，因为没有_propopal_被超过一半_acceptors_的接受，因此，_acceptor_必须能够接受多个_proposal_，不同的_proposal_由不同的编号（可以有各种实现方式）进行区分，当某个_proposal_被超过一半的_acceptors_接受后，这个_proposal_就被选定了。
+先来先服务，合情合理。但这样产生一个问题，如果多个*proposers*同时提出*proposal*，很可能会导致无法达成一致，因为没有*propopal*被超过一半*acceptors*的接受，因此，*acceptor*必须能够接受多个*proposal*，不同的*proposal*由不同的编号（可以有各种实现方式）进行区分，当某个*proposal*被超过一半的*acceptors*接受后，这个*proposal*就被选定了。
 
-既然允许_acceptors_接受多个_proposal_就有可能出现多个不同值都被最终选定的情况，这违背了**Safety**要求，为了保证**Safety**要求，Paxos进一步提出：
+既然允许*acceptors*接受多个*proposal*就有可能出现多个不同值都被最终选定的情况，这违背了**Safety**要求，为了保证**Safety**要求，Paxos进一步提出：
 
-**P2：如果值为\\(v\\)的_proposal_被选定（chosen），则任何被选定（chosen）的具有更高编号的_proposal_值也一定为\\(v\\)**
+**P2：如果值为\\(v\\)的*proposal*被选定（chosen），则任何被选定（chosen）的具有更高编号的*proposal*值也一定为\\(v\\)**
 
 只要算法同时满足**P1**和**P2**，就保证了**Safety**。**P2**是一个比较宽泛的约定，完全没有算法细节，我们对其进一步延伸：
 
-**P2a：如果值为\\(v\\)的_proposal_被选定（chosen），则对所有的_acceptors_，它们接受（accept）的任何具有更高编号的_proposal_值也一定为\\(v\\)**
+**P2a：如果值为\\(v\\)的*proposal*被选定（chosen），则对所有的*acceptors*，它们接受（accept）的任何具有更高编号的*proposal*值也一定为\\(v\\)**
 
-如果满足**P2a**则一定满足**P2**，显然，因为只有首先被接受才有可能被最终选定。但是**P2a**依然难以实现，因为_acceptor_很有可能并不知道之前被选定的_proposal_（恰好不在接受它的多数派中），因此进一步延伸：
+如果满足**P2a**则一定满足**P2**，显然，因为只有首先被接受才有可能被最终选定。但是**P2a**依然难以实现，因为*acceptor*很有可能并不知道之前被选定的*proposal*（恰好不在接受它的多数派中），因此进一步延伸：
 
-**P2b：如果值为\\(v\\)的_proposal_被选定（chosen），则对所有的_proposer_，它们提出的的任何具有更高编号的_proposal_值也一定为\\(v\\)**
+**P2b：如果值为\\(v\\)的*proposal*被选定（chosen），则对所有的*proposer*，它们提出的的任何具有更高编号的*proposal*值也一定为\\(v\\)**
 
 更进一步的：
 
-**P2c：为了提出值为\\(v\\)且编号为\\(n\\)的_proposal_，必须存在一个包含超过一半_acceptors_的集合\\(S\\)，满足(a)没有任何\\(S\\)中的_acceptors_曾经接受（accept）过编号比\\(n\\)小的_proposal_，或者(b)\\(v\\)和\\(S\\)中的_acceptors_所接受过(accept)的编号最大且小于\\(n\\)的_proposal_值一致。**
+**P2c：为了提出值为\\(v\\)且编号为\\(n\\)的*proposal*，必须存在一个包含超过一半*acceptors*的集合\\(S\\)，满足(a)没有任何\\(S\\)中的*acceptors*曾经接受（accept）过编号比\\(n\\)小的*proposal*，或者(b)\\(v\\)和\\(S\\)中的*acceptors*所接受过(accept)的编号最大且小于\\(n\\)的*proposal*值一致。**
 
-满足**P2c**即满足**P2b**即满足**P2a**即满足**P2**。至此Paxos提出了_proposer_的执行流程，以满足**P2c**：
+满足**P2c**即满足**P2b**即满足**P2a**即满足**P2**。至此Paxos提出了*proposer*的执行流程，以满足**P2c**：
 
-1. _proposer_选择一个新的编号\\(n\\)，向超过一半的_acceptors_发送请求消息，_acceptor_回复: (a)承诺不会接受编号比\\(n\\)小的_proposal_，**以及**(b)它所接受过的编号比\\(n\\)小的最大_proposal_（如果有）。该请求称为_prepare_请求。
-2. 如果_proposer_收到了超过一半_acceptors_的回复，它就可以提出_proposal_了，_proposal_的值为收到回复中编号最大的_proposal_的值，如果没有这样的值，则可以自由提出任何值。
-3. 向收到回复的_acceptors_发送_accept_请求，请求对方接受提出的_proposal_。
+1. *proposer*选择一个新的编号\\(n\\)，向超过一半的*acceptors*发送请求消息，*acceptor*回复: (a)承诺不会接受编号比\\(n\\)小的*proposal*，**以及**(b)它所接受过的编号比\\(n\\)小的最大*proposal*（如果有）。该请求称为*prepare*请求。
+2. 如果*proposer*收到了超过一半*acceptors*的回复，它就可以提出*proposal*了，*proposal*的值为收到回复中编号最大的*proposal*的值，如果没有这样的值，则可以自由提出任何值。
+3. 向收到回复的*acceptors*发送*accept*请求，请求对方接受提出的*proposal*。
 
-仔细品味_proposer_的执行流程，其完全吻合**P2c**中的要求，但你可能也发现了，当多个_proposer_同时运行时，有可能出现没有任何_proposal_可以成功被接受的情况（编号递增的交替完成第一步），这就是Paxos算法的**Liveness**问题，有些文档中称其为“活锁”，论文中建议通过对_proposers_引入选主算法选出_distinguished proposer_来全权负责提出_proposal_来解决这个问题，但是即使在出现多个_proposers_同时提出_proposal_的情况时，Paxos算法也可以保证**Safety**。
+仔细品味*proposer*的执行流程，其完全吻合**P2c**中的要求，但你可能也发现了，当多个*proposer*同时运行时，有可能出现没有任何*proposal*可以成功被接受的情况（编号递增的交替完成第一步），这就是Paxos算法的**Liveness**问题，有些文档中称其为“活锁”，论文中建议通过对*proposers*引入选主算法选出*distinguished proposer*来全权负责提出*proposal*来解决这个问题，但是即使在出现多个*proposers*同时提出*proposal*的情况时，Paxos算法也可以保证**Safety**。
 
-接下来看看_acceptors_的执行过程，和我们对**P2**做的事情一样，我们对**P1**进行延伸：
+接下来看看*acceptors*的执行过程，和我们对**P2**做的事情一样，我们对**P1**进行延伸：
 
-**P1a：acceptor可以接受（accept）编号为\\(n\\)的_proposal_当且仅当它没有回复过一个具有更大编号的_prepare_消息。**
+**P1a：acceptor可以接受（accept）编号为\\(n\\)的*proposal*当且仅当它没有回复过一个具有更大编号的*prepare*消息。**
 
-易见，**P1a**包含了**P1**，对于_acceptors_：
+易见，**P1a**包含了**P1**，对于*acceptors*：
 
-1. 当收到_prepare_请求时，如果其编号\\(n\\)大于之前所收到的_prepare_消息，则回复。
-2. 当收到_accept_请求时，仅当它没有回复过一个具有更大编号的_prepare_消息，接受该_proposal_并回复。
+1. 当收到*prepare*请求时，如果其编号\\(n\\)大于之前所收到的*prepare*消息，则回复。
+2. 当收到*accept*请求时，仅当它没有回复过一个具有更大编号的*prepare*消息，接受该*proposal*并回复。
 
-以上涵盖了满足**P1a**和**P2b**的一套完整共识算法，其中一点优化在于_acceptor_可以提前终止较小编号的_proposal_过程。
+以上涵盖了满足**P1a**和**P2b**的一套完整共识算法，其中一点优化在于*acceptor*可以提前终止较小编号的*proposal*过程。
 
-Paxos算法中的另一部分是_learners_如何知晓已被选中的_proposal_，本文不再展开。
+Paxos算法中的另一部分是*learners*如何知晓已被选中的*proposal*，本文不再展开。
 
 ### 多说两句
 
-观察Paxos和前文中的VR和Raft算法，最大的区别在于Paxos是“非集中式”的，在Paxos中不存在地位特殊的进程，引入选主也只是因为多个活动的_proposers_可能导致活锁；VR和Raft是基于“集中式”的设计的，它们在算法中自带了选主，并要求在每个“view”或“term”中只能存在一个_leader_，由_leader_来负责定序等操作，这样极大的简化了设计和实现的难度，在系统设计中，简单不一定是个坏事，即使是使用了Paxos算法的Chubby系统，实际上也只是使用Paxos来完成选主，当选主结束后Chubby仍然是作为一个“集中式”的系统来运行的。
+观察Paxos和前文中的VR和Raft算法，最大的区别在于Paxos是“非集中式”的，在Paxos中不存在地位特殊的进程，引入选主也只是因为多个活动的*proposers*可能导致活锁；VR和Raft是基于“集中式”的设计的，它们在算法中自带了选主，并要求在每个“view”或“term”中只能存在一个*leader*，由*leader*来负责定序等操作，这样极大的简化了设计和实现的难度，在系统设计中，简单不一定是个坏事，即使是使用了Paxos算法的Chubby系统，实际上也只是使用Paxos来完成选主，当选主结束后Chubby仍然是作为一个“集中式”的系统来运行的。
 
 另外，Paxos算法作为一个理论工作，它的实现难度不容忽视，分布式系统的设计者往往从Paxos开始，但由于实现难度大而不得不做一些这样那样的修改，这样的修改看似无妨，却极有可能导致最终实现一个没有理论证明的算法（比如Zab）。即使是Google的Chubby工程师团队，在实现Paxos的过程中也吃尽了苦头，他们在发表的关于Paxos工程实现的文章[12](#fn-1494-live)中如此评论：
 
@@ -337,13 +338,13 @@ Paxos算法中的另一部分是_learners_如何知晓已被选中的_proposal_�
 
 多副本状态机在本质上是一种副本技术，我们使用副本技术的目的往往是容错和负载均衡，不但要保证副本能够容忍进程故障，也希望能通过负载均衡提高整体的性能。
 
-我们可以看到前文中描述的几个多副本状态机性能都十分有限，首先，它们都只有_leader_节点可以处理请求，而从节点只是作为副本保障容错性；第二点，在这样的多副本状态机中，读请求也是作为一个常规操作执行的，也就是说单纯的读操作也需要在多副本状态机中产生消息交互并生成对应的日志条目，限制了单纯的读请求执行效率。
+我们可以看到前文中描述的几个多副本状态机性能都十分有限，首先，它们都只有*leader*节点可以处理请求，而从节点只是作为副本保障容错性；第二点，在这样的多副本状态机中，读请求也是作为一个常规操作执行的，也就是说单纯的读操作也需要在多副本状态机中产生消息交互并生成对应的日志条目，限制了单纯的读请求执行效率。
 
 在我所了解的一些系统中，已经有了不少优秀的思路可以用来提高多副本状态机的性能。
 
-针对读请求多的场景，Harp[13](#fn-1494-harp)提出了一种方法：针对读请求这类不影响状态机状态的操作，可以不将其作为需要在状态机副本中同步的操作，而直接由_leader_副本处理，这样产生的一个问题是可能会由于网络分区等异常而读到失效的错误信息，违背了副本的线性化能力（强一致性），可以通过对_leader_引入Leases[14](#fn-1494-leases)机制来消除这个问题，只要当_leader_持有Lease，就可以直接响应读请求，而其他副本也保证在Lease失效前不会产生新的_leader_，因此保证了一致性要求。更进一步的，如果系统可以接受更加放松的一致性要求，则可以允许非_leader_节点响应读请求，达到负载均衡的效果，通过对client的请求引入向量时钟（vector timestamps）或Lamport时钟，可以在这样的模式中实现较弱的一致性要求。
+针对读请求多的场景，Harp[13](#fn-1494-harp)提出了一种方法：针对读请求这类不影响状态机状态的操作，可以不将其作为需要在状态机副本中同步的操作，而直接由*leader*副本处理，这样产生的一个问题是可能会由于网络分区等异常而读到失效的错误信息，违背了副本的线性化能力（强一致性），可以通过对*leader*引入Leases[14](#fn-1494-leases)机制来消除这个问题，只要当*leader*持有Lease，就可以直接响应读请求，而其他副本也保证在Lease失效前不会产生新的*leader*，因此保证了一致性要求。更进一步的，如果系统可以接受更加放松的一致性要求，则可以允许非*leader*节点响应读请求，达到负载均衡的效果，通过对client的请求引入向量时钟（vector timestamps）或Lamport时钟，可以在这样的模式中实现较弱的一致性要求。
 
-另一种解决思路是为多副本状态机加入缓存机制，例如Chubby和Zookeeper都在client端为数据做了缓存，在Chubby中client只允许访问_leader_进程，但对数据使用了基于Leases的缓存机制，保证了副本的线性化能力；而Zookeeper则放松了一致性要求，client不仅可以访问非_leader_的副本，而且使用“watch”机制提高系统处理能力。Chubby的设计者认为使用较弱的一致性模型会造成用户的困惑，而具备线性化能力的副本行为要更加容易被程序员所接受，但Zookeeper的设计者认为程序员应该理解所使用服务的一致性保证，并将进行更强一致性操作选择权交给了程序员用户（Zookeeper提供sync API），这就是性能和一致性之间常有的trade off，留给每个系统设计者思考。
+另一种解决思路是为多副本状态机加入缓存机制，例如Chubby和Zookeeper都在client端为数据做了缓存，在Chubby中client只允许访问*leader*进程，但对数据使用了基于Leases的缓存机制，保证了副本的线性化能力；而Zookeeper则放松了一致性要求，client不仅可以访问非*leader*的副本，而且使用“watch”机制提高系统处理能力。Chubby的设计者认为使用较弱的一致性模型会造成用户的困惑，而具备线性化能力的副本行为要更加容易被程序员所接受，但Zookeeper的设计者认为程序员应该理解所使用服务的一致性保证，并将进行更强一致性操作选择权交给了程序员用户（Zookeeper提供sync API），这就是性能和一致性之间常有的trade off，留给每个系统设计者思考。
 
 ## 参考资料
 
