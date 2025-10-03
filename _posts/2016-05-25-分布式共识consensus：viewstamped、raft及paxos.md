@@ -19,7 +19,10 @@ tags:
 
 这篇文章主要总结一下我个人认为是整个分布式系统中最为重要的问题（没有之一）：**分布式共识（Consensus）**。
 
-\[caption id="attachment\_1519" align="aligncenter" width="747"\][![达成共识](/assets/images/committee-meeting.jpg)](/assets/images/committee-meeting.jpg) 达成共识\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/committee-meeting.jpg" alt="达成共识" />
+  <figcaption>达成共识</figcaption>
+</figure>
 
 PS：我在学习过程中是以《分布式系统：概念与设计》[1](#fn-1494-book)这本书作为基础的，在下文中如果没有特别指明，所提书中内容均指该书。
 
@@ -61,7 +64,10 @@ PS：我在学习过程中是以《分布式系统：概念与设计》[1](#fn-1
 
 分布式共识问题的定义如下图所示：
 
-\[caption id="attachment\_1508" align="aligncenter" width="654"\][![分布式共识问题](/assets/images/consensus.jpg)](/assets/images/consensus.jpg) 分布式共识问题\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/consensus.jpg" alt="分布式共识问题" />
+  <figcaption>分布式共识问题</figcaption>
+</figure>
 
 为了达到共识，每个进程都提出自己的提议（propose），最终通过共识算法，所有正确运行的进程决定（decide）相同的值。
 
@@ -87,13 +93,19 @@ PS：我在学习过程中是以《分布式系统：概念与设计》[1](#fn-1
 
 分布式系统中对共识问题的直接应用常常是在多副本状态机（不太确定这个翻译对不对）的场景中出现的。多副本状态机是指多台机器具有完全相同的状态，并且运行有完全相同的确定性状态机。通过使用这样的状态机，可以解决很多分布式系统中的容错问题，因为多副本状态机通常可以容忍\\(\\lfloor \\frac{N}{2}\\rfloor\\)进程故障，且所有正常运行的副本都完全一致，所以，可以使用多副本状态机来实现需要避免单点故障的组件，如集中式的选主或是互斥算法中的协调者（coordinator），如图所示：
 
-\[caption id="attachment\_1509" align="aligncenter" width="500"\][![高可用“单点”的集中式架构](/assets/images/leader_election.png)](/assets/images/leader_election.png) 高可用“单点”的集中式架构\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/leader_election.png" alt="高可用“单点”的集中式架构" />
+  <figcaption>高可用“单点”的集中式架构</figcaption>
+</figure>
 
 集中式的选主或互斥算法逻辑简单，但最大的问题是协调者的单点故障问题，通过采用多副本状态机来实现协调者实现了高可用的“单点”，回避了单点故障。Google的Chubby服务[5](#fn-1494-chubby)和类似的开源服务Zookeeper就是这样的例子。
 
 虽然有很多不同的多副本状态机实现，但其基本实现模式是类似的：状态机的每个副本上都保存有完全相同的操作日志，保证所有副本状态机按照相同的顺序执行操作，这样由于状态机是确定性的，则一定会得到相同的状态，如下图：
 
-\[caption id="attachment\_1510" align="aligncenter" width="485"\][![多副本状态机](/assets/images/RSM.jpg)](/assets/images/RSM.jpg) 多副本状态机\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/RSM.jpg" alt="多副本状态机" />
+  <figcaption>多副本状态机</figcaption>
+</figure>
 
 共识算法的作用就是在这样的场景中保证所有副本状态机上的操作日志具有完全相同的顺序，具体来讲：**如果状态机的任何一个副本在本地状态机上执行了一个操作，则绝对不会有别的副本在操作序列相同位置执行一个不同的操作**。
 
@@ -129,7 +141,10 @@ VR算法适用于允许故障-停止的异步系统中，并且VR不要求可靠
 
 这个处理过程如下图所示：
 
-\[caption id="attachment\_1512" align="aligncenter" width="500"\][![VR正常执行流程](/assets/images/vr.jpg)](/assets/images/vr.jpg) VR正常执行流程\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/vr.jpg" alt="VR正常执行流程" />
+  <figcaption>VR正常执行流程</figcaption>
+</figure>
 
 另外，在整个过程中，在没有收到回复时发送方会重复发送消息，以此来对抗可能出现的消息丢失。在VR中只有_primary_副本可以响应client请求，_backup_对client请求仅仅是简单的丢弃，如果_primary_发生了变化，当请求超时后client会向所有副本发送请求以找到新的_primary_。
 
@@ -188,23 +203,35 @@ Raft中所有的_follower_需要定期接收到来自_leader_的心跳消息，�
 
 当完成_leader election_后，Raft进入新的_term_开始工作， _leader_接受到client的请求后，会为该操作生成一条_log_项，并同时记录该项的_index_（表明该项在_log_中的位置）和_term_，如下图：
 
-\[caption id="attachment\_1514" align="aligncenter" width="480"\][![Raft中的log](/assets/images/raft1.jpg)](/assets/images/raft1.jpg) Raft中的log\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/raft1.jpg" alt="Raft中的log" />
+  <figcaption>Raft中的log</figcaption>
+</figure>
 
 然后，_leader_会向所有_follower_发送该请求，将该_log_项传播出去，如果有副本失败的情况，_leader_会不断执行重传。当_leader_成功将该_log_项复制到超过一半的副本上后，_leader_认为该_log_项（及其之前的所有_log_项）可以被提交了（**仅限于当前_term_的_log_项，见下文**），它将在本地状态机执行对应操作，并向client返回执行结果，_leader_记录已提交的最高_index_，并告知_follower_，_follower_据此知晓已确认提交的操作并在本地执行。
 
 在正常运行中以上的过程就足够了，然而在考虑到各类故障的影响，各个副本上的_log_可能会出现各种不一致的情况，如下图：
 
-\[caption id="attachment\_1515" align="aligncenter" width="500"\][![log不一致](/assets/images/raft2.jpg)](/assets/images/raft2.jpg) log不一致\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/raft2.jpg" alt="log不一致" />
+  <figcaption>log不一致</figcaption>
+</figure>
 
 Raft用来处理这种情况的对策很简单：以_leader_上的日志为准，将与_leader_不一致的日志进行重写（这个过程比较繁琐，但思路是简单的，通过不断向前检查_follower_上_log_项，直到找到分叉点，然后进行修正）。这样的重写使得旧_term_中遗留的_log_项可能出现被覆盖丢失的情况，如下图：
 
-\[caption id="attachment\_1516" align="aligncenter" width="494"\][![Raft中旧term日志覆盖问题](/assets/images/raft3.jpg)](/assets/images/raft3.jpg) Raft中旧term日志覆盖问题\[/caption\] 因此，Raft约束**对于来自旧_term_的_log_项不能根据多数原则提交，而只能随着当前_term_的_log_项一起提交。**
+<figure style="text-align: center;">
+  <img src="/assets/images/raft3.jpg" alt="Raft中旧term日志覆盖问题" />
+  <figcaption>Raft中旧term日志覆盖问题</figcaption>
+</figure> 因此，Raft约束**对于来自旧_term_的_log_项不能根据多数原则提交，而只能随着当前_term_的_log_项一起提交。**
 
 ### 正确性
 
 Raft的完整的正确性证明在论文中推倒的非常详细，我实在做不出什么精简，其核心证明过程在于在整个算法中保证下图中的几点性质：
 
-\[caption id="attachment\_1517" align="aligncenter" width="511"\][![Raft中的Safety保证](/assets/images/raft4.jpg)](/assets/images/raft4.jpg) Raft中的Safety保证\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/raft4.jpg" alt="Raft中的Safety保证" />
+  <figcaption>Raft中的Safety保证</figcaption>
+</figure>
 
 可以看到通过这几点性质，Raft满足了**Safety**要求，但其在**Liveness**上是有缺陷的，例如_leader election_过程可能会出现无法完成的情况，虽然出现概率非常非常低，在实践中可以忽略不计，但从理论证明角度是无法确保Liveness的。
 

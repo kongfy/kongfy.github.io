@@ -10,7 +10,10 @@ tags:
 
 上一篇文章中实现了一个lock-free的队列，但是有一个问题：内存无法被安全的回收。那么，这次就来把这缺失的一环补上：hazard pointer，一种lock-free对象的内存回收机制。
 
-\[caption id="attachment\_1646" align="aligncenter" width="541"\][![hazard pointer](/assets/images/hp.png)](/assets/images/hp.png) hazard pointer\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/hp.png" alt="hazard pointer" />
+  <figcaption>hazard pointer</figcaption>
+</figure>
 
 PS：因为hazard pointer完整代码略有些长，不适合贴在文章内部，完整代码可以在[这里](https://github.com/kongfy/playground/tree/master/hazard_pointer)找到。
 

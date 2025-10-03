@@ -23,7 +23,10 @@ OpenStack似乎没有针对这种情况的网络模式（即使FlatManager也不
 
 首先我们要按照标准的Flat网络模型配置计算节点网络：
 
-\[caption id="attachment\_370" align="aligncenter" width="255"\][![Flat网络模型](/assets/images/generic-bridge-config-2.png)](/assets/images/generic-bridge-config-2.png) Flat网络模型\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/generic-bridge-config-2.png" alt="Flat网络模型" />
+  <figcaption>Flat网络模型</figcaption>
+</figure>
 
 在Flat模式中需要手工建立Linux网桥，网上这方面的资料很多了，在此不进行赘述。值得注意的一点是如果创建的网桥名称不是默认的br100，那么在配置的过程中仅仅按照文档描述的修改配置文件中的 `flat_network_bridge=vmbr` 是不够的，还需要在创建网络时指定网桥的名字才可以...（所以说还是按照默认的br100比较好）
 

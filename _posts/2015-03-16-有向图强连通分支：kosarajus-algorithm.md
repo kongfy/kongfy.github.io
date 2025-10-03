@@ -21,7 +21,10 @@ tags:
 2. 在图\[latex\]G^{rev}\[/latex\]上做**后序**的DFS，得到点遍历顺序
 3. 按照上一步中得到的遍历顺序，从大到小在原图\[latex\]G\[/latex\]中通过DFS依次“拖”出强连通分支
 
-运行过程如下图例，\[latex\]f(v)\[/latex\]代表点在\[latex\]G^{rev}\[/latex\]的遍历结束时间，从9号点开始DFS。 \[caption id="attachment\_963" align="aligncenter" width="843"\][![Exampl  e execution of the strongly connected components algorithm.](/assets/images/B0842D09-98C3-4F8C-B551-315CBAC0874E.jpg)](/assets/images/B0842D09-98C3-4F8C-B551-315CBAC0874E.jpg) Exampl e execution of the strongly connected components algorithm.\[/caption\]
+运行过程如下图例，\[latex\]f(v)\[/latex\]代表点在\[latex\]G^{rev}\[/latex\]的遍历结束时间，从9号点开始DFS。 <figure style="text-align: center;">
+  <img src="/assets/images/B0842D09-98C3-4F8C-B551-315CBAC0874E.jpg" alt="Exampl  e execution of the strongly connected components algorithm." />
+  <figcaption>Exampl e execution of the strongly connected components algorithm.</figcaption>
+</figure>
 
 记得刚学习这个算法时一直有的一个疑惑：为什么在第一遍DFS时一定要在图\[latex\]G^{rev}\[/latex\]上做么？难道不能通过在原图\[latex\]G\[/latex\]上DFS的顺序**从小到大**的进行第二次DFS么？仔细研究算法正确性的证明，不难发现这个想法是错误的。
 
@@ -37,7 +40,10 @@ $$\\displaystyle \\max\_{v\\in C\_1}f(v) < \\max\_{v\\in C\_2}f(v)$$
 
 显然这是不对的...反例见下图中强连通分支{9，6，3}和{8，5，2}，\[latex\]f'(3)=1\[/latex\]比{8，5，2}中的完成时间都要小，如果从该点开始“拖”强连通分支得到的是错误的结果{9，6，3，8，5，2}。
 
-\[caption id="attachment\_961" align="aligncenter" width="536"\][![遍历顺序](/assets/images/9A6FEF4E-FD08-4AF3-89BC-398920C58BAB.jpg)](/assets/images/9A6FEF4E-FD08-4AF3-89BC-398920C58BAB.jpg) 遍历顺序\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/9A6FEF4E-FD08-4AF3-89BC-398920C58BAB.jpg" alt="遍历顺序" />
+  <figcaption>遍历顺序</figcaption>
+</figure>
 
 所以\[latex\]G^{rev}\[/latex\]的计算是必不可少的。
 

@@ -13,7 +13,10 @@ tags:
 
 先前的文章描述了Intel系列计算机的[主板和存储地址映射](/posts/2014-03-*-%e8%af%91%e4%b8%bb%e6%9d%bf%e8%8a%af%e7%89%87%e9%9b%86%e5%92%8c%e5%ad%98%e5%82%a8%e5%9c%b0%e5%9d%80%e6%98%a0%e5%b0%84-motherboard-chipsets-and-the-memory-map/ "[译]主板芯片组和存储地址映射 – Motherboard Chipsets and the Memory Map")，在此基础上我们来看看计算机启动的初始阶段。计算机的启动是一个复杂、多阶段并且相当有趣的事情。下图描述了整个计算机启动的过程：
 
-\[caption id="attachment\_111" align="aligncenter" width="674"\][![计算机启动过程](/assets/images/55E52855-DA54-4925-98DD-E45A9F000583.jpg)](/assets/images/55E52855-DA54-4925-98DD-E45A9F000583.jpg) 计算机启动过程\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/55E52855-DA54-4925-98DD-E45A9F000583.jpg" alt="计算机启动过程" />
+  <figcaption>计算机启动过程</figcaption>
+</figure>
 
 当你按下计算机的电源按钮时，启动过程就开始了。一旦主板电源接通，主板就会初始化主板上的固件——一些芯片组和周边——并且会尝试让CPU运行起来。如果在这一步失败了（比如CPU故障或者没有找到），一般来说除了风扇仍然可以转动，计算机的其他部分都无法工作。少数主板在未找到CPU或者发现CPU故障时会发出“哔哔”的警报音，但是基于我的经验，大部分的主板只会不断的转动风扇，没有其它任何反应。有时候USB或是其他设备都有可能会导致这种情况：如果你发现你的系统突然变成了这样，尝试拔掉所有非必须的设备可能会有帮助。你也可以一个一个的排除出可能导致问题发生的设备。
 
@@ -25,7 +28,10 @@ tags:
 
 主板会保证在reset vector处的指令是一条到BIOS程序入口的跳转指令。在主板芯片组的存储地址映射作用下，所有的存储地址都对应有CPU需要的正确的内容。这些地址都被映射到了包含有BIOS的闪存中，而此时RAM中存在的只是一些无用的随机值。有关存储区域的一个示例如下图：
 
-\[caption id="attachment\_119" align="aligncenter" width="337"\][![启动时的重要内存区域](/assets/images/79CF14EF-A63E-4B19-9E51-7416099D1DFB.jpg)](/assets/images/79CF14EF-A63E-4B19-9E51-7416099D1DFB.jpg) 启动时的重要内存区域\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/79CF14EF-A63E-4B19-9E51-7416099D1DFB.jpg" alt="启动时的重要内存区域" />
+  <figcaption>启动时的重要内存区域</figcaption>
+</figure>
 
 在这之后CPU就会开始执行BIOS程序来对一些机器的硬件进行初始化。然后BIOS会触发[通电自检(Power-on Self Test - POST)](http://en.wikipedia.org/wiki/Power_on_self_test "POST")过程以检测计算机的众多组件。如果POST检测到显卡故障，BIOS程序会停止并发出蜂鸣声——因为无法在屏幕上显示信息，而如果显卡可以正常工作，一切就美好的多了：制造商的logo会出现在屏幕上，BIOS开始检测内存，喇叭会发出声音。POST过程中的其他错误比如未找到键盘等会在屏幕上打印出错误信息。POST过程涉及到非常多的检测和初始化工作，包括整理出所有可用的资源——中断、内存大小、PCI设备的I/O端口。遵守[ACPI](http://en.wikipedia.org/wiki/ACPI "ACPI")的BIOS程序会建立一些描述计算机设备的数据表，这些数据表在之后交给操作系统内核使用。
 
@@ -33,7 +39,10 @@ tags:
 
 假设我们的可启动设备为硬盘，则BIOS程序会读取硬盘的开头512个字节（第一个扇区），这512个字节被称为[主引导记录(Master Boot Record - MBR)](http://en.wikipedia.org/wiki/Master_boot_record "MBR")，MBR通常包含两个必不可少的部分：一个很小的操作系统各异的引导程序和磁盘的分区表。不过BIOS并不关心这些，BIOS只是简单的把MBR的内容载入到内存地址0x7c00的位置并且跳转到这一地址开始执行MBR中的指令。
 
-\[caption id="attachment\_117" align="aligncenter" width="616"\][![主引导记录（MBR）](/assets/images/6C14B5AE-6E9C-421F-8278-88720E722CF4.jpg)](/assets/images/6C14B5AE-6E9C-421F-8278-88720E722CF4.jpg) 主引导记录（MBR）\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/6C14B5AE-6E9C-421F-8278-88720E722CF4.jpg" alt="主引导记录（MBR）" />
+  <figcaption>主引导记录（MBR）</figcaption>
+</figure>
 
 MBR中的代码可能是一个Windows的启动器（Loader），也可能是Linux的启动器比如LILO或是GRUB，甚至有可能是一个病毒。而分区表是标准化的：分区表长度为64字节，由4个16字节的分区描述组成，它们描述了磁盘是如何分隔的（所以你可以在同一块磁盘中安装不同的操作系统）。传统的微软MBR代码会检查分区表，找出唯一一个标记为活动的分区，从这个分区中载入启动扇区并且运行扇区上的代码。启动扇区是这个分区上的第一个扇区，相对的MBR是整个磁盘的第一个扇区。如果分区表中有错误你会看到类似“Invalid Partition Table”或者“Missing Operating System”这样的错误提示，这些信息是MBR代码发出的，而不是BIOS，因此具体的错误提示取决于MBR的实现风格。
 

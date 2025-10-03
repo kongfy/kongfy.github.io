@@ -15,7 +15,10 @@ tags:
 
 这个链表看起来大概是这个样子：
 
-\[caption id="attachment\_330" align="aligncenter" width="300"\][![带有随机指针的链表](/assets/images/0.png)](/assets/images/0.png) 带有随机指针的链表\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/0.png" alt="带有随机指针的链表" />
+  <figcaption>带有随机指针的链表</figcaption>
+</figure>
 
 这个随机指针对链表的拷贝造成了不小的麻烦...
 
@@ -28,8 +31,17 @@ tags:
 而最为巧妙的，也是不太容易想到的一种方法可以使用O(n)的时间复杂度，并且在不是用额外空间的情况下解决这个问题。步骤如下：
 
 1. 对链表进行遍历，对每个节点，复制一个新节点，并将其插入到链表中该节点后面的位置上
-\[caption id="attachment\_331" align="aligncenter" width="607"\][![Step 1](/assets/images/1.png)](/assets/images/1.png) Step 1\[/caption\]3. 再次对链表进行遍历，k = 1...n，将2k节点的random指针指向(2k - 1)节点的random指针所指向节点的后继节点
-\[caption id="attachment\_332" align="aligncenter" width="607"\][![Step 2](/assets/images/2.png)](/assets/images/2.png) Step 2\[/caption\]5. 最后一次对链表进行遍历，k = 1...n，将2k节点顺序抽出组成新链表
-\[caption id="attachment\_333" align="aligncenter" width="608"\][![Step3](/assets/images/3.png)](/assets/images/3.png) Step3\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/1.png" alt="Step 1" />
+  <figcaption>Step 1</figcaption>
+</figure>3. 再次对链表进行遍历，k = 1...n，将2k节点的random指针指向(2k - 1)节点的random指针所指向节点的后继节点
+<figure style="text-align: center;">
+  <img src="/assets/images/2.png" alt="Step 2" />
+  <figcaption>Step 2</figcaption>
+</figure>5. 最后一次对链表进行遍历，k = 1...n，将2k节点顺序抽出组成新链表
+<figure style="text-align: center;">
+  <img src="/assets/images/3.png" alt="Step3" />
+  <figcaption>Step3</figcaption>
+</figure>
 
 `class Solution { public: RandomListNode *copyRandomList(RandomListNode *head) { if (!head) { return NULL; } RandomListNode *p = head, *q = NULL; while (p) { q = new RandomListNode(p->label); q->next = p->next; p->next = q; p = q->next; }  p = head; q = NULL; while (p) { q = p->next; if (p->random) { q->random = p->random->next; } p = q->next; }  p = head; q = NULL; RandomListNode *new_head = NULL, *tail = NULL; while (p) { q = p->next; p->next = q->next; q->next = NULL; if (!new_head) { new_head = q; } else { tail->next = q; } tail = q; p = p->next; } return new_head; } };`

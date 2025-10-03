@@ -23,7 +23,10 @@ tags:
 
 OpenStack主要包括Identity Service、Image Service、Compute Service、Dashboard、Block Storage等几部分组成，OpenStack Havana的整体结构图如下（图片出自官方安装指南）：
 
-\[caption id="attachment\_54" align="aligncenter" width="859"\][![OpenStack基本结构概况](/assets/images/F263D492-D28B-468D-87BB-C1A5860E0FCC.jpg)](/assets/images/F263D492-D28B-468D-87BB-C1A5860E0FCC.jpg) OpenStack基本结构概况\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/F263D492-D28B-468D-87BB-C1A5860E0FCC.jpg" alt="OpenStack基本结构概况" />
+  <figcaption>OpenStack基本结构概况</figcaption>
+</figure>
 
 我没有安装图中全部的模块，仅选择了主要的几部分，按照下面的顺序进行安装：
 

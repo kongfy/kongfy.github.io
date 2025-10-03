@@ -10,7 +10,10 @@ tags:
 
 因为项目关系，接触学习了大名鼎鼎的Python网络编程框架Twised，Twisted是以高性能为目标的异步（event-driven）网络编程框架。
 
-\[caption id="attachment\_817" align="aligncenter" width="379"\][![Twisted book](/assets/images/518wm5u3TjL.jpg)](/assets/images/518wm5u3TjL.jpg) Twisted book\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/518wm5u3TjL.jpg" alt="Twisted book" />
+  <figcaption>Twisted book</figcaption>
+</figure>
 
 图中是Twisted官方推荐的学习书籍的封面，我觉得封面设计的非常贴切：Twisted就是很多Python（蟒蛇）纠缠在一起。
 
@@ -45,7 +48,10 @@ tags:
 
 因此我们将这样的异步模式称为Reactor模式，例如在iOS开发中的Run Loop概念，实际上非常类似于Reactor loop，主线程的Run Loop监听屏幕UI事件，一旦发生UI事件则执行对应的事件处理代码，还可以通过GCD等方式产生事件至主线程执行。
 
-\[caption id="attachment\_825" align="aligncenter" width="524"\][![Event model](/assets/images/event_model.png)](/assets/images/event_model.png) Event model\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/event_model.png" alt="Event model" />
+  <figcaption>Event model</figcaption>
+</figure>
 
 上图是[Boost](http://www.boost.org "boost")对Reactor模式的描绘，Twisted的设计就是基于这样的Reactor模式，Twisted程序就是在等待事件、处理事件的过程中不断循环。
 
@@ -61,7 +67,10 @@ reactor是Twisted程序中的单例对象。
 
 Factory如名字所暗示的，是抽象工厂。在Twisted中把一个工厂对象绑定到特定的端口中，当连接到来，Twisted使用该工厂创建工厂指定的Protocol对象，Protocol对象表明了连接的处理流程（协议），每个Protocol对象按照预定的协议处理连接，当连接关闭后销毁。
 
-\[caption id="attachment\_829" align="aligncenter" width="474"\][![Factory and Protocol](/assets/images/protocols-1.png)](/assets/images/protocols-1.png) Factory and Protocol\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/protocols-1.png" alt="Factory and Protocol" />
+  <figcaption>Factory and Protocol</figcaption>
+</figure>
 
 因为Protocol仅处理一条连接，所以一些全局持久保存的数据都存储在Factory中，每个Protocol对象中都有一个指向创建自己的Factory对象的成员变量factory。
 
@@ -83,7 +92,10 @@ Deferred是Twisted对Callback的实现方式，Deferred非常灵活，代表了�
 
 当我们想执行一个异步操作时，我们可以使用Deferred来代替数据立即返回。Deferred的含义是：你想要的数据还没有到，不过你可以告诉我你接下来想要执行的操作，当我得到数据以后会调用你想要执行的函数。
 
-\[caption id="attachment\_834" align="aligncenter" width="240"\][![Deferred process](/assets/images/deferred-process.png)](/assets/images/deferred-process.png) Deferred process\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/deferred-process.png" alt="Deferred process" />
+  <figcaption>Deferred process</figcaption>
+</figure>
 
 如上图，我们把想要的回调函数添加到Deferred对象上，当数据准备好后会按我们设置好的回调函数链一层一层的进行回调。
 

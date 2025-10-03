@@ -14,7 +14,10 @@ tags:
 
 在实践中，SVM也的确是一种非常流行的“黑盒”学习算法，下图为SVM标志性的概念图：
 
-\[caption id="attachment\_650" align="aligncenter" width="464"\][![Support Vector Machine](/assets/images/Svm_max_sep_hyperplane_with_margin-e1417223870925.png)](/assets/images/Svm_max_sep_hyperplane_with_margin-e1417223870925.png) Support Vector Machine\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/Svm_max_sep_hyperplane_with_margin-e1417223870925.png" alt="Support Vector Machine" />
+  <figcaption>Support Vector Machine</figcaption>
+</figure>
 
 <!--more-->
 
@@ -37,7 +40,10 @@ SVM也是一种线性模型，为了与之前讲的几个线性模型分类器�
 
 上面的式子比起之前的形式更清楚的说明了SVM到底在做什么：通过最小化$latex \\frac{1}{2} {\\left \\| \\theta \\right \\|}^2$，SVM实际上是在寻找合适的$latex \\theta$使得在各个训练样本$latex x^{(i)}$上获得更大的投影来满足限制条件，这也对应了更大的margin（所以SVM也叫Large margin classifier）,简单来说，SVM的目标不仅使找到可以分开正反类别的超平面，而且希望能找个“最好”的超平面，即距离正反类别样本距离最远的超平面，如下图：
 
-\[caption id="attachment\_666" align="aligncenter" width="1208"\][![Larger margin](/assets/images/69F86EE6-78B5-4620-A038-29D1A22D507D.jpg)](/assets/images/69F86EE6-78B5-4620-A038-29D1A22D507D.jpg) Larger margin\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/69F86EE6-78B5-4620-A038-29D1A22D507D.jpg" alt="Larger margin" />
+  <figcaption>Larger margin</figcaption>
+</figure>
 
 * * *
 
@@ -49,11 +55,17 @@ SVM也是一种线性模型，为了与之前讲的几个线性模型分类器�
 
 其中$latex C$是惩罚系数，后面的两项中$latex cost\_1$和$latex cost\_0$实际上是[Hinge loss](http://en.wikipedia.org/wiki/Hinge_loss "Hinge loss")函数：
 
-\[caption id="attachment\_670" align="aligncenter" width="1083"\][![Hinge Loss](/assets/images/945126A2-3160-49B1-B4C2-5C9CB6EAA0C9.jpg)](/assets/images/945126A2-3160-49B1-B4C2-5C9CB6EAA0C9.jpg) [](http://en.wikipedia.org/wiki/Hinge_loss "Hinge loss")Hinge Loss\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/945126A2-3160-49B1-B4C2-5C9CB6EAA0C9.jpg" alt="Hinge Loss" />
+  <figcaption><a href="http://en.wikipedia.org/wiki/Hinge_loss" title="Hinge loss">Hinge Loss</a></figcaption>
+</figure>
 
 到这里我们已经得到了线性核的SVM，训练个线性分类器看看效果：
 
-\[caption id="attachment\_689" align="aligncenter" width="630"\][![Linear Kernel](/assets/images/0A148944-9317-4BDA-BCB4-591148F131BE.jpg)](/assets/images/0A148944-9317-4BDA-BCB4-591148F131BE.jpg) Linear Kernel\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/0A148944-9317-4BDA-BCB4-591148F131BE.jpg" alt="Linear Kernel" />
+  <figcaption>Linear Kernel</figcaption>
+</figure>
 
 * * *
 
@@ -61,7 +73,10 @@ SVM也是一种线性模型，为了与之前讲的几个线性模型分类器�
 
 SVM的核（Kernel），本质上是把低维空间的样本映射到高维空间，在低维空间线性不可分的样本在高维空间可能会变为线性可分的，见下图：
 
-\[caption id="attachment\_674" align="aligncenter" width="1038"\][![Linearity v.s. dimensionality](/assets/images/77B83BE4-C6A6-4302-AEAD-CA9B85B3AF27.jpg)](/assets/images/77B83BE4-C6A6-4302-AEAD-CA9B85B3AF27.jpg) Linearity v.s. dimensionality\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/77B83BE4-C6A6-4302-AEAD-CA9B85B3AF27.jpg" alt="Linearity v.s. dimensionality" />
+  <figcaption>Linearity v.s. dimensionality</figcaption>
+</figure>
 
 在线性回归和逻辑回归中，我们通过添加高次项的方法将样本从低维空间映射到高维空间，在SVM中通过Kernel来完成映射，如果不使用任何Kernel，则称该SVM是线性核（Linear Kernel）。
 
@@ -73,7 +88,10 @@ SVM的核（Kernel），本质上是把低维空间的样本映射到高维空�
 
 在使用Gaussian kernel时要注意不要忘记做feature scaling！否则会导致规模较小的特征被忽略，相信这不会是你想要的结果。 直到最后Ng也没有将SVM具体是如何运行的，只是说虽然特征维度很高，但只要Kernel满足“Mercer's Theorem”，SVM的运算过程是非常有效的，看来SVM确实很适合被当做“黑盒”来使用...训练一个高斯核SVM分类器看看效果：
 
-\[caption id="attachment\_690" align="aligncenter" width="630"\][![Gaussian kernel](/assets/images/82396B3F-C2F1-4F64-9DA3-CAB0C9BF250C.jpg)](/assets/images/82396B3F-C2F1-4F64-9DA3-CAB0C9BF250C.jpg) Gaussian kernel\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/82396B3F-C2F1-4F64-9DA3-CAB0C9BF250C.jpg" alt="Gaussian kernel" />
+  <figcaption>Gaussian kernel</figcaption>
+</figure>
 
 * * *
 
@@ -81,7 +99,10 @@ SVM的核（Kernel），本质上是把低维空间的样本映射到高维空�
 
 在实际使用SVM时，以Gaussian kernel为例，需要选择合适的参数$latex C$和$latex \\sigma$：
 
-\[caption id="attachment\_681" align="aligncenter" width="1199"\][![SVM parameters](/assets/images/61FBC408-0CBA-441A-917B-361D374CE8B9.jpg)](/assets/images/61FBC408-0CBA-441A-917B-361D374CE8B9.jpg) SVM parameters\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/61FBC408-0CBA-441A-917B-361D374CE8B9.jpg" alt="SVM parameters" />
+  <figcaption>SVM parameters</figcaption>
+</figure>
 
 具体的建议Ng已经给出了，我们需要在实际的过程中在交叉验证集上选择合适的参数，最终在测试集上检验模型的泛化误差。因为如果在测试集上选择参数再测试泛化误差，本身参数就是针对测试集优化，这样做使得泛化误差的检验变得不公平，所以参数的选择必须在独立的交叉验证集中进行。
 
@@ -91,11 +112,17 @@ SVM的核（Kernel），本质上是把低维空间的样本映射到高维空�
 
 因为SVM是Ng课程中讲的最后一个监督学习算法，所以Ng在之后还给出了对问题如何选择合适的学习模型的建议：
 
-\[caption id="attachment\_684" align="aligncenter" width="1257"\][![Model selection](/assets/images/13E72658-771D-489A-9233-17FA9120AE8E.jpg)](/assets/images/13E72658-771D-489A-9233-17FA9120AE8E.jpg) Model selection\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/13E72658-771D-489A-9233-17FA9120AE8E.jpg" alt="Model selection" />
+  <figcaption>Model selection</figcaption>
+</figure>
 
 在另一门课程mmds中，也给出了SVM和决策树模型之间的选择建议，一并贴出留念：
 
-\[caption id="attachment\_685" align="aligncenter" width="1152"\][![SVM vs Decision Tree](/assets/images/B4E78099-7ADE-4C93-86DA-537E411F870A.jpg)](/assets/images/B4E78099-7ADE-4C93-86DA-537E411F870A.jpg) SVM vs Decision Tree\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/B4E78099-7ADE-4C93-86DA-537E411F870A.jpg" alt="SVM vs Decision Tree" />
+  <figcaption>SVM vs Decision Tree</figcaption>
+</figure>
 
 但是这些只能对选择模型做出一定的参考，而不能仅凭特征数量来选择模型，如俞扬老师说：
 

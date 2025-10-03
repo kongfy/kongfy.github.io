@@ -7,7 +7,10 @@ tags:
   - "最小割"
 ---
 
-\[caption id="attachment\_912" align="aligncenter" width="550"\][![Cut in an undirected graph](/assets/images/kargers-algorithm-3.png)](/assets/images/kargers-algorithm-3.png) Cut in an undirected graph\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/kargers-algorithm-3.png" alt="Cut in an undirected graph" />
+  <figcaption>Cut in an undirected graph</figcaption>
+</figure>
 
 提到无向图的最小割问题，首先想到的就是[Ford-Fulkerson算法](http://en.wikipedia.org/wiki/Ford%E2%80%93Fulkerson_algorithm)解s-t最小割，通过[Edmonds–Karp](http://en.wikipedia.org/wiki/Edmonds%E2%80%93Karp_algorithm)实现可以在\[latex\]O(nm^2)\[/latex\]时间内解决这个问题（\[latex\]n\[/latex\]为图中的顶点数，\[latex\]m\[/latex\]为图中的边数）。
 
@@ -20,7 +23,10 @@ Can we do better?
 答案是肯定的，Karger在攻读博士学位期间（Orz...）提出了非常著名的基于随机化的全局最小割算法，算法非常简单，简单到不敢相信它是正确的，算法描述如下：
 
 1. 在图中随机取一条边，将边的两个端点合并（contraction），同时消除所有由于合并而形成自环的边
-\[caption id="attachment\_930" align="aligncenter" width="601"\][![Contraction](/assets/images/kargers-algorithm-4.png)](/assets/images/kargers-algorithm-4.png) Contraction\[/caption\]3. 重复步骤1直到图中仅剩下两个点
+<figure style="text-align: center;">
+  <img src="/assets/images/kargers-algorithm-4.png" alt="Contraction" />
+  <figcaption>Contraction</figcaption>
+</figure>3. 重复步骤1直到图中仅剩下两个点
 4. 将最终两点之间的边作为找的割返回
 
 {% raw %}

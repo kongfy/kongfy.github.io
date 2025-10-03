@@ -7,7 +7,10 @@ tags:
 
 斯坦福在coursera上的博弈论课程又开放了，这么高大上的课程怎么能错过呢？现在课程已经过半，回过头来对前几周的内容做个小结。
 
-\[caption id="attachment\_1454" align="aligncenter" width="640"\][![真实的博弈](/assets/images/842972-14349115-640-360.jpg)](/assets/images/842972-14349115-640-360.jpg) 真实的博弈\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/842972-14349115-640-360.jpg" alt="真实的博弈" />
+  <figcaption>真实的博弈</figcaption>
+</figure>
 
 <!--more-->
 
@@ -33,7 +36,10 @@ tags:
 
 举个栗子，将“石头-剪子-布”游戏展现为Matrix如下：
 
-\[caption id="attachment\_1446" align="aligncenter" width="550"\][![石头-剪子-布](/assets/images/matching-pennies.jpg)](/assets/images/matching-pennies.jpg) 石头-剪子-布\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/matching-pennies.jpg" alt="石头-剪子-布" />
+  <figcaption>石头-剪子-布</figcaption>
+</figure>
 
 游戏中\\(N=\\{1,2\\}\\)，\\(A\_1=A\_2=\\{Rock, Paper, Scissors\\}\\)，对应的Payoffs写在表格中，当\\(a=\\{Paper, Paper\\}\\)时，\\(u\_1(a)=u\_2(a)=0\\)，表示平局。
 
@@ -98,17 +104,26 @@ Nash在1950年证明了所有有穷的(finite)的game都存在Nash equilibrium�
 
 Ignacio Palacios-Heurta在2003年的论文“Professionals Play Minimax”中对1417场西班牙、英国、意大利的FIFA联赛中出现的点球进行了统计，得出下面的game：
 
-\[caption id="attachment\_1448" align="aligncenter" width="530"\][![点球“大战”](/assets/images/penalty-kicks.jpg)](/assets/images/penalty-kicks.jpg) 点球“大战”\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/penalty-kicks.jpg" alt="点球“大战”" />
+  <figcaption>点球“大战”</figcaption>
+</figure>
 
 参与博弈的双方毫无意外的是射手（Kicker）和守门员（Goalie），双方的Actions均包含两个方向：向左踢（扑救）或者向右踢（扑救），Payoffs可以看做是射进点球的概率和成功守住的概率。
 
 很明显可以看出在这个game中不存在pure strategy nash equilibrium（双方总可以通过选择相反方向获得更高的回报），那么我们来寻找它的mixed strategy nash equilibrium。
 
-\[caption id="attachment\_1451" align="aligncenter" width="846"\][![求解纳什均衡](/assets/images/penalty-kicks-solve.png)](/assets/images/penalty-kicks-solve.png) 求解纳什均衡\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/penalty-kicks-solve.png" alt="求解纳什均衡" />
+  <figcaption>求解纳什均衡</figcaption>
+</figure>
 
 下图是我们所求得的mixed strategy nash equilibrium，可以看到和真实统计得到的结果非常接近！
 
-\[caption id="attachment\_1450" align="aligncenter" width="711"\][![数据对比](/assets/images/penalty-kicks-data.jpg)](/assets/images/penalty-kicks-data.jpg) 数据对比\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/penalty-kicks-data.jpg" alt="数据对比" />
+  <figcaption>数据对比</figcaption>
+</figure>
 
 虽然球场上双方球员都没有经过这样一系列运算，但是最终的结果居然惊人的一致！是不是很神奇~
 

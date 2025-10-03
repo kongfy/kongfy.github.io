@@ -10,7 +10,10 @@ tags:
   - "逻辑回归"
 ---
 
-\[caption id="attachment\_459" align="aligncenter" width="500"\][![machine learning](/assets/images/CE58CE85-71A0-493C-ACCA-4EBEAE917603.jpg)](/assets/images/CE58CE85-71A0-493C-ACCA-4EBEAE917603.jpg) Coursera上machine learning课程的图标\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/CE58CE85-71A0-493C-ACCA-4EBEAE917603.jpg" alt="machine learning" />
+  <figcaption>Coursera上machine learning课程的图标</figcaption>
+</figure>
 
 跟风学习[Coursera](http://www.coursera.org "Coursera")上[Andrew Ng](http://www-cs-faculty.stanford.edu/people/ang/ "Andrew Ng")叔的数据挖掘课程已经一个多月了，刚开始在Coursera上看到这门课的时候还有些犹豫，因为研一的时候已经修过学校的数据挖掘课了，那为什么还要再学习这个课程呢？现在想想真是庆幸自己还是选择听听看，原因如下：
 
@@ -32,7 +35,10 @@ tags:
 
 ### 算法概要
 
-\[caption id="attachment\_489" align="aligncenter" width="632"\][![Linear Regression](/assets/images/C090DAA6-96C6-4517-A650-F4D4EBA4A045.jpg)](/assets/images/C090DAA6-96C6-4517-A650-F4D4EBA4A045.jpg) Linear Regression\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/C090DAA6-96C6-4517-A650-F4D4EBA4A045.jpg" alt="Linear Regression" />
+  <figcaption>Linear Regression</figcaption>
+</figure>
 
 线性回归是一种基本的回归算法，当给出相应的训练集后，通过线性回归来寻找合适参数$latex \\theta$（向量）使得Hypothesis函数的Cost function最小：
 
@@ -42,7 +48,10 @@ tags:
 
 Cost function所表示的是对应参数$latex \\theta$刻画的Hypothesis函数与真实数据的距离，最小化这个距离可以使我们的模型和真实值更加接近。同时，通过增加高次项特征，我们可以使模型更加复杂。
 
-\[caption id="attachment\_492" align="aligncenter" width="629"\][![Polynomial regression](/assets/images/D32D48BB-8141-4051-A1DB-4465C9054A91.jpg)](/assets/images/D32D48BB-8141-4051-A1DB-4465C9054A91.jpg) Polynomial regression\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/D32D48BB-8141-4051-A1DB-4465C9054A91.jpg" alt="Polynomial regression" />
+  <figcaption>Polynomial regression</figcaption>
+</figure>
 
 ### 梯度下降（Gradient descent)
 
@@ -52,11 +61,17 @@ Cost function所表示的是对应参数$latex \\theta$刻画的Hypothesis函数
 
 可以看到，梯度下降的思想非常的简单：每次迭代中向梯度最大的方向按照learning rate$latex \\alpha$下降，直到到达整个函数的局部/全局最优点，Ng的slides中的示意图很好的表示了这个思想：
 
-\[caption id="attachment\_512" align="aligncenter" width="1067"\][![Gradient descent](/assets/images/1A7706DD-2E06-4371-924B-DCD1D4EBB381.jpg)](/assets/images/1A7706DD-2E06-4371-924B-DCD1D4EBB381.jpg) Gradient descent\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/1A7706DD-2E06-4371-924B-DCD1D4EBB381.jpg" alt="Gradient descent" />
+  <figcaption>Gradient descent</figcaption>
+</figure>
 
 通过不断的调整参数，使其不断的朝着Cost function下降的方向改变，最终达到一个最小点。在线性回归中，由于Cost function没有局部最优解，所以梯度下降一定会得到全局最优解。
 
-\[caption id="attachment\_514" align="aligncenter" width="620"\][![Gradient descent in linear regression](/assets/images/E4D41A4C-F48E-47EF-B9AE-27B29CCA51C8.jpg)](/assets/images/E4D41A4C-F48E-47EF-B9AE-27B29CCA51C8.jpg) Gradient descent in linear regression\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/E4D41A4C-F48E-47EF-B9AE-27B29CCA51C8.jpg" alt="Gradient descent in linear regression" />
+  <figcaption>Gradient descent in linear regression</figcaption>
+</figure>
 
 梯度下降并不是唯一的降低Cost function的方法，还有更多更加高级的解法可以达到相同的效果，在之后的project中Ng更多的使用fminunc而非梯度下降来获得更好的实现效率。
 
@@ -64,7 +79,10 @@ Cost function所表示的是对应参数$latex \\theta$刻画的Hypothesis函数
 
 当多个特征的取值范围不同并且相差很大时，会给梯度下降带来不小的麻烦，梯度下降过程会变得非常的缓慢，因此在多个特征取值范围相差较大时，我们首先应该对这些特征进行缩放以确保他们具有相同的取值范围。
 
-\[caption id="attachment\_517" align="aligncenter" width="1209"\][![Feature scaling](/assets/images/CF26D801-A17F-4CF8-892C-7A128BDEAD10.jpg)](/assets/images/CF26D801-A17F-4CF8-892C-7A128BDEAD10.jpg) Feature scaling\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/CF26D801-A17F-4CF8-892C-7A128BDEAD10.jpg" alt="Feature scaling" />
+  <figcaption>Feature scaling</figcaption>
+</figure>
 
 * * *
 
@@ -78,7 +96,10 @@ Cost function所表示的是对应参数$latex \\theta$刻画的Hypothesis函数
 
 唯一的区别在于外层的sigmoid function，详情戳[这里](http://en.wikipedia.org/wiki/Sigmoid_function "Sigmoid function")。
 
-\[caption id="attachment\_522" align="aligncenter" width="569"\][![Sigmoid function](/assets/images/5B807B59-5930-47C7-8341-27D524ABBA1B.jpg)](/assets/images/5B807B59-5930-47C7-8341-27D524ABBA1B.jpg) Sigmoid function\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/5B807B59-5930-47C7-8341-27D524ABBA1B.jpg" alt="Sigmoid function" />
+  <figcaption>Sigmoid function</figcaption>
+</figure>
 
 简单来说，当参数大于0时，则函数值趋近于1，而当参数值小于0时，函数值趋近于0。因此逻辑回归的Hypothesis可以解释为样本$latex x$属于正类型的概率。当$latex \\theta^{T}x>0$后，概率趋近于1，反之则趋近于0。由此得到Cost function如下：
 
@@ -88,7 +109,10 @@ Cost function看上去复杂，实际上如果仔细分析，其实函数表示�
 
 之后可以和线性回归一样，采用梯度下降或其他方法来寻找合适的参数$latex \\theta$使Cost function最小化，得到训练后的模型。
 
-\[caption id="attachment\_533" align="aligncenter" width="629"\][![Logistic regression](/assets/images/291F8223-4629-4D43-BDE3-CEF9E3E786D3.jpg)](/assets/images/291F8223-4629-4D43-BDE3-CEF9E3E786D3.jpg) Logistic regression\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/291F8223-4629-4D43-BDE3-CEF9E3E786D3.jpg" alt="Logistic regression" />
+  <figcaption>Logistic regression</figcaption>
+</figure>
 
 ### One-vs-all
 
@@ -96,7 +120,10 @@ Cost function看上去复杂，实际上如果仔细分析，其实函数表示�
 
 \[latex\] \\displaystyle \\max \_i h\_\\theta^{(i)}(x)\[/latex\]
 
-\[caption id="attachment\_539" align="aligncenter" width="1227"\][![One-vs-all](/assets/images/C36E2BAD-B94E-4736-A88B-713E41523470.jpg)](/assets/images/C36E2BAD-B94E-4736-A88B-713E41523470.jpg) One-vs-all\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/C36E2BAD-B94E-4736-A88B-713E41523470.jpg" alt="One-vs-all" />
+  <figcaption>One-vs-all</figcaption>
+</figure>
 
 * * *
 
@@ -104,7 +131,10 @@ Cost function看上去复杂，实际上如果仔细分析，其实函数表示�
 
 接下来需要讨论一个前面一直避而不谈的问题：Bias和Variance。这两个词意思都不是很直白，简单来说，high Bias的含义就是模型太过于简单，不能很好对训练集进行学习，属于under-fitting；而high Variance则相反，代表了模型太过于复杂，甚至拟合了训练集中的噪声，属于over-fitting，虽然training error很低但是泛化误差大，会有很高的test error。
 
-\[caption id="attachment\_547" align="aligncenter" width="622"\][![Bias vs Variance](/assets/images/C24570FC-0A66-4F28-BAD5-C70BB71F24D0.jpg)](/assets/images/C24570FC-0A66-4F28-BAD5-C70BB71F24D0.jpg) Bias vs Variance\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/C24570FC-0A66-4F28-BAD5-C70BB71F24D0.jpg" alt="Bias vs Variance" />
+  <figcaption>Bias vs Variance</figcaption>
+</figure>
 
 如上图所示，当模型非常简单时，训练误差和验证误差都很大，说明模型under-fitting（high Bias），随着模型越来越复杂（次数越来越高），对训练集的学习越来越到位，训练误差和验证误差都逐渐减小，然而在超过某一程度后，模型过于复杂，出现了over-fitting（high Variance），验证误差开始增大。
 
@@ -137,7 +167,10 @@ Regularization parameter的作用相当于对每一个参数增加了惩罚，�
 
 ### 神经元
 
-\[caption id="attachment\_559" align="aligncenter" width="1201"\][![Neuron model](/assets/images/C8DC0939-2233-469B-86B5-DD7779D6BCBF.jpg)](/assets/images/C8DC0939-2233-469B-86B5-DD7779D6BCBF.jpg) Neuron model\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/C8DC0939-2233-469B-86B5-DD7779D6BCBF.jpg" alt="Neuron model" />
+  <figcaption>Neuron model</figcaption>
+</figure>
 
 每次学习神经网络总是在第一步看到神经元的地方就愣住了，“这是啥...为啥要这么做...这能训练出啥...”，当在Ng课上再次看到这个神经元模型，终于恍然大悟，这货不就是个逻辑回归么！！！输入为$latex x$，神经元的输入边权构成参数$latex \\theta$，激活函数sigmoid函数...和逻辑回归的Hypothesis一样样的...
 
@@ -145,7 +178,10 @@ Regularization parameter的作用相当于对每一个参数增加了惩罚，�
 
 ### 神经网络
 
-\[caption id="attachment\_561" align="aligncenter" width="1080"\][![Neural network](/assets/images/6657A266-DF61-4F08-937D-6B08528D94A7.jpg)](/assets/images/6657A266-DF61-4F08-937D-6B08528D94A7.jpg) Neural network\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/6657A266-DF61-4F08-937D-6B08528D94A7.jpg" alt="Neural network" />
+  <figcaption>Neural network</figcaption>
+</figure>
 
 于是神经网络似乎也就不是那么难以理解了，神经网络的第一层是输入层，值为$latex x\_i$，最后一层是输出层，如果作为分类算法训练则有多少个类别就应该有多少个对应的输出单元，对应的输出单元被激活代表着分类的结果。有意思的事情发生在中间的隐藏层，隐藏层可以有多层，每层可以有多个单元，规模越大训练的模型越复杂。而对于隐藏层中的每个单元本身都是一个逻辑回归的过程，也就是说每个隐藏单元都训练出了一个比前一层更加复杂的特征，这样一层接一层我们就可以训练出越来越复杂的特征，直到得到结果。
 
@@ -171,7 +207,10 @@ Regularization parameter的作用相当于对每一个参数增加了惩罚，�
 
 整体的后向传播算法就是对每一个训练样本执行上面的过程，并不断积累$latex a\_j^{(l)}\\delta\_i^{(l+1)}$（略过复杂的数学证明）如下：
 
-\[caption id="attachment\_586" align="aligncenter" width="1211"\][![Backpropagation](/assets/images/53C728D0-9321-4ACD-8D6F-920FCB720AD8.jpg)](/assets/images/53C728D0-9321-4ACD-8D6F-920FCB720AD8.jpg) Backpropagation\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/53C728D0-9321-4ACD-8D6F-920FCB720AD8.jpg" alt="Backpropagation" />
+  <figcaption>Backpropagation</figcaption>
+</figure>
 
 最后的等式$latex \\frac{\\partial}{\\partial{\\Theta\_{ij}^{(l)}}}J(\\Theta)=D\_{ij}^{(l)}$涉及到复杂的数学证明，Ng也没有详细解释。总之通过一通计算我们得到了想要的$latex \\frac{\\partial}{\\partial\\Theta\_{ij}^{(l)}}J(\\Theta)$，然后使用梯度下降或是更高级的算法来对Cost function进行最小化，这里特别注意虽然神经网络中Cost function并不是convex函数，即存在局部最优解，但Ng说这不碍事，通常即使是局部最优解也会得到相当不错的效果。 PS.后向传播算法的原理相当复杂，我是没能力讲清楚了...请参见Ng的课程吧。
 
@@ -183,15 +222,24 @@ Regularization parameter的作用相当于对每一个参数增加了惩罚，�
 
 Ng课程的编程作业中给出了一个蛮好玩的例子：识别手写数字。
 
-\[caption id="attachment\_592" align="aligncenter" width="420"\][![numbers](/assets/images/9888D333-93C6-4833-A31D-7C6DD63EDDCF.jpg)](/assets/images/9888D333-93C6-4833-A31D-7C6DD63EDDCF.jpg) numbers\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/9888D333-93C6-4833-A31D-7C6DD63EDDCF.jpg" alt="numbers" />
+  <figcaption>numbers</figcaption>
+</figure>
 
 数字识别过程首先将20\*20的数字图片转换为400维的灰度向量输入神经网络，使用下面结构的神经网络进行训练，输入层有401个节点（包括1个Bias节点），隐藏层包含25个神经元，输出层有10个神经元对应10个数字类别，最终获得了非常赞的效果~
 
-\[caption id="attachment\_594" align="aligncenter" width="535"\][![Neural network model](/assets/images/823006AE-89BD-477B-835F-DAA7B8D9EC14.jpg)](/assets/images/823006AE-89BD-477B-835F-DAA7B8D9EC14.jpg) Neural network model\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/823006AE-89BD-477B-835F-DAA7B8D9EC14.jpg" alt="Neural network model" />
+  <figcaption>Neural network model</figcaption>
+</figure>
 
 下图对训练好的隐藏层25个神经元参数进行了可视化，可以看到每个神经元都训练出了一个更加复杂的特征，神经网络就是通过不断训练出这些比原始灰度特征更加复杂的特征才能得到如此优秀的效果。
 
-\[caption id="attachment\_595" align="aligncenter" width="420"\][![Hidden layer](/assets/images/99BA29D7-B7AE-4628-A926-ADE03298FFCC.jpg)](/assets/images/99BA29D7-B7AE-4628-A926-ADE03298FFCC.jpg) Hidden layer\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/99BA29D7-B7AE-4628-A926-ADE03298FFCC.jpg" alt="Hidden layer" />
+  <figcaption>Hidden layer</figcaption>
+</figure>
 
 * * *
 

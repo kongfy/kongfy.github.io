@@ -9,7 +9,10 @@ tags:
 
 “学而时习之，不亦乐乎”，利用放假几天时间，简单复习了一下之前学习的Machine Learning课程，并且用刚上手没两天的SciPy重新完成了大部分Ng的课后作业，SciPy真的非常好用~
 
-\[caption id="attachment\_1281" align="aligncenter" width="818"\][![SciPy](/assets/images/scipy.jpg)](/assets/images/scipy.jpg) SciPy\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/scipy.jpg" alt="SciPy" />
+  <figcaption>SciPy</figcaption>
+</figure>
 
 上图是SciPy官方网站对SciPy的介绍，SciPy并不是单个开源项目，而是一组开源项目共同构成的Python科学计算生态系统，一个非常值得一看的系列Tutorial在[这里](https://www.youtube.com/watch?v=lmoNmY-cmSI&list=PLRJx8WOUx5Xd3_dgw5xRmABUd8MWdsA_C)。
 

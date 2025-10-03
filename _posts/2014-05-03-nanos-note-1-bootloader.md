@@ -33,15 +33,24 @@ Nanos的框架代码都可以在github上找到([点我](https://github.com/NJUO
 
 在这里我们稍微停留一下，来仔细的研究一下Nanos是如何设置GDT的。假定你已经大致理解了GDT是如何工作的，我们把注意力集中到下面这行代码上： `lgdt gdtdesc # 设置GDT(段描述符表地址为$gdt)` lgdt指令实际上设置了gdtr寄存器，指明了GDT在内存中的位置。lgdt命令需要GDT描述符的地址作为操作数，GDT描述符的结构如下：
 
-\[caption id="attachment\_174" align="aligncenter" width="465"\][![GDT描述符](/assets/images/Gdtr.png)](/assets/images/Gdtr.png) GDT描述符\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/Gdtr.png" alt="GDT描述符" />
+  <figcaption>GDT描述符</figcaption>
+</figure>
 
 其中offset字段为GDT起始位置的线性地址，size字段为GDT的大小减1(注：之所以要减去1是因为GDT的最大长度为65536，而不存在长度为0的GDT)，在Nanos中lgdt的操作数gdtdesc详细定义： `# GDT .p2align 2 # 对齐 gdt: # 确保段选择子不能为0 SEG_NULLASM # GDT第一项必须为空 # type 0xA 代表设置了Ex&Rw，表示代码段可执行&可读 SEG_ASM(0xA, 0x0, 0xffffffff) # 代码段描述符 # type 0x2 代表设置了Rw，表示数据段可写 SEG_ASM(0x2, 0x0, 0xffffffff) # 数据段描述符 # 参见 http://wiki.osdev.org/Global_Descriptor_Table  gdtdesc: # GDT描述符 .word (gdtdesc - gdt - 1) # GDT长度，留意地址运算 .long gdt # GDT地址` 可以看到gdtdesc起始的内存中存放了GDT描述符，而具体的段描述符表则存放在标号gdt开始的内存单元中。每一个段描述符占8字节，其结构如下：
 
-\[caption id="attachment\_177" align="aligncenter" width="512"\][![段描述符](/assets/images/GDT_Entry.png)](/assets/images/GDT_Entry.png) 段描述符\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/GDT_Entry.png" alt="段描述符" />
+  <figcaption>段描述符</figcaption>
+</figure>
 
 段描述符中Base字段表示该段的段基址(32位线性地址)，Limit字段表示该段可寻址的最大单元(注意：这里的单元可能是1byte，也可能是一个页，见Gr位)。Flags和Access Byte要稍微复杂些：
 
-\[caption id="attachment\_218" align="aligncenter" width="427"\][![Flags & Access Byte](/assets/images/Gdt_bits.png)](/assets/images/Gdt_bits.png) Flags & Access Byte\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/Gdt_bits.png" alt="Flags & Access Byte" />
+  <figcaption>Flags & Access Byte</figcaption>
+</figure>
 
 对这些位的解释引自[OSDev](http://wiki.osdev.org/GDT "GDT"):
 
@@ -64,7 +73,10 @@ Nanos的框架代码都可以在github上找到([点我](https://github.com/NJUO
 
 回到主线，现在我们已经切换到了保护模式，并跳转到start32处开始执行。这里值得注意的一点是最后执行的ljmp指令，宏GDT\_ENTRY只是简单的将参数n左移三位，这是因为在保护模式中段寄存器中并不像实模式那样直接存放段基址，而是存放了一个叫做段选择子的结构来指出选择的段，段选择子结构如下：
 
-\[caption id="attachment\_198" align="aligncenter" width="712"\][![段选择子](/assets/images/selector.jpg)](/assets/images/selector.jpg) 段选择子\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/selector.jpg" alt="段选择子" />
+  <figcaption>段选择子</figcaption>
+</figure>
 
 结构中TI位用于标识该段是GDT还是LDT中的段(0为GDT，1为LDT)、RPL表示运行的权限等级(0-3，0为最高权限)、高13位表示段描述符的标号。因此ljmp的操作数$GDT\_ENTRY(1)表示选择了GDT中的第一个段描述符，并具有最高权限。跳转成功后执行的start32中32位代码如下： `.code32 start32: # 设置数据访问所用的段寄存器(%DS, %ES, %SS) movw $GDT_ENTRY(2), %ax movw %ax, %ds # %DS = %AX movw %ax, %es # %ES = %AX movw %ax, %ss # %SS = %AX  # 设置栈位置。栈从此没有切换过，请注意栈的大小！ movl $0x8000, %esp # %ESP = $0x8000 call bootmain # 跳转到C代码执行，此处不会返回` 这段代码所做的事情非常简单，首先设置了ds、es、ss段寄存器，使其指向GDT中的第二项——数据段，然后设置栈顶指针为0x8000，最后跳转到C函数bootmain执行。
 

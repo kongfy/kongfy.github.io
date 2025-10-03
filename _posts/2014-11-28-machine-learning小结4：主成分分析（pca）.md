@@ -10,7 +10,10 @@ tags:
 
 主成分分析（PCA）是一种通常用来做数据降维的非监督学习算法，下图是数据降维的直观说明：
 
-\[caption id="attachment\_753" align="aligncenter" width="1079"\][![Principal Component Analysis](/assets/images/fig_pca_principal_component_analysis.png)](/assets/images/fig_pca_principal_component_analysis.png) Principal Component Analysis\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/fig_pca_principal_component_analysis.png" alt="Principal Component Analysis" />
+  <figcaption>Principal Component Analysis</figcaption>
+</figure>
 
 在PCA中，我们将每个样本看做特征线性空间中的一个向量，左图代表具有三个特征的样本（处于三维空间中，每个特征代表一个维度），通过寻找空间中样本的主成分PC1、PC2，以此建立新的二维线性空间来完成3D到2D的降维。
 
@@ -33,7 +36,10 @@ tags:
 
 PCA是一种常见的数据降维算法，其核心思想非常的简单：寻找一个低维的超平面，使所有样本和其在该低维超平面上的投影间的距离和最小，如下图：
 
-\[caption id="attachment\_759" align="aligncenter" width="1170"\][![PCA is not linear regression](/assets/images/23796B6B-7ECE-468A-A1B6-E7EFE1ADEF5B.jpg)](/assets/images/23796B6B-7ECE-468A-A1B6-E7EFE1ADEF5B.jpg) PCA is not linear regression\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/23796B6B-7ECE-468A-A1B6-E7EFE1ADEF5B.jpg" alt="PCA is not linear regression" />
+  <figcaption>PCA is not linear regression</figcaption>
+</figure>
 
 Ng在这页slide上着重强调了PCA和线性回归的区别：线性回归的Cost function重点在回归值和真实值的误差，而PCA着重样本与超平面的投影距离。
 
@@ -53,7 +59,10 @@ Ng在这页slide上着重强调了PCA和线性回归的区别：线性回归的C
 
 Ng对PCA算法的讲解非常的概要，都浓缩在这个slide里：
 
-\[caption id="attachment\_766" align="aligncenter" width="1251"\][![Principal Component Analysis (PCA) algorithm summary](/assets/images/243B08FC-6FFC-4351-A677-5B0FAB218904.jpg)](/assets/images/243B08FC-6FFC-4351-A677-5B0FAB218904.jpg) Principal Component Analysis (PCA) algorithm summary\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/243B08FC-6FFC-4351-A677-5B0FAB218904.jpg" alt="Principal Component Analysis (PCA) algorithm summary" />
+  <figcaption>Principal Component Analysis (PCA) algorithm summary</figcaption>
+</figure>
 
 算法主要依赖于SVD矩阵分解：
 
@@ -73,11 +82,17 @@ Ng对PCA算法的讲解非常的概要，都浓缩在这个slide里：
 
 这里使用\[latex\]x\_{approx}\[/latex\]是因为在降维后损失了一定信息，即使映射回原空间也只是原先样本的近似而无法准确的还原。
 
-\[caption id="attachment\_773" align="aligncenter" width="1156"\][![向量映射](/assets/images/5BA0587B-59CF-424A-B530-F3225356AA1A.jpg)](/assets/images/5BA0587B-59CF-424A-B530-F3225356AA1A.jpg) 向量映射\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/5BA0587B-59CF-424A-B530-F3225356AA1A.jpg" alt="向量映射" />
+  <figcaption>向量映射</figcaption>
+</figure>
 
 下图是一个示例，将2维数据降维到1维（直线）后的映射关系，红色代表数据在低维的投影：
 
-\[caption id="attachment\_784" align="aligncenter" width="474"\][![Dimensionality Reduction](/assets/images/0514D0CD-212F-4CFB-9465-B0EB6DBC25BB.jpg)](/assets/images/0514D0CD-212F-4CFB-9465-B0EB6DBC25BB.jpg) Dimensionality Reduction\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/0514D0CD-212F-4CFB-9465-B0EB6DBC25BB.jpg" alt="Dimensionality Reduction" />
+  <figcaption>Dimensionality Reduction</figcaption>
+</figure>
 
 * * *
 
@@ -125,11 +140,17 @@ SVD的另一种常见的应用场景在推荐系统中，以后有机会再写�
 
 这次Ng的实验中展示了一个使用PCA作为人脸检测预处理的例子，使用的人脸数据看上去是这样的：
 
-\[caption id="attachment\_786" align="aligncenter" width="420"\][![Original faces](/assets/images/90B96A4B-3ABB-45DC-9307-1F238D58478A.jpg)](/assets/images/90B96A4B-3ABB-45DC-9307-1F238D58478A.jpg) Original faces\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/90B96A4B-3ABB-45DC-9307-1F238D58478A.jpg" alt="Original faces" />
+  <figcaption>Original faces</figcaption>
+</figure>
 
 每一个人脸图像的分辨率为36\*36，每个像素作为一个灰度特征值则我们将每个人脸图片作为一个1024维的样本进行处理，进行PCA降维至100维，映射回原始空间进行可视化得到了下面的效果：
 
-\[caption id="attachment\_787" align="aligncenter" width="420"\][![Recovered faces](/assets/images/628C5AE5-306B-4D09-9D84-DB5BAC487DDF.jpg)](/assets/images/628C5AE5-306B-4D09-9D84-DB5BAC487DDF.jpg) Recovered faces\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/628C5AE5-306B-4D09-9D84-DB5BAC487DDF.jpg" alt="Recovered faces" />
+  <figcaption>Recovered faces</figcaption>
+</figure>
 
 可以观察到非常有趣的结果，虽然经过PCA数据维度降低了非常多，但是人脸的五官还是基本保留了下来（这也形象的说明了“主成分”的意义），对后续的学习算法是一个很好的加速。
 

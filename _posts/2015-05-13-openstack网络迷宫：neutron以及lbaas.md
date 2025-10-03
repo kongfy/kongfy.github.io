@@ -8,7 +8,10 @@ tags:
   - "openstack"
 ---
 
-\[caption id="attachment\_1150" align="aligncenter" width="1024"\][!["一团糟" - 我对OpenStack网络实现的第一感觉](/assets/images/IMG_5155.jpg)](/assets/images/IMG_5155.jpg) "一团糟" - 我对OpenStack网络实现的第一感觉\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/IMG_5155.jpg" alt=""一团糟" - 我对OpenStack网络实现的第一感觉" />
+  <figcaption>"一团糟" - 我对OpenStack网络实现的第一感觉</figcaption>
+</figure>
 
 OpenStack的网络模块相信不会有人否认是整个OpenStack中最复杂的部分，即使是OpenStack社区的成员也常常被网络模块的复杂性搞的焦头烂额。因为研究负载均衡的关系，我不得不对网络模块进行一点粗浅的了解，这里按照个人的理解把这些东西总结起来写下来。
 
@@ -43,7 +46,10 @@ OpenStack就是开源软件的堆叠，它的网络模块也不例外：Neutron�
 
 Neutron中对网络抽象的最核心的概念是**Network**、**Port**和**Subnet**，关系如下图：
 
-\[caption id="attachment\_1183" align="aligncenter" width="814"\][![Neutron抽象网络概念](/assets/images/concepts.png)](/assets/images/concepts.png) Neutron抽象网络概念\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/concepts.png" alt="Neutron抽象网络概念" />
+  <figcaption>Neutron抽象网络概念</figcaption>
+</figure>
 
 Network是OpenStack中一个独立的连通二层网络，Port是连接在网络上的接口，Subnet是对应Network上的一块IP地址。注意这里不要过多的纠结OSI模型中的层次关系，这些术语是Neutron自身对网络的抽象概念，和OSI模型中的术语并不是一一对应的。
 
@@ -60,7 +66,10 @@ Neutron本身只负责实现网络抽象API，充分采用了插件化的设计�
 
 总的来说，插件分为两类：Core Plugin和Service Plugin。
 
-\[caption id="attachment\_1186" align="aligncenter" width="918"\][![Neutron插件结构](/assets/images/modules.png)](/assets/images/modules.png) Neutron插件结构\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/modules.png" alt="Neutron插件结构" />
+  <figcaption>Neutron插件结构</figcaption>
+</figure>
 
 Core Plugin实现对二层和三层网络的抽象（链路层和IP层），如名字所暗示的，Core Plugin必须启用才能保证Neutron的正常运行。二层插件Modular Layer 2 Plugin（ML2）又通过使用具体的Type driver(Local, Flat, VLAN, GRE, VXLAN - 负责对应类型网络的虚拟化)和Mechanism driver（OpenvSwitch, Linux bridge - 实际的网络实现机制）来实现二层网络的模拟工作；三层插件主要通过驱动L3-Agent和DHCP-Agent来提供虚拟的三层网络服务。
 
@@ -74,7 +83,10 @@ Service Plugin则是基于Core Plugin提供的功能来提供额外的服务，�
 
 下图展示是Neutron网络实现的最核心的思路，注意图中将整个OpenStack视为整体，忽略了物理机之间的边界：
 
-\[caption id="attachment\_1179" align="aligncenter" width="599"\][![不考虑物理机边界时的Neutron网络实现](/assets/images/logical-network.png)](/assets/images/logical-network.png) 不考虑物理机边界时的Neutron网络实现\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/logical-network.png" alt="不考虑物理机边界时的Neutron网络实现" />
+  <figcaption>不考虑物理机边界时的Neutron网络实现</figcaption>
+</figure>
 
 整个Neutron网络实现的核心就是图中的两个OpenvSwitch虚拟网桥 br-int 和br-ex。
 
@@ -88,7 +100,10 @@ br-int 是集成网桥，在逻辑概念上，它是跨越整个OpenStack的内�
 
 Neutron可以采用三种方法来完成这一任务：VLAN、GRE和VXLAN，分别对应三种Tenant Network类型，每一个用户创建的Tenant Network根据其类型决定内部网络采用什么样的方式来跨越物理机的界限。
 
-\[caption id="attachment\_1197" align="aligncenter" width="778"\][![OpenStack集群标准网络部署图](/assets/images/D7F8423F-D72A-40EB-BC4A-756866317992.png)](/assets/images/D7F8423F-D72A-40EB-BC4A-756866317992.png) OpenStack集群标准网络部署图\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/D7F8423F-D72A-40EB-BC4A-756866317992.png" alt="OpenStack集群标准网络部署图" />
+  <figcaption>OpenStack集群标准网络部署图</figcaption>
+</figure>
 
 上图是OpenStack安装文档中对整体OpenStack节点配置和网络部署的解释，Neutron关心的是其中的Network Node和Compute Node，Compute Node是集群中承载虚拟机运行的节点，Network Node主要负责提供网络API和三层网络服务。br-int网桥分散在这些节点中，下面我们分别看看如何通过VLAN、GRE和VXLAN的方式解决这一问题。
 
@@ -96,7 +111,10 @@ Neutron可以采用三种方法来完成这一任务：VLAN、GRE和VXLAN，分�
 
 通过VLAN来连接分散在不同物理机中不同的租户网络实际上和nova-network的VLANManager在想法上是一脉相承的，都是为每一个租户网络分配一个物理交换机上的VLAN，在连接所有节点的同时通过不同的VLAN保证了租户网络的隔离性。
 
-\[caption id="attachment\_1202" align="aligncenter" width="781"\][![VLAN模式网络](/assets/images/network-2.png)](/assets/images/network-2.png) VLAN模式网络\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/network-2.png" alt="VLAN模式网络" />
+  <figcaption>VLAN模式网络</figcaption>
+</figure>
 
 如图所示是两个不同的Compute节点的网络部署，两个节点之间通过一个支持VLAN的物理交换机连接起来。并且分别创建了OpenvSwitch网桥br-eth1与br-int相连。
 
@@ -108,7 +126,10 @@ Neutron可以采用三种方法来完成这一任务：VLAN、GRE和VXLAN，分�
 
 GRE和VXLAN的方式原理上非常相似，都是通过三层隧道的方法将虚拟交换机的报文用三层协议封装，发送给隧道对应端后再由对端将三层报文脱掉得到原报文后转交给虚拟网络，下面以GRE为例进行说明。
 
-\[caption id="attachment\_1207" align="aligncenter" width="781"\][![GRE模式网络](/assets/images/network-3.png)](/assets/images/network-3.png) GRE模式网络\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/network-3.png" alt="GRE模式网络" />
+  <figcaption>GRE模式网络</figcaption>
+</figure>
 
 上图中可以看到两个Compute Node中分别创建了隧道网桥br-tun与br-int相连，并且为每个租户网络在节点间创建了对应的点对点GRE隧道，在计算节点上使用命令 sudo ovs-vsctl show 查看这些隧道：
 
@@ -148,7 +169,10 @@ GRE和VXLAN的方式原理上非常相似，都是通过三层隧道的方法将
 
 在Juno版本之前，三层网络的所有服务：包括虚拟路由器、DHCP等等都部署在Network Node上（Juno版本推出了Distributed Virtual Router功能，用来解决Network Node的单点故障问题并减轻数据中心网络中不必要的数据传输，这些内容超出了本文的讨论范围，感兴趣的同学可以看看[这个](https://www.youtube.com/watch?v=4CKSm3bwv78)）。虚拟路由器的实现实际上可以说是非常“朴素”的，Neutron在网络节点上创建对应虚拟路由器接口的Internal Port，将这些设备接入br-int设置VLAN tag（Tenant Network）或者直接接入br-ex（External Network），实际负责包转发的就是Network Node的内核本身，为了防止网络地址重叠，要把虚拟路由器相关的这些Internal Port放进独立的网络Namespace中。
 
-\[caption id="attachment\_1221" align="aligncenter" width="898"\][![demo虚拟网络拓扑](/assets/images/8B56059D-567D-4C06-8753-F075C00EE3CB.jpg)](/assets/images/8B56059D-567D-4C06-8753-F075C00EE3CB.jpg) demo虚拟网络拓扑\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/8B56059D-567D-4C06-8753-F075C00EE3CB.jpg" alt="demo虚拟网络拓扑" />
+  <figcaption>demo虚拟网络拓扑</figcaption>
+</figure>
 
 上图是在我的实验环境中创建的虚拟网络（10.0.0.0/24），通过一个虚拟路由器连接到外网（没错，就是192.168.1.0/24网段）。在Network Node上通过命令 ip netns 来查看当前有哪些Namespace：
 
@@ -303,7 +327,10 @@ Floating IP即外网可访问的IP地址，可以绑定到Tenant Network的任�
 
 在结束对Neutron虚拟网络的实现之前，还有一个必须要提到的部分：虚拟机的安全组和访问规则。这是整个Neutron虚拟网络实现中比较tricky的部分，为什么这么说呢？请看下图：
 
-\[caption id="attachment\_1240" align="aligncenter" width="697"\][![“多余”的网桥？](/assets/images/33112565-CE51-4895-B067-652BCE4832A6.jpg)](/assets/images/33112565-CE51-4895-B067-652BCE4832A6.jpg) “多余”的网桥？\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/33112565-CE51-4895-B067-652BCE4832A6.jpg" alt="“多余”的网桥？" />
+  <figcaption>“多余”的网桥？</figcaption>
+</figure>
 
 图是从OpenStack的文档中借来的，主要看我用红色边框框起来的部分，为什么虚拟机不能直接接在br-int上呢？而是似乎很没用的连接了一个Linux Bridge？答案是为了实现虚拟机的安全组和访问规则功能，这个功能不能直接用OpenvSwitch实现（原因没有仔细研究），所以Neutron做出了妥协。
 
@@ -362,13 +389,19 @@ neutron-openvswi-sg-fallback  all  -- anywhere             anywhere             
 
 根据负载均衡的特点，社区在OpenStack中把负载均衡抽象成下面的概念：
 
-\[caption id="attachment\_1248" align="aligncenter" width="757"\][![OpenStack的负载均衡模型](/assets/images/lbaas1.png)](/assets/images/lbaas1.png) OpenStack的负载均衡模型\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/lbaas1.png" alt="OpenStack的负载均衡模型" />
+  <figcaption>OpenStack的负载均衡模型</figcaption>
+</figure>
 
 其中最为核心的是Pool，代表负载后端的虚拟机池，Pool中包含想要进行负载均衡的虚拟机作为Member，并且要为Pool整体绑定一个VIP作为所有Member的虚拟IP，所有访问虚拟IP的请求将根据设定的负载均衡规则分配到Pool中的Member虚拟机上。最后再为这个VIP对应的Port绑定一个Floating IP，就可以从外网愉快的使用负载均衡下的虚拟机集群了~
 
 实现的网络逻辑如下图所示：
 
-\[caption id="attachment\_1252" align="aligncenter" width="865"\][![负载均衡网络示意图](/assets/images/lbaas2.png)](/assets/images/lbaas2.png) 负载均衡网络示意图\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/lbaas2.png" alt="负载均衡网络示意图" />
+  <figcaption>负载均衡网络示意图</figcaption>
+</figure>
 
 LBaaS利用Neutron的网络服务，将Floating IP绑定到Load Balancer的Port上，然后将这些流量通过内部网络均衡的分配给各个虚拟机。很容易看出，最核心的部分就是Load Balancer的实现了，那么Load Balancer是怎么实现的呢？
 

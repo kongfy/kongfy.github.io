@@ -19,7 +19,10 @@ tags:
 
 首先复习一下[高斯分布（正态分布）](http://en.wikipedia.org/wiki/Normal_distribution "高斯分布")：
 
-\[caption id="attachment\_849" align="aligncenter" width="769"\][![Gaussion distribution](/assets/images/Empirical_Rule.png)](/assets/images/Empirical_Rule.png) Gaussion distribution\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/Empirical_Rule.png" alt="Gaussion distribution" />
+  <figcaption>Gaussion distribution</figcaption>
+</figure>
 
 对于均值为\[latex\]\\mu\[/latex\]方差为\[latex\]\\sigma^{2}\[/latex\]的随机变量\[latex\]X\[/latex\]，若其服从正态分布，称\[latex\]X\\sim N(\\mu,\\sigma^{2})\[/latex\]，概率密度函数为：
 
@@ -29,7 +32,10 @@ tags:
 
 下图是对两个特征的样本进行异常检测的结果，红色圈出的是检测出的异常样本：
 
-\[caption id="attachment\_869" align="aligncenter" width="628"\][![Gaussian distribution contours](/assets/images/66E71180-425A-49BB-BE66-754319028DEC.jpg)](/assets/images/66E71180-425A-49BB-BE66-754319028DEC.jpg) Gaussian distribution contours\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/66E71180-425A-49BB-BE66-754319028DEC.jpg" alt="Gaussian distribution contours" />
+  <figcaption>Gaussian distribution contours</figcaption>
+</figure>
 
 ### 单变量高斯分布
 
@@ -47,13 +53,19 @@ tags:
 
 [多变量高斯分布](http://en.wikipedia.org/wiki/Multivariate_normal_distribution)可以发现不同特征间的关联，但是计算开销更高。
 
-\[caption id="attachment\_866" align="aligncenter" width="1261"\][![Multivariate Gaussian](/assets/images/28EBDC63-CA44-48BF-A28D-FB2550412262.jpg)](/assets/images/28EBDC63-CA44-48BF-A28D-FB2550412262.jpg) Multivariate Gaussian\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/28EBDC63-CA44-48BF-A28D-FB2550412262.jpg" alt="Multivariate Gaussian" />
+  <figcaption>Multivariate Gaussian</figcaption>
+</figure>
 
 ### 特征变换
 
 那么，如果某个特征不服从高斯分布该怎么办呢？答案是对特征进行变换，让新特征的分布更像高斯分布。
 
-\[caption id="attachment\_867" align="aligncenter" width="1222"\][![Non-gaussian features](/assets/images/B16AE4EC-B5AA-42C6-BEE5-36F531A056C4.jpg)](/assets/images/B16AE4EC-B5AA-42C6-BEE5-36F531A056C4.jpg) Non-gaussian features\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/B16AE4EC-B5AA-42C6-BEE5-36F531A056C4.jpg" alt="Non-gaussian features" />
+  <figcaption>Non-gaussian features</figcaption>
+</figure>
 
 * * *
 
@@ -69,7 +81,10 @@ F1 score实际上另外两种评价标准：精度（precision）和召回率（
 
 两种度量存在Trade off的关系，有可能通过降低其中一个为代价来提高另一个：
 
-\[caption id="attachment\_884" align="aligncenter" width="1247"\][![Trading off precision and recall](/assets/images/92C2E408-20CB-4026-89DA-60A6E29B6190.jpg)](/assets/images/92C2E408-20CB-4026-89DA-60A6E29B6190.jpg) Trading off precision and recall\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/92C2E408-20CB-4026-89DA-60A6E29B6190.jpg" alt="Trading off precision and recall" />
+  <figcaption>Trading off precision and recall</figcaption>
+</figure>
 
 F1 score是精度和召回率的[调和均值](http://en.wikipedia.org/wiki/Harmonic_mean "Harmonic mean")，它赋予精度和召回率相等的权重：
 

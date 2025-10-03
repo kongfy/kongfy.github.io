@@ -10,7 +10,10 @@ tags:
 
 一觉醒来，所有的新闻媒体都充斥着**Swift**，不过这个Swift可不是那个女歌手[Swift](http://en.wikipedia.org/wiki/Taylor_Swift)，而是apple在WWDC2014上刚刚发布的新编程语言：[Swift](https://developer.apple.com/swift/)。
 
-\[caption id="attachment\_277" align="aligncenter" width="1024"\][![WWDC2014推出Swift编程语言](/assets/images/rdn_538cc786563e1.jpg)](/assets/images/rdn_538cc786563e1.jpg) WWDC2014推出Swift编程语言\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/rdn_538cc786563e1.jpg" alt="WWDC2014推出Swift编程语言" />
+  <figcaption>WWDC2014推出Swift编程语言</figcaption>
+</figure>
 
 ### Swift是什么？
 
@@ -26,11 +29,17 @@ tags:
 
 很多人在看到Swift的动态解释特性的时候很自然的认为Swift运行效率很低。但这并说不通，因为Swift并不是一个脚本语言，虽然在apple新推出的playground中，你可以像一个脚本语言一样来运行它，但是它却不是一个脚本语言。_Using the high-performance LLVM compiler, Swift code is transformed into optimized native code._Swift和Objective-C一样，是由LLVM编译成native code运行的。同时，Swift在内存管理方面依然沿用了ARC机制，并没有垃圾回收造成的效率损失。在WWDC上展示了其运行效率甚至已经超越了其前辈Objective-C！(不过这个...我感觉只能信一半)
 
-\[caption id="attachment\_285" align="aligncenter" width="580"\][![Swift运行效率](/assets/images/wwdc-31.jpg)](/assets/images/wwdc-31.jpg) Swift运行效率\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/wwdc-31.jpg" alt="Swift运行效率" />
+  <figcaption>Swift运行效率</figcaption>
+</figure>
 
 ### 大明湖畔的Objective-C
 
-\[caption id="attachment\_304" align="aligncenter" width="416"\][![长江后浪推前浪，前浪死在沙滩上](/assets/images/538d0f1cdec3c.jpg)](/assets/images/538d0f1cdec3c.jpg) 长江后浪推前浪，前浪死在沙滩上\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/538d0f1cdec3c.jpg" alt="长江后浪推前浪，前浪死在沙滩上" />
+  <figcaption>长江后浪推前浪，前浪死在沙滩上</figcaption>
+</figure>
 
 相信不止我一个人在第一次看到的Swift的时候心中一声咆哮：“我\*，这Objective-C是白学了么！”
 
@@ -42,15 +51,24 @@ Objective-C作为Swift的大哥，而Swift作为Objective-C官方出品的继任
 
 看了半天热闹，也该上手感受感受了。apple同时放出了Xcode 6 beta来支持Swift的开发，所以首先安装Xcode 6 beta（同时放出的还有OS X Yosemite，这个如果不是急需建议还是先等等，笔者上次太早更新Maverick导致发生了一些不愉快的体验）。
 
-\[caption id="attachment\_288" align="aligncenter" width="611"\][![安装Xcode 6 beta](/assets/images/8DCE2F8B-8BC5-4B2E-9B5D-168A9EFEEFE8.jpg)](/assets/images/8DCE2F8B-8BC5-4B2E-9B5D-168A9EFEEFE8.jpg) 安装Xcode 6 beta\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/8DCE2F8B-8BC5-4B2E-9B5D-168A9EFEEFE8.jpg" alt="安装Xcode 6 beta" />
+  <figcaption>安装Xcode 6 beta</figcaption>
+</figure>
 
 打开Xcode，还是熟悉的感觉，创建一个项目，选择语言为Swift:
 
-\[caption id="attachment\_291" align="aligncenter" width="730"\][![使用Swift创建项目](/assets/images/8AA06695-5ED4-43D5-A5EC-D7F0DA81CC66.jpg)](/assets/images/8AA06695-5ED4-43D5-A5EC-D7F0DA81CC66.jpg) 使用Swift创建项目\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/8AA06695-5ED4-43D5-A5EC-D7F0DA81CC66.jpg" alt="使用Swift创建项目" />
+  <figcaption>使用Swift创建项目</figcaption>
+</figure>
 
 看的出来apple对待Swift还是很认真的，UIKit的文档全部都针对Swift做了重写：
 
-\[caption id="attachment\_293" align="aligncenter" width="1400"\][![UIView文档中的Swift部分](/assets/images/5AED08BC-3C28-4AFC-B735-BD695D1F8426.jpg)](/assets/images/5AED08BC-3C28-4AFC-B735-BD695D1F8426.jpg) UIView文档中的Swift部分\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/5AED08BC-3C28-4AFC-B735-BD695D1F8426.jpg" alt="UIView文档中的Swift部分" />
+  <figcaption>UIView文档中的Swift部分</figcaption>
+</figure>
 
 找准位置，写下helloworld代码~
 

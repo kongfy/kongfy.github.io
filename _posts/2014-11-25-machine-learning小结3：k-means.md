@@ -10,7 +10,10 @@ tags:
 
 这已经是我第三次学习K-means算法了，K-means算法应该说不是一个复杂的算法，就做一个相对比较简单的记录吧。
 
-\[caption id="attachment\_714" align="aligncenter" width="561"\][![K-means](/assets/images/38f1df05cf64ab7434f4fc11760f14e6fda51155.jpeg)](/assets/images/38f1df05cf64ab7434f4fc11760f14e6fda51155.jpeg) K-means\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/38f1df05cf64ab7434f4fc11760f14e6fda51155.jpeg" alt="K-means" />
+  <figcaption>K-means</figcaption>
+</figure>
 
 <!--more-->
 
@@ -26,11 +29,17 @@ K-means算法是Ng引入的第一个非监督学习算法，所谓非监督学�
 
 式子相当直观，K-means算法为了最小化优化目标，不断的重复Cluster assignment和Move centroid两步直到收敛，如下：
 
-\[caption id="attachment\_718" align="aligncenter" width="1250"\][![K-means algorithm](/assets/images/D4457EA5-DC99-445A-BF5A-B08EB07FB542.jpg)](/assets/images/D4457EA5-DC99-445A-BF5A-B08EB07FB542.jpg) K-means algorithm\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/D4457EA5-DC99-445A-BF5A-B08EB07FB542.jpg" alt="K-means algorithm" />
+  <figcaption>K-means algorithm</figcaption>
+</figure>
 
 通过一幅图来观察迭代过程中每次迭代产生的中心点的变化如下：
 
-\[caption id="attachment\_724" align="aligncenter" width="632"\][![centroid](/assets/images/8371CF03-4D3B-4B5C-A328-D3A2F79518A8.jpg)](/assets/images/8371CF03-4D3B-4B5C-A328-D3A2F79518A8.jpg) centroid\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/8371CF03-4D3B-4B5C-A328-D3A2F79518A8.jpg" alt="centroid" />
+  <figcaption>centroid</figcaption>
+</figure>
 
 * * *
 
@@ -44,7 +53,10 @@ K-means算法通过随机执行K个中心点对算法进行初始化，由于K-m
 
 在K-means算法中一个重要的问题是如何选择合适的K，Ng讲了一种Elbow method可以选择合适的K：
 
-\[caption id="attachment\_721" align="aligncenter" width="1211"\][![Elbow method](/assets/images/B80DDC6D-623E-47AE-8C77-0565009A0E36.jpg)](/assets/images/B80DDC6D-623E-47AE-8C77-0565009A0E36.jpg) Elbow method\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/B80DDC6D-623E-47AE-8C77-0565009A0E36.jpg" alt="Elbow method" />
+  <figcaption>Elbow method</figcaption>
+</figure>
 
 但是，如上图右侧的示意图，Elbow method并不总是有效，在大部分情况下仍然需要人为的指定K的值，因为我们在运行K-means算法时通常对结果的类别会有一定的预期，所以这样做也是可行的。
 
@@ -56,7 +68,10 @@ Ng课后作业中有一个很有意思的例子：使用K-means算法做图像�
 
 其做法非常简单，在图像的颜色RGB空间（三维）中做聚类，获得16个类，将中心点作为新的16个颜色对原图像中的颜色进行替换，效果还不错:
 
-\[caption id="attachment\_728" align="aligncenter" width="562"\][![image compress](/assets/images/F018CAD5-5B15-43D9-87F9-1E6E453EDEBF.jpg)](/assets/images/F018CAD5-5B15-43D9-87F9-1E6E453EDEBF.jpg) image compress\[/caption\]
+<figure style="text-align: center;">
+  <img src="/assets/images/F018CAD5-5B15-43D9-87F9-1E6E453EDEBF.jpg" alt="image compress" />
+  <figcaption>image compress</figcaption>
+</figure>
 
 在我机器上产生了奇怪的拉伸效果，其实这是一只鸟...
 
