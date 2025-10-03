@@ -3,6 +3,7 @@ title: "可串行化（Serializable）：理想和现实"
 date: 2019-03-11
 categories: 
   - "关系型数据库"
+mathjax: true
 ---
 
 
@@ -156,14 +157,14 @@ ANSI隔离级别试图定义出一套实现无关的隔离级别，但这个尝�
 
 例如这个测试[6](#fn-1743-hermitage)中提到的，在初始状态如下的数据库中：
 
-```
+```sql
 create table test (id int primary key, value int) engine=innodb;
 insert into test (id, value) values (1, 10), (2, 20);
 ```
 
 会有Lost update：
 
-```
+```sql
 set session transaction isolation level repeatable read; begin; -- T1
 set session transaction isolation level repeatable read; begin; -- T2
 select * from test where id = 1; -- T1
@@ -176,7 +177,7 @@ commit; -- T2
 
 会有Read skew：
 
-```
+```sql
 set session transaction isolation level repeatable read; begin; -- T1
 set session transaction isolation level repeatable read; begin; -- T2
 select * from test where id = 1; -- T1. Shows 1 => 10
@@ -191,7 +192,7 @@ commit; -- T1
 
 会有Write skew：
 
-```
+```sql
 set session transaction isolation level repeatable read; begin; -- T1
 set session transaction isolation level repeatable read; begin; -- T2
 select * from test where id in (1,2); -- T1

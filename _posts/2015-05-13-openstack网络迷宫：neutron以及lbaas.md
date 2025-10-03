@@ -410,7 +410,7 @@ LBaaS利用Neutron的网络服务，将Floating IP绑定到Load Balancer的Port�
 
 我在我的实验环境中为三台虚拟机（10.0.0.20, 10.0.0.21, 10.0.0.0.22）的80端口（HTTP）配置了负载均衡服务，使用10.0.0.23作为VIP，果然发现了HAProxy进程：
 
-```
+```bash
 [kongfy@3E ~]$ ps aux | grep haproxy
 kongfy    3008  0.0  0.0 112612   740 pts/0    S+   11:42   0:00 grep --color=auto haproxy
 kongfy   12684  2.1  0.9 199700 35596 pts/14   S+   May05 253:32 python /usr/bin/neutron-lbaas-agent --config-file /etc/neutron/neutron.conf --config-file=/etc/neutron/services/loadbalancer/haproxy/lbaas_agent.ini
@@ -419,7 +419,7 @@ nobody   23906  0.0  0.0  49692  1300 ?        Ss   May09   0:20 haproxy -f /opt
 
 顺藤摸瓜看看HAProxy使用的配置文件：
 
-```asm
+```bash
 global
 	daemon
 	user nobody

@@ -112,7 +112,7 @@ test.cpp:8: note: initialized from here
 
 明白了问题出现的原因，不妨看看编译器最终生成的汇编代码是怎样的：
 
-```asm
+```
 080484a0 :
  80484a0:   55                      push   %ebp
  80484a1:   89 e5                   mov    %esp,%ebp
