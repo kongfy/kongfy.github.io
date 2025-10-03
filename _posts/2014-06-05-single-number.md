@@ -19,6 +19,27 @@ tags:
 
 <!--more-->
 
-其实这个题目的解法非常的巧妙，也非常简单，主要用到了**异或**运算的性质： `a xor a = 0 0 xor a = a a xor b = b xor a` 非常非常简单...使用上面的性质可以很容易知道，把数组中所有的数异或起来，得到的结果就是仅出现了一次的数！！！！！
+其实这个题目的解法非常的巧妙，也非常简单，主要用到了**异或**运算的性质： 
 
-`class Solution { public: int singleNumber(int A[], int n) { int ans = 0; for (int i = 0; i < n; ++i) { ans ^= A[i]; } return ans; } };`
+```
+a xor a = 0
+0 xor a = a
+a xor b = b xor a
+```
+
+非常非常简单...使用上面的性质可以很容易知道，把数组中所有的数异或起来，得到的结果就是仅出现了一次的数！！！！！
+
+```cpp
+class Solution
+{
+public:
+    int singleNumber(int A[], int n)
+    {
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            ans ^= A[i];
+        }
+        return ans;
+    }
+};
+```

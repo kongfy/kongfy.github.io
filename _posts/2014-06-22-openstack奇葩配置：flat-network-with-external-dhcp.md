@@ -28,11 +28,31 @@ OpenStack似乎没有针对这种情况的网络模式（即使FlatManager也不
   <figcaption>Flat网络模型</figcaption>
 </figure>
 
-在Flat模式中需要手工建立Linux网桥，网上这方面的资料很多了，在此不进行赘述。值得注意的一点是如果创建的网桥名称不是默认的br100，那么在配置的过程中仅仅按照文档描述的修改配置文件中的 `flat_network_bridge=vmbr` 是不够的，还需要在创建网络时指定网桥的名字才可以...（所以说还是按照默认的br100比较好）
+在Flat模式中需要手工建立Linux网桥，网上这方面的资料很多了，在此不进行赘述。值得注意的一点是如果创建的网桥名称不是默认的br100，那么在配置的过程中仅仅按照文档描述的修改配置文件中的 
 
-进行了上面的配置之后虚拟机已经可以通过系楼DHCP获取到IP了，但是仍然不能正常的进行网络通信...经过一段时间的挣扎（抓包抓包抓包），发现似乎虚拟机的ARP报文被什么东西拦截了，原来这是OpenStack的防火墙机制，因为DHCP获取到的IP和OpenStack认为的IP不同，所以被判断为IP欺诈报文！So...干掉防火墙： `firewall_driver = nova.virt.firewall.NoopFirewallDriver` 因为OpenStack的防火墙实际上是使用了libvirt的nwfilter机制，如果已经创建的规则关闭防火墙后没有失效，你可能需要在virsh中手动undefine对应的nwfilter才可以。
+```bash
+flat_network_bridge=vmbr
+```
 
-到这一步配置已经全部完成了，网络也可以正常访问了，完整的网络配置如下： `network_manager = nova.network.manager.FlatManager firewall_driver = nova.virt.firewall.NoopFirewallDriver multi_host = True flat_network_bridge = vmbr allow_same_net_traffic = true`
+ 是不够的，还需要在创建网络时指定网桥的名字才可以...（所以说还是按照默认的br100比较好）
+
+进行了上面的配置之后虚拟机已经可以通过系楼DHCP获取到IP了，但是仍然不能正常的进行网络通信...经过一段时间的挣扎（抓包抓包抓包），发现似乎虚拟机的ARP报文被什么东西拦截了，原来这是OpenStack的防火墙机制，因为DHCP获取到的IP和OpenStack认为的IP不同，所以被判断为IP欺诈报文！So...干掉防火墙： 
+
+```bash
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+```
+
+因为OpenStack的防火墙实际上是使用了libvirt的nwfilter机制，如果已经创建的规则关闭防火墙后没有失效，你可能需要在virsh中手动undefine对应的nwfilter才可以。
+
+到这一步配置已经全部完成了，网络也可以正常访问了，完整的网络配置如下： 
+
+```bash
+network_manager = nova.network.manager.FlatManager
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+multi_host = True
+flat_network_bridge = vmbr
+allow_same_net_traffic = true
+```
 
 * * *
 

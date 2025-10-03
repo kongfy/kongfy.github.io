@@ -48,7 +48,188 @@ $\\displaystyle \\min\_{v\\in C\_1}f(v) > \\min\_{v\\in C\_2}f(v)$
 
 所以$G^{rev}$的计算是必不可少的。
 
-代码如下，采用递归实现DFS，在实际使用中容易造成栈溢出，修改为非递归实现即可。 `#include #include #include #include #include #include #include #include  using namespace std;  class Graph { public: Graph(int n) { _storage.resize(n); }  void addVertex() { _storage.push_back(list()); }  void addEdge(int vertex, int adjacent) { _storage[vertex].push_back(adjacent); }  int vertices() { return _storage.size(); }  int edges() { int count = 0; for (int i = 0; i < vertices(); ++i) { count += _storage[i].size(); } return count; }  list &edges_for_vertex(int vertex) { return _storage[vertex]; }  private: vector > _storage; };  class SCC { public: vector calculateSCC(Graph &g) { int n = g.vertices(); Graph g_rev(n);  for (int v = 0; v < n; ++v) { list &edges = g.edges_for_vertex(v); for (int u : edges) { g_rev.addEdge(u, v); } }  assert(g.edges() == g_rev.edges());  stack s; vector map(n, false);  // first pass for (int i = 0; i < n; ++i) { if (!map[i]) { dfs_order(g_rev, i, s, map); } }  vector ssc(n, -1);  // second pass while (!s.empty()) { int i = s.top(); s.pop();  if (ssc[i] < 0) { dfs_ssc(g, i, i, ssc); } }  return ssc; }  private: void dfs_order(Graph &g, int v, stack &s, vector &map) { map[v] = true;  list &edges = g.edges_for_vertex(v); for (int u : edges) { if (!map[u]) { dfs_order(g, u, s, map); } }  s.push(v); }  void dfs_ssc(Graph &g, int v, int leader, vector &ssc) { ssc[v] = leader;  list &edges = g.edges_for_vertex(v); for (int u : edges) { if (ssc[u] < 0) { dfs_ssc(g, u, leader, ssc); } } } };  vector rankSCC(vector &scc) { unordered_map count;  for (int i = 0; i < scc.size(); ++i) { if (count.find(scc[i]) != count.end()) { count[scc[i]] += 1; } else { count[scc[i]] = 1; } }  vector rank; for (auto it = count.begin(); it != count.end(); ++it) { rank.push_back(it->second); }  sort(rank.begin(), rank.end()); return rank; }  int main(int argc, char *argv[]) { ifstream fin("SCC.txt");  int n = 875714; Graph graph(n);  while (fin) { int s = 0, t = 0; fin >> s >> t; if (s != 0 && t != 0) { graph.addEdge(s - 1, t - 1); } }  cout << graph.edges() << " lines loaded." << endl;  SCC solver; vector scc = solver.calculateSCC(graph); vector rank = rankSCC(scc);  int total = 0; for (int i = 0; i < rank.size(); ++i) { total += rank[i]; } assert(total == n);  for (int i = rank.size() - 1; i >= rank.size() - 5; --i) { cout << rank[i] << ','; } cout << endl;  return 0; }`
+代码如下，采用递归实现DFS，在实际使用中容易造成栈溢出，修改为非递归实现即可。
+
+```cpp
+#include <vector>
+#include <list>
+#include <stack>
+#include <iostream>
+#include <fstream>
+#include <cassert>
+#include <unordered_map>
+#include <algorithm>
+
+using namespace std;
+
+class Graph
+{
+public:
+    Graph(int n)
+    {
+        _storage.resize(n);
+    }
+
+    void addVertex()
+    {
+        _storage.push_back(list<int>());
+    }
+
+    void addEdge(int vertex, int adjacent)
+    {
+        _storage[vertex].push_back(adjacent);
+    }
+
+    int vertices()
+    {
+        return _storage.size();
+    }
+
+    int edges()
+    {
+        int count = 0;
+        for (int i = 0; i < vertices(); ++i) {
+            count += _storage[i].size();
+        }
+        return count;
+    }
+
+    list<int> &edges_for_vertex(int vertex)
+    {
+        return _storage[vertex];
+    }
+
+private:
+    vector<list<int> > _storage;
+};
+
+class SCC
+{
+public:
+    vector<int> calculateSCC(Graph &g)
+    {
+        int n = g.vertices();
+        Graph g_rev(n);
+
+        for (int v = 0; v < n; ++v) {
+            list<int> &edges = g.edges_for_vertex(v);
+            for (int u : edges) {
+                g_rev.addEdge(u, v);
+            }
+        }
+
+        assert(g.edges() == g_rev.edges());
+
+        stack<int> s;
+        vector<bool> map(n, false);
+
+        // first pass
+        for (int i = 0; i < n; ++i) {
+            if (!map[i]) {
+                dfs_order(g_rev, i, s, map);
+            }
+        }
+
+        vector<int> ssc(n, -1);
+
+        // second pass
+        while (!s.empty()) {
+            int i = s.top();
+            s.pop();
+
+            if (ssc[i] < 0) {
+                dfs_ssc(g, i, i, ssc);
+            }
+        }
+
+        return ssc;
+    }
+
+private:
+    void dfs_order(Graph &g, int v, stack<int> &s, vector<bool> &map)
+    {
+        map[v] = true;
+
+        list<int> &edges = g.edges_for_vertex(v);
+        for (int u : edges) {
+            if (!map[u]) {
+                dfs_order(g, u, s, map);
+            }
+        }
+
+        s.push(v);
+    }
+
+    void dfs_ssc(Graph &g, int v, int leader, vector<int> &ssc)
+    {
+        ssc[v] = leader;
+
+        list<int> &edges = g.edges_for_vertex(v);
+        for (int u : edges) {
+            if (ssc[u] < 0) {
+                dfs_ssc(g, u, leader, ssc);
+            }
+        }
+    }
+};
+
+vector<int> rankSCC(vector<int> &scc)
+{
+    unordered_map<int, int> count;
+
+    for (int i = 0; i < scc.size(); ++i) {
+        if (count.find(scc[i]) != count.end()) {
+            count[scc[i]] += 1;
+        } else {
+            count[scc[i]] = 1;
+        }
+    }
+
+    vector<int> rank;
+    for (auto it = count.begin(); it != count.end(); ++it) {
+        rank.push_back(it->second);
+    }
+
+    sort(rank.begin(), rank.end());
+    return rank;
+}
+
+int main(int argc, char *argv[])
+{
+    ifstream fin("SCC.txt");
+
+
+    int n = 875714;
+    Graph graph(n);
+
+    while (fin) {
+        int s = 0, t = 0;
+        fin >> s >> t;
+        if (s != 0 && t != 0) {
+            graph.addEdge(s - 1, t - 1);
+        }
+    }
+
+    cout << graph.edges() << " lines loaded." << endl;
+
+    SCC solver;
+    vector<int> scc = solver.calculateSCC(graph);
+    vector<int> rank = rankSCC(scc);
+
+    int total = 0;
+    for (int i = 0; i < rank.size(); ++i) {
+        total += rank[i];
+    }
+    assert(total == n);
+
+    for (int i = rank.size() - 1; i >= rank.size() - 5; --i) {
+        cout << rank[i] << ',';
+    }
+    cout << endl;
+
+    return 0;
+}
+```
 
 好吧，我承认我就是为了凑数的...
 

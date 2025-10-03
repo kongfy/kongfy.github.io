@@ -134,7 +134,7 @@ GRE和VXLAN的方式原理上非常相似，都是通过三层隧道的方法将
 
 上图中可以看到两个Compute Node中分别创建了隧道网桥br-tun与br-int相连，并且为每个租户网络在节点间创建了对应的点对点GRE隧道，在计算节点上使用命令 sudo ovs-vsctl show 查看这些隧道：
 
-```
+```bash
 [kongfy@3E ~]$ sudo ovs-vsctl show
 ...
     Bridge br-tun
@@ -228,7 +228,7 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 
 非常朴素的路由表，最后一步，检查一下 qr-4eecdd03-28 和 qg-e79d220c-32 这两个接口接在哪里了？
 
-```
+```bash
 [kongfy@3E ~]$ sudo ovs-vsctl show
 2589affe-8d13-4c1e-be9d-1a3f3603454b
     Bridge br-ex
@@ -419,7 +419,7 @@ nobody   23906  0.0  0.0  49692  1300 ?        Ss   May09   0:20 haproxy -f /opt
 
 顺藤摸瓜看看HAProxy使用的配置文件：
 
-```
+```asm
 global
 	daemon
 	user nobody

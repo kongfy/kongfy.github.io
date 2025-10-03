@@ -11,7 +11,15 @@ tags:
 
 题目链接在[这里](https://oj.leetcode.com/problems/copy-list-with-random-pointer/)。
 
-题目要求对链表进行复制，不过这个链表稍微有点特殊：在每一个节点中除了指向下一个节点的指针，还有一个指向链表中随机节点的指针，如下： `struct RandomListNode { int label; RandomListNode *next, *random; RandomListNode(int x) : label(x), next(NULL), random(NULL) {} };`
+题目要求对链表进行复制，不过这个链表稍微有点特殊：在每一个节点中除了指向下一个节点的指针，还有一个指向链表中随机节点的指针，如下： 
+
+```cpp
+struct RandomListNode {
+    int label;
+    RandomListNode *next, *random;
+    RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
+};
+```
 
 这个链表看起来大概是这个样子：
 
@@ -44,4 +52,53 @@ tags:
   <figcaption>Step3</figcaption>
 </figure>
 
-`class Solution { public: RandomListNode *copyRandomList(RandomListNode *head) { if (!head) { return NULL; } RandomListNode *p = head, *q = NULL; while (p) { q = new RandomListNode(p->label); q->next = p->next; p->next = q; p = q->next; }  p = head; q = NULL; while (p) { q = p->next; if (p->random) { q->random = p->random->next; } p = q->next; }  p = head; q = NULL; RandomListNode *new_head = NULL, *tail = NULL; while (p) { q = p->next; p->next = q->next; q->next = NULL; if (!new_head) { new_head = q; } else { tail->next = q; } tail = q; p = p->next; } return new_head; } };`
+```cpp
+class Solution
+{
+public:
+    RandomListNode *copyRandomList(RandomListNode *head)
+    {
+        if (!head) {
+            return NULL;
+        }
+        
+        RandomListNode *p = head, *q = NULL;
+        while (p) {
+            q = new RandomListNode(p->label);
+            q->next = p->next;
+            p->next = q;
+            p = q->next;
+        }
+ 
+        p = head;
+        q = NULL;
+        while (p) {
+            q = p->next;
+            if (p->random) {
+                q->random = p->random->next;
+            }
+            p = q->next;
+        }
+ 
+        p = head;
+        q = NULL;
+        RandomListNode *new_head = NULL, *tail = NULL;
+        while (p) {
+            q = p->next;
+            p->next = q->next;
+            
+            q->next = NULL;
+            if (!new_head) {
+                new_head = q;
+            } else {
+                tail->next = q;
+            }
+            tail = q;
+            
+            p = p->next;
+        }
+        
+        return new_head;
+    }
+};
+```

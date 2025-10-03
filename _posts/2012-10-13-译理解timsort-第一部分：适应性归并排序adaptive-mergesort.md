@@ -25,13 +25,77 @@ Python的timsort常常被认为是很复杂、可怕的。这是可以理解的�
 
 下面是代码：
 
-`#include "timsort.h" #include #include  // 将两个长度分别为l1, l2的已排序数组p1, p2合并为一个 // 已排序的目标数组。 void merge(int target[], int p1[], int l1, int p2[], int l2);  void integer_timsort(int array[], int size){ if(size <= 1) return; int partition = size/2; integer_timsort(array, partition); integer_timsort(array + partition, size - partition); merge(array, array, partition, array + partition, size - partition); }  void merge(int target[], int p1[], int l1, int p2[], int l2){ int *merge_to = malloc(sizeof(int) * (l1 + l2));  // 当前扫描两数组的位置 int i1, i2; i1 = i2 = 0;  // 在合并过程中存放下一个元素的位置 int *next_merge_element = merge_to;  // 扫描两数组，将较小的元素写入 // merge_to. 当两数相等时我们选择 // 左边的, 因为我们想保证排序的稳定性 // 当然对于integers这无关紧要，但这种想法是很重要的 while(i1 < l1 && i2 < l2){ if(p1[i1] <= p2[i2]){ *next_merge_element = p1[i1]; i1++; } else { *next_merge_element = p2[i2]; i2++; } next_merge_element++; }  // 如果有一个数组没有扫描完，我们直接拷贝剩余的部分 memcpy(next_merge_element, p1 + i1, sizeof(int) * (l1 - i1)); memcpy(next_merge_element, p2 + i2, sizeof(int) * (l2 - i2));  // 现在我们已经将他们合并在了我们的额外的存储空间里了 // 是时候转存到target了 memcpy(target, merge_to, sizeof(int) * (l1 + l2));  free(merge_to); }`
+```cpp
+#include "timsort.h"
+#include <stdlib.h>
+#include <string.h>
+ 
+// 将两个长度分别为l1, l2的已排序数组p1, p2合并为一个
+// 已排序的目标数组。
+void merge(int target[], int p1[], int l1, int p2[], int l2);
+ 
+void integer_timsort(int array[], int size){
+    if(size <= 1) return;
+ 
+    int partition = size/2;
+    integer_timsort(array, partition);
+    integer_timsort(array + partition, size - partition);
+    merge(array, array, partition, array + partition, size - partition);
+}
+ 
+void merge(int target[], int p1[], int l1, int p2[], int l2){
+    int *merge_to = malloc(sizeof(int) * (l1 + l2));
+ 
+    // 当前扫描两数组的位置
+    int i1, i2;
+    i1 = i2 = 0;
+ 
+    // 在合并过程中存放下一个元素的位置
+    int *next_merge_element = merge_to;
+ 
+    // 扫描两数组，将较小的元素写入
+    // merge_to. 当两数相等时我们选择
+    // 左边的, 因为我们想保证排序的稳定性
+    // 当然对于integers这无关紧要，但这种想法是很重要的
+    while(i1 < l1 && i2 < l2){
+        if(p1[i1] <= p2[i2]){
+            *next_merge_element = p1[i1];
+            i1++;
+        } else {
+            *next_merge_element = p2[i2];
+            i2++;
+        }
+        next_merge_element++;
+    }
+ 
+    // 如果有一个数组没有扫描完，我们直接拷贝剩余的部分
+    memcpy(next_merge_element, p1 + i1, sizeof(int) * (l1 - i1));
+    memcpy(next_merge_element, p2 + i2, sizeof(int) * (l2 - i2));
+ 
+    // 现在我们已经将他们合并在了我们的额外的存储空间里了
+    // 是时候转存到target了
+    memcpy(target, merge_to, sizeof(int) * (l1 + l2));
+ 
+    free(merge_to);
+}
+```
 
 我不会总是贴出完整的代码，你可以在github上根据不同的版本来[查看他们](http://github.com/DRMacIver/understanding-timsort)
 
 现在，如果你是一个C程序员，你可能已经在吐槽了：我在每次合并过程中都申请并释放了一次额外存储空间（你可能也会不爽于我没有检查返回值是否为null,请无视之...如果这能让你感觉好一点）
 
-这个问题只要一点点的改动就可以修正： `void merge(int target[], int p1[], int l1, int p2[], int l2, int storage[]); void integer_timsort_with_storage(int array[], int size, int storage[]);  void integer_timsort(int array[], int size){ int *storage = malloc(sizeof(int) * size); integer_timsort_with_storage(array, size, storage); free(storage); }`
+这个问题只要一点点的改动就可以修正： 
+
+```cpp
+void merge(int target[], int p1[], int l1, int p2[], int l2, int storage[]);
+void integer_timsort_with_storage(int array[], int size, int storage[]);
+ 
+void integer_timsort(int array[], int size){
+    int *storage = malloc(sizeof(int) * size);
+    integer_timsort_with_storage(array, size, storage);
+    free(storage);
+}
+```
 
 现在我们有了排序函数的最顶层，做了一些内存分配（setup）工作并将其传入调用中。这是我们将要开始优化工作的模版，当然最后实际可用的版本会更加复杂而不仅仅是优化一块内存空间。
 
@@ -51,9 +115,39 @@ Python的timsort常常被认为是很复杂、可怕的。这是可以理解的�
 
 这就是插入排序工作的方式：当你有了k个已排序的元素，将第k+1个元素插入其中，你就有了k+1个已排序的元素。反复如此直到整个数组有序。
 
-下面是代码： `void insertion_sort(int xs[], int length){ if(length <= 1) return; int i; for(i = 1; i < length; i++){ // i之前的数组已经有序了，现在将xs[i]插入到里面 int x = xs[i]; int j = i - 1;  // 将j向前移动直到数组头或者 // something <= x, 并且其右边的所有的元素都已经 // 右移了 while(j >= 0 && xs[j] > x){ xs[j+1], xs[j]; j--; } xs[j+1] = x; } }`
+下面是代码： 
 
-现在排序的代码会被修改为下面这样： `void integer_timsort_with_storage(int array[], int size, int storage[]){ if(size <= INSERTION_SORT_SIZE){ insertion_sort(array, size); return; } }`
+```cpp
+void insertion_sort(int xs[], int length){
+    if(length <= 1) return;
+    int i;
+    for(i = 1; i < length; i++){
+        // i之前的数组已经有序了，现在将xs[i]插入到里面
+        int x = xs[i];
+        int j = i - 1;
+ 
+        // 将j向前移动直到数组头或者
+        // something <= x, 并且其右边的所有的元素都已经
+        // 右移了
+        while(j >= 0 && xs[j] > x){
+            xs[j+1], xs[j];
+             j--;
+        }   
+        xs[j+1] = x;
+    }
+}
+```
+
+现在排序的代码会被修改为下面这样： 
+
+```cpp
+void integer_timsort_with_storage(int array[], int size, int storage[]){
+    if(size <= INSERTION_SORT_SIZE){
+        insertion_sort(array, size);
+        return;
+    }
+}
+```
 
 你可以在[这里](http://github.com/DRMacIver/understanding-timsort/commit/57a91bd8c5383ffa1e0e5dc1df0849e16ec037bd)查看这个版本
 
@@ -98,7 +192,10 @@ Python的timsort常常被认为是很复杂、可怕的。这是可以理解的�
 当存在多个分区时，奇偶交替的两两合并这些分区（alternating even/odd）并用合并后的分区替代原先的两个分区。
 
 {% raw %}
-举例来说，如果我们有数组｛1, 2, 3, 4｝那么我们会这么做： {{1}, {2}, {3}, {4}} {{1, 2}, {3, 4}} {{1, 2, 3, 4}}
+举例来说，如果我们有数组｛1, 2, 3, 4｝那么我们会这么做： 
+{{1}, {2}, {3}, {4}} 
+{{1, 2}, {3, 4}} 
+{{1, 2, 3, 4}}
 {% endraw %}
 
 很容易观察到这和普通归并排序的做法是相同的：我们只是将递归的过程变的明确并且用额外的存储空间取代了栈。但是，这样的方法更直观的展现了我们应该如何使用存在的已排序子序列：在第一步中，我们不将数组分割为长度为1的分段，而是将其分割成很多已排序的分段。然后对这些分段以相同的方法执行合并操作。
@@ -117,11 +214,48 @@ Python的timsort常常被认为是很复杂、可怕的。这是可以理解的�
 
 到此为止已经有太多的文字而代码太少了，所以我打算给出一个暂时的答案：随便什么时候（好坑爹）。
 
-现在，我们先写一些代码。 `// 我们使用固定的栈大小，这个大小要远远大于任何合理的栈高度 // 当然，我们仍然需要对溢出进行检查 #define STACK_SIZE 1024  typedef struct { int *index; int length; } run;  typedef struct { int *storage; // 存储已经得到的分段(runs,原文作者将得到分段叫做run) run runs[STACK_SIZE]; // 栈顶指针，指向下一个待插入的位置 int stack_height;  // 保持记录我们已经分段到哪里里，这样我们可以知道在哪里开始下一次的分段 // 数组中index < partioned_up_to 是已经分段并存储在栈上的, 而index >= partioned_up_to // 的元素是还没有存储到栈上的. 当partitioned_up_to == 数组长度的时候所有的元素都在栈上了 int *partitioned_up_to;  int *array; int length;  } sort_state_struct;  typedef sort_state_struct *sort_state;`
+现在，我们先写一些代码。 
+
+```cpp
+// 我们使用固定的栈大小，这个大小要远远大于任何合理的栈高度
+// 当然，我们仍然需要对溢出进行检查
+#define STACK_SIZE 1024
+ 
+typedef struct {
+    int *index;
+    int length;
+} run;
+ 
+typedef struct {
+    int *storage;
+    // 存储已经得到的分段(runs,原文作者将得到分段叫做run)
+    run runs[STACK_SIZE];
+    // 栈顶指针，指向下一个待插入的位置
+    int stack_height;
+ 
+    // 保持记录我们已经分段到哪里里，这样我们可以知道在哪里开始下一次的分段
+    // 数组中index < partioned_up_to 是已经分段并存储在栈上的, 而index >= partioned_up_to
+    // 的元素是还没有存储到栈上的. 当partitioned_up_to == 数组长度的时候所有的元素都在栈上了
+    int *partitioned_up_to;
+ 
+    int *array;
+    int length;
+ 
+} sort_state_struct;
+ 
+typedef sort_state_struct *sort_state;
+```
 
 我们将会给需要的所有函数传入`sort_state`的指针
 
-这个排序的基础逻辑代码如下： `while(next_partition(&state)){ while(should_collapse(&state)) merge_collapse(&state); } while(state.stack_height > 1) merge_collapse(&state);`
+这个排序的基础逻辑代码如下： 
+
+```cpp
+while(next_partition(&state)){
+    while(should_collapse(&state)) merge_collapse(&state);
+}
+while(state.stack_height > 1) merge_collapse(&state);
+```
 
 `next_partition`函数如果还有未入栈的元素则将一个新的分段压入栈中并返回1，否则返回0。然后适当的压缩栈。最后当全部数组都分段完毕后将整个栈压缩。
 
@@ -139,7 +273,16 @@ Python的timsort常常被认为是很复杂、可怕的。这是可以理解的�
 
 64, 32, 16, 8, 4, 2, 1
 
-假设我们将一个长度为1的分段放到栈上，就会产生如下的合并： 64, 32, 16, 8, 4, 2, 1, 1 64, 32, 16, 8, 4, 2, 2 64, 32, 16, 8, 4, 4 64, 32, 16, 8, 8 64, 32, 16, 16 64, 32, 32 64, 64 128
+假设我们将一个长度为1的分段放到栈上，就会产生如下的合并：  
+
+64, 32, 16, 8, 4, 2, 1, 1  
+64, 32, 16, 8, 4, 2, 2  
+64, 32, 16, 8, 4, 4  
+64, 32, 16, 8, 8  
+64, 32, 16, 16  
+64, 32, 32  
+64, 64  
+128 
 
 在之后对合并过程做了更多的优化后，这种情况会显得愈发糟糕（basically because it stomps on certain structure that might be present in the array）。但是现在我们的合并过程还是很简单的，所以我们没有必要担心它，先暂时这样做就可以了。
 
@@ -147,7 +290,20 @@ Python的timsort常常被认为是很复杂、可怕的。这是可以理解的�
 
 另外还有一点值得注意，我们只需要检查栈顶下面的一个元素长度>=2 \* 栈顶元素长度，因为我们在入栈过程中总是保持这个不变式的，并且合并过程只会影响到栈顶两个元素。
 
-为了满足不变式，我们现在将`should_collapse`函数修改如下： `int should_collapse(sort_state state){ if (state->stack_height <= 2) return 0; int h = state->stack_height - 1;  int head_length = state->runs[h].length; int next_length = state->runs[h-1].length;  return 2 * head_length > next_length; }`
+为了满足不变式，我们现在将`should_collapse`函数修改如下： 
+
+```cpp
+int should_collapse(sort_state state){
+    if (state->stack_height <= 2) return 0;
+ 
+    int h = state->stack_height - 1;
+ 
+    int head_length = state->runs[h].length;
+    int next_length = state->runs[h-1].length;
+ 
+    return 2 * head_length > next_length;
+}
+```
 
 现在，我们的适应性归并排序完成了，赞！
 
@@ -159,7 +315,17 @@ Python的timsort常常被认为是很复杂、可怕的。这是可以理解的�
 
 当使用我们的适应性归并排序会发生什么？
 
-栈的运行过程如下： {5} {5}, {4} {4, 5} {4, 5}, {3} {4, 5}, {3}, {2} {4, 5}, {2, 3} {2, 3, 4, 5} {2, 3, 4, 5}, {1} {1, 2, 3, 4, 5}
+栈的运行过程如下：  
+
+{5}  
+{5}, {4}  
+{4, 5}  
+{4, 5}, {3}  
+{4, 5}, {3}, {2}  
+{4, 5}, {2, 3}  
+{2, 3, 4, 5}  
+{2, 3, 4, 5}, {1}  
+{1, 2, 3, 4, 5} 
 
 这是一个足够清晰的合并策略了。
 
@@ -167,7 +333,27 @@ Python的timsort常常被认为是很复杂、可怕的。这是可以理解的�
 
 可以很简单的修改我们的算法来利用到这一点，我们已经寻找了递增的子序列，当找不递增的子序列的时候可以很简单的寻找一个递减的子序列，然后将其反转为一个递增的序列加入栈中。
 
-根据上面的策略我们修改找序列的代码如下： `if(next_start_index < state->array + state->length){ if(*next_start_index < *start_index){ // We have a decreasing sequence starting here. while(next_start_index < state->array + state->length){ if(*next_start_index < *(next_start_index - 1)) next_start_index++; else break; } // Now reverse it in place. reverse(start_index, next_start_index - start_index); } else { // We have an increasing sequence starting here. while(next_start_index < state->array + state->length){ if(*next_start_index >= *(next_start_index - 1)) next_start_index++; else break; } } }`
+根据上面的策略我们修改找序列的代码如下： 
+
+```cpp
+if(next_start_index < state->array + state->length){
+    if(*next_start_index < *start_index){
+        // We have a decreasing sequence starting here.
+        while(next_start_index < state->array + state->length){
+            if(*next_start_index < *(next_start_index - 1)) next_start_index++;
+            else break;
+        }
+        // Now reverse it in place.
+        reverse(start_index, next_start_index - start_index);
+    } else {
+    // We have an increasing sequence starting here.
+        while(next_start_index < state->array + state->length){
+            if(*next_start_index >= *(next_start_index - 1)) next_start_index++;
+            else break;
+        }
+    }
+}
+```
 
 和基本的逆序序列相同，我们的排序现在也可以很好的处理混合的情况了。比如下面这种数组：
 
@@ -175,7 +361,9 @@ Python的timsort常常被认为是很复杂、可怕的。这是可以理解的�
 
 执行排序过程如下：
 
-{1, 2, 3, 4, 5} {1, 2, 3, 4, 5}, {1, 2, 3, 4} {1, 1, 2, 2, 3, 3, 4, 4, 5}
+{1, 2, 3, 4, 5}  
+{1, 2, 3, 4, 5}, {1, 2, 3, 4}  
+{1, 1, 2, 2, 3, 3, 4, 4, 5}  
 
 这样的情况比我们之前的实现又要好上很多！
 
@@ -187,11 +375,27 @@ Python的timsort常常被认为是很复杂、可怕的。这是可以理解的�
 
 这提示了我们一个自然的思路来改进我们的适应性版本：当我们发现一个分段要小于一个设定值时，可以使用插入排序来将它增长到设定长度。
 
-这使得我们更改了`next_partition`函数的最后面的代码如下： `if(run_to_add.length < MIN_RUN_SIZE){ boost_run_length(state, &run_to_add); } state->partitioned_up_to = start_index + run_to_add.length;`
+这使得我们更改了`next_partition`函数的最后面的代码如下： 
+
+```cpp
+if(run_to_add.length < MIN_RUN_SIZE){
+    boost_run_length(state, &run_to_add);
+}
+state->partitioned_up_to = start_index + run_to_add.length;
+```
 
 boot\_run\_length函数如下：
 
-`void boost_run_length(sort_state state, run *run){ // Need to make sure we don't overshoot the end of the array int length = state->length - (run->index - state->array); if(length > MIN_RUN_SIZE) length = MIN_RUN_SIZE;  insertion_sort(run->index, length); run->length = length; }`
+```cpp
+void boost_run_length(sort_state state, run *run){
+    // Need to make sure we don't overshoot the end of the array
+    int length = state->length - (run->index - state->array);
+    if(length > MIN_RUN_SIZE) length = MIN_RUN_SIZE;
+ 
+    insertion_sort(run->index, length);
+    run->length = length;
+}
+```
 
 这将算法应用在随机数据上时的性能表现提高到了一个和普通归并排序相比相当具有竞争力的程度。
 

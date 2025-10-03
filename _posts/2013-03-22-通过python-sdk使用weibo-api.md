@@ -11,7 +11,11 @@ tags:
 
 <!--more-->
 
-Python的weibo SDK是第三方开发的[weibopy](http://michaelliao.github.com/sinaweibopy/)，主要是封装了OAuth2的认证和weibo API接口的访问和JSON解析。下载之后文件夹里主要的文件是weibo.py，将这个文件直接拷贝到工程目录下即可。当然也可以通过 `python setup.py install`
+Python的weibo SDK是第三方开发的[weibopy](http://michaelliao.github.com/sinaweibopy/)，主要是封装了OAuth2的认证和weibo API接口的访问和JSON解析。下载之后文件夹里主要的文件是weibo.py，将这个文件直接拷贝到工程目录下即可。当然也可以通过 
+
+```bash
+python setup.py install
+```
 
 来安装到python目录中。
 
@@ -19,13 +23,100 @@ Python的weibo SDK是第三方开发的[weibopy](http://michaelliao.github.com/s
 
 代码如下：
 
-**config.py** `# -*- coding: utf-8 -*- config = {'APP_KEY' : '********', 'APP_SECRET' : '****************************', 'CALLBACK_URL' : 'www.kongfy.com', 'WEIBO_USER' : '******', 'WEIBO_PWD' : '**********', }`
+**config.py** 
 
-**main.py** `# -*- coding: utf-8 -*- from weibo_toy import Toy from config import config  if __name__ == '__main__': try: toy = Toy(config['APP_KEY'], config['APP_SECRET'], config['CALLBACK_URL'], config['WEIBO_USER'], config['WEIBO_PWD'], ) except Exception, e: print "Error while Oauth2 with sina api..." print e exit()  client = toy.client print client.get.statuses__public_timeline()`
+```python
+# -*- coding: utf-8 -*-
+ 
+config = {'APP_KEY' : '********',
+          'APP_SECRET' : '****************************',
+          'CALLBACK_URL' : 'www.kongfy.com',
+          'WEIBO_USER' : '******',
+          'WEIBO_PWD' : '**********',
+          }
+```          
 
-**weibo\_toy.py** `# -*- coding: utf-8 -*- from weibo import APIClient import urllib2, urllib  class Toy(object): def __init__(self, app_key, app_secret, app_redirect_uri, username, password): self.__client = APIClient(app_key, app_secret, app_redirect_uri) self.__app_key = app_key self.__app_secret = app_secret self.__username = username self.__password = password self.__callback = app_redirect_uri client = self.__client code = self.__get_code() #获取新浪认证code #新浪返回的token，类似abc123xyz456，每天的token不一样 r = client.request_access_token(code) access_token = r.access_token expires_in = r.expires_in # token过期的UNIX时间  #设置得到的access_token client.set_access_token(access_token, expires_in) def __get_code(self): login_url = 'https://api.weibo.com/oauth2/authorize' params = urllib.urlencode({'action' : 'submit', #login不能授权,submit可以 'response_type' : 'code', 'redirect_uri' : self.__callback, 'client_id' : self.__app_key, 'userId' : self.__username, 'passwd' : self.__password, }) client = self.__client url = client.get_authorize_url() headers = {'Referer' : url} request = urllib2.Request(login_url, params, headers) f = urllib2.urlopen(request) return f.geturl().split('=')[1] def __getattr__(self, name): if name == 'client': return self.__client`
+**main.py**
 
-代码中的 `client.get.statuses__public_timeline()`
+```python
+# -*- coding: utf-8 -*-
+ 
+from weibo_toy import Toy
+from config import config
+ 
+ 
+if __name__ == '__main__':
+    try:
+        toy = Toy(config['APP_KEY'],
+                  config['APP_SECRET'],
+                  config['CALLBACK_URL'],
+                  config['WEIBO_USER'],
+                  config['WEIBO_PWD'],
+                  )
+    except Exception, e:
+        print "Error while Oauth2 with sina api..."
+        print e
+        exit()
+ 
+ 
+    client = toy.client
+    print client.get.statuses__public_timeline()
+```
+
+**weibo\_toy.py** 
+
+```python
+# -*- coding: utf-8 -*-
+ 
+from weibo import APIClient
+import urllib2, urllib
+ 
+class Toy(object):
+    def __init__(self, app_key, app_secret, app_redirect_uri, username, password):
+        self.__client = APIClient(app_key, app_secret, app_redirect_uri)
+        self.__app_key = app_key
+        self.__app_secret = app_secret
+        self.__username = username
+        self.__password = password
+        self.__callback = app_redirect_uri
+        
+        client = self.__client
+        code = self.__get_code() #获取新浪认证code
+    
+        #新浪返回的token，类似abc123xyz456，每天的token不一样
+        r = client.request_access_token(code)
+        access_token = r.access_token
+        expires_in = r.expires_in # token过期的UNIX时间
+ 
+        #设置得到的access_token
+        client.set_access_token(access_token, expires_in)
+    
+    def __get_code(self):
+        login_url = 'https://api.weibo.com/oauth2/authorize'
+        params = urllib.urlencode({'action' : 'submit', #login不能授权,submit可以
+                                   'response_type' : 'code',
+                                   'redirect_uri' : self.__callback,
+                                   'client_id' : self.__app_key,
+                                   'userId' : self.__username,
+                                   'passwd' : self.__password,
+                                   })
+        client = self.__client
+        url = client.get_authorize_url()
+        headers = {'Referer' : url}
+        request = urllib2.Request(login_url, params, headers)
+        f = urllib2.urlopen(request)
+        return f.geturl().split('=')[1]
+    
+    def __getattr__(self, name):
+        if name == 'client':
+            return self.__client
+```
+
+代码中的 
+
+```python
+client.get.statuses__public_timeline()
+```
 
 就是使用weibo的statuses/public\_timeline的API,get代表使用GET方法提交数据，用"\_\_"代替"/"。完整的API文档在[这里](http://open.weibo.com/wiki/API%E6%96%87%E6%A1%A3_V2)。
 

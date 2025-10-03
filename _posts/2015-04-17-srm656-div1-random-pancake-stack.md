@@ -51,7 +51,43 @@ $\\displaystyle f\[N,N\]$
 
 有了状态转移方尺和边界条件后就可以非常轻松的写出动态规划代码了，如下（注意：上述方程中从1开始计数，在转换为C++程序时要留心）：
 
-`#include  using namespace std;  class RandomPancakeStack { public: double expectedDeliciousness(vector d) { int n = d.size(); vector > f(n + 1, vector (n + 1, 0));  // base case for (int i = 1; i <= n; ++i) { f[1][i] = d[0]; } // dp for (int i = 2; i <= n; ++i) { for (int j = i; j <= n; ++j) { double temp = 0; for (int k = 1; k <= i; ++k) { temp += (d[k - 1] + f[k - 1][j - 1]) * (k - 1) / (double)(j - 1); temp += d[k - 1] * (j - k) / (double)(j - 1); } temp *= 1.0 / i; f[i][j] = temp; } }  return f[n][n]; } };`
+```cpp
+#include <vector>
+
+using namespace std;
+
+class RandomPancakeStack
+{
+public:
+    double expectedDeliciousness(vector <int> d)
+    {
+        int n = d.size();
+        
+        vector<vector<double> > f(n + 1, vector<double> (n + 1, 0));
+
+        // base case
+        for (int i = 1; i <= n; ++i) {
+            f[1][i] = d[0];
+        }
+        
+        // dp
+        for (int i = 2; i <= n; ++i) {
+            for (int j = i; j <= n; ++j) {
+                double temp = 0;
+                for (int k = 1; k <= i; ++k) {
+                    temp += (d[k - 1] + f[k - 1][j - 1]) * (k - 1) / (double)(j - 1);
+                    temp += d[k - 1] * (j - k) / (double)(j - 1);
+                }
+                
+                temp *= 1.0 / i;
+                f[i][j] = temp;
+            }
+        }
+
+        return f[n][n];
+    }
+};
+```
 
 算法运行时间复杂度为$O(n^{2})$，空间复杂度为$O(n^{2})$，通过滚动数组可以将空间复杂度优化到$O(n)$（和背包问题一样）。房间里有一个Red(3000+)的俄罗斯大神写了时间复杂度为$O(n)$，空间复杂度为$O(1)$的方法...令人汗颜...
 

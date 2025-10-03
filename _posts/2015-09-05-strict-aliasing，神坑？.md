@@ -8,7 +8,7 @@ mathjax: true
 
 先来看一段代码：
 
-```
+```cpp
 #include <cstdio>
 
 void exchange(int input, int* output)
@@ -69,7 +69,7 @@ PS:似乎有必要注明用来测试的g++版本，我测试用的版本是4.4.7
 
 编译出现诡异问题怎么办？不要忘了使用\-Wall，编译器会给你线索：
 
-```
+```c
 [kongfy@kongfy-vps dev]$ g++ -Wall -O2 -g test.cpp -o test
 test.cpp: In function ‘void exchange(int, int*)’:
 test.cpp:7: warning: dereferencing pointer ‘pi’ does break strict-aliasing rules
@@ -91,7 +91,7 @@ test.cpp:8: note: initialized from here
 
 在man g++中找到这样一段介绍：
 
-```
+```c
 -fstrict-aliasing
            Allow the compiler to assume the strictest aliasing rules applicable to the language being compiled.  For C (and C++), this activates optimizations based on the
            type of expressions.  In particular, an object of one type is assumed never to reside at the same address as an object of a different type, unless the types are
@@ -112,7 +112,7 @@ test.cpp:8: note: initialized from here
 
 明白了问题出现的原因，不妨看看编译器最终生成的汇编代码是怎样的：
 
-```
+```asm
 080484a0 :
  80484a0:   55                      push   %ebp
  80484a1:   89 e5                   mov    %esp,%ebp

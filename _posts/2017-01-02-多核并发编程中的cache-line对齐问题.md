@@ -11,7 +11,7 @@ mathjax: true
 
 先看一段代码：
 
-```
+```cpp
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>

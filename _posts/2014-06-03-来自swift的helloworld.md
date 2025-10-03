@@ -72,7 +72,12 @@ Objective-C作为Swift的大哥，而Swift作为Objective-C官方出品的继任
 
 找准位置，写下helloworld代码~
 
-`override func viewDidLoad() { super.viewDidLoad() println("hello, world") }`
+```swift
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        println("hello, world")
+    }
+```
 
 运行后就可以看到华丽丽的hello, world输出了~
 

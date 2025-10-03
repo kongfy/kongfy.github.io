@@ -80,7 +80,7 @@ MESI这四个字母分别代表了每一个cache line可能处于的四种状态
 
 让我们写个代码来实际验证这个问题：
 
-```
+```cpp
 /*
  * Demo program for showing the drawback of "false sharing"
  *
@@ -90,12 +90,12 @@ MESI这四个字母分别代表了每一个cache line可能处于的四种状态
  * Usage: perf stat -e cache-misses ./false_share  
  */
 
-#include 
-#include 
-#include 
-#include 
-#include 
-#include 
+#include <sys/time.h>
+#include <cstdio>
+#include <stdio.h>
+#include <time.h>
+#include <stdint.h>
+#include <cstdlib>
 
 #define CACHE_ALIGN_SIZE 64
 #define CACHE_ALIGNED __attribute__((aligned(CACHE_ALIGN_SIZE)))
@@ -195,7 +195,7 @@ int main(int argc, char *argv[])
 
 代码很简单，不需要太多解释，重点看下perf结果：
 
-```
+```bash
 [jingyan.kfy@OceanBase224006 work]$ perf stat -e cache-misses ./false_share 100000000 0
 size of unaligned data : 16
 size of aligned data   : 128
@@ -313,7 +313,7 @@ C/C++的程序员应该对volatile都很熟悉了，但volatile在多线程并�
 
 这是因为单单保证编译器不优化掉读操作**并不能保证CPU不会产生乱序行为**，如果读操作被提前，即使没有被优化掉也可能读出你意料之外的值，让我们看个例子，下面是一种[Dekker算法](https://en.wikipedia.org/wiki/Dekker%27s_algorithm)的实现：
 
-```
+```cpp
 /*
  * Dekker's algorithm, implemented on pthreads
  *
@@ -325,10 +325,10 @@ C/C++的程序员应该对volatile都很熟悉了，但volatile在多线程并�
  * Source: http://jakob.engbloms.se/archives/65
  */
 
-#include 
-#include 
-#include 
-#include 
+#include <cstdio>
+#include <stdio.h>
+#include <time.h>
+#include <cstdlib>
 
 static volatile int flag1 = 0;
 static volatile int flag2 = 0;
@@ -484,7 +484,7 @@ Both threads terminated
 
 所以可能会产生r1和r2都为0的执行结果，这是不符合程序执行逻辑的。下面让我们通过程序实际验证这种乱序行为（上文中的Dekker算法也是一个例子）：
 
-```
+```cpp
 /*
  * Demo program for catching cpu reorder behaviors
  *
@@ -492,12 +492,12 @@ Both threads terminated
  * Usage: ./reorder 
  */
 
-#include 
-#include 
-#include 
-#include 
-#include 
-#include 
+#include <sys/time.h>
+#include <cstdio>
+#include <stdio.h>
+#include <time.h>
+#include <stdint.h>
+#include <cstdlib>
 
 int gLoopCount;
 int A, B, X, Y;
@@ -568,7 +568,7 @@ int main(int argc, char *argv[])
 
 在多核x86机器上运行该程序会发现冲突：
 
-```
+```bash
 ➜  test git:(master) ✗ ./reorder 100000
 reorder caught!
 reorder caught!

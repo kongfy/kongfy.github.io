@@ -25,7 +25,11 @@ tags:
 
 那么该怎么找到这个不存在的对象呢？很简单，使用Zombie Objects！Apple的命名还是很形象的，如果你在build时开启了这个选项，那么运行时释放的对象都不会被完全释放，而是留在内存中，就像Zombie一样~ 在"Product"-"Scheme"-"Edit Scheme"中打开Zombie Objects: [![Zombie](/assets/images/7517BBB0-8A1A-4D00-B8FF-E3FEFCA15276.jpg)](/assets/images/7517BBB0-8A1A-4D00-B8FF-E3FEFCA15276.jpg)
 
-再次运行调试，观察控制台输出： `-[CommentTableViewController scrollViewDidScroll:]: message sent to deallocated instance 0x19397130`
+再次运行调试，观察控制台输出： 
+
+```bash
+-[CommentTableViewController scrollViewDidScroll:]: message sent to deallocated instance 0x19397130
+```
 
 OK，这个不存在的对象终于被我们找到了！
 
@@ -33,7 +37,15 @@ OK，这个不存在的对象终于被我们找到了！
 
 接下来就要好好分析一下错误的原因了，上面的输出告诉我们Crash是因为scrollViewDidScroll消息发送给了已经被释放的对象，但这怎么会发生嘞？一番Google之后发现遇到这个问题的人为数不少，在iOS7中确实存在这个问题，但也没有说明为什么出现，只是给出了[解决方法](http://stackoverflow.com/questions/15216245/uicollectionview-calling-scrollviewdidscroll-when-popped-from-the-navigation-st "解决方法")，在对象dealloc时，一定将scrollView delegate置为nil：
 
-`- (void)dealloc { // iOS7中 EXC_BAD_ACCESS // message sent to deallocated instance // http://stackoverflow.com/questions/15216245/uicollectionview-calling-scrollviewdidscroll-when-popped-from-the-navigation-st self.tableView.delegate = nil; }`
+```c
+- (void)dealloc
+{
+    // iOS7中 EXC_BAD_ACCESS
+    // message sent to deallocated instance
+    // http://stackoverflow.com/questions/15216245/uicollectionview-calling-scrollviewdidscroll-when-popped-from-the-navigation-st
+    self.tableView.delegate = nil;
+}
+```
 
 再次运行，问题解决。
 

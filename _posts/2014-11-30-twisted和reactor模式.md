@@ -55,7 +55,10 @@ tags:
 
 上图是[Boost](http://www.boost.org "boost")对Reactor模式的描绘，Twisted的设计就是基于这样的Reactor模式，Twisted程序就是在等待事件、处理事件的过程中不断循环。
 
-`from twisted.internet import reactor reactor.run()`
+```python
+from twisted.internet import reactor
+reactor.run()
+```
 
 reactor是Twisted程序中的单例对象。
 
@@ -76,7 +79,29 @@ Factory如名字所暗示的，是抽象工厂。在Twisted中把一个工厂对
 
 下面是官网指南中一个简单的例子，可以清楚的看到Factory和Protocol的关系。Protocol实例的transport成员变量表示对应的网络连接。
 
-`# Read username, output from non-empty factory, drop connections  from twisted.internet import protocol, reactor from twisted.protocols import basic  class FingerProtocol(basic.LineReceiver): def lineReceived(self, user): self.transport.write(self.factory.getUser(user)+"\r\n") self.transport.loseConnection()  class FingerFactory(protocol.ServerFactory): protocol = FingerProtocol  def __init__(self, **kwargs): self.users = kwargs  def getUser(self, user): return self.users.get(user, "No such user")  reactor.listenTCP(1079, FingerFactory(moshez='Happy and well')) reactor.run()`
+```python
+# Read username, output from non-empty factory, drop connections
+
+from twisted.internet import protocol, reactor
+from twisted.protocols import basic
+
+class FingerProtocol(basic.LineReceiver):
+    def lineReceived(self, user):
+        self.transport.write(self.factory.getUser(user)+"\r\n")
+        self.transport.loseConnection()
+
+class FingerFactory(protocol.ServerFactory):
+    protocol = FingerProtocol
+
+    def __init__(self, **kwargs):
+        self.users = kwargs
+
+    def getUser(self, user):
+        return self.users.get(user, "No such user")
+
+reactor.listenTCP(1079, FingerFactory(moshez='Happy and well'))
+reactor.run()
+```
 
 * * *
 
@@ -84,7 +109,26 @@ Factory如名字所暗示的，是抽象工厂。在Twisted中把一个工厂对
 
 Deferred是Twisted对Callback的实现方式，Deferred非常灵活，代表了“推迟”。下面的例子展示了Deferred对象的基本用法：
 
-`from twisted.internet.defer import Deferred def got_poem(res): print 'Your poem is served:' print res def poem_failed(err): print 'No poetry for you.' d = Deferred() # add a callback/errback pair to the chain d.addCallbacks(got_poem, poem_failed) # fire the chain with a normal result d.callback('This poem is short.') print "Finished"`
+```python
+from twisted.internet.defer import Deferred
+ 
+def got_poem(res):
+    print 'Your poem is served:'
+    print res
+ 
+def poem_failed(err):
+    print 'No poetry for you.'
+ 
+d = Deferred()
+ 
+# add a callback/errback pair to the chain
+d.addCallbacks(got_poem, poem_failed)
+ 
+# fire the chain with a normal result
+d.callback('This poem is short.')
+ 
+print "Finished"
+```
 
 1. 创建Deferred对象
 2. 将callback和errback函数添加到Deferred对象上
@@ -107,9 +151,53 @@ Deferred是Twisted对Callback的实现方式，Deferred非常灵活，代表了�
 
 很多时候我们编写网络程序都需要程序可以作为[守护进程](http://en.wikipedia.org/wiki/Daemon_\(computing\) "守护进程")运行，在UNIX环境中这需要做2次fork的魔法（见APUE第13章），twist（注意，比Twisted少了一个字母e）为我们跨平台的封装了这一过程，通过编写Twisted Application Configuration文件（.tac）指定所运行的application，就可以通过twistd命令运行守护进程了！
 
-`root% twistd -ny finger11.tac # just like before root% twistd -y finger11.tac # daemonize, keep pid in twistd.pid root% twistd -y finger11.tac --pidfile=finger.pid root% twistd -y finger11.tac --rundir=/ root% twistd -y finger11.tac --chroot=/var root% twistd -y finger11.tac -l /var/log/finger.log root% twistd -y finger11.tac --syslog # just log to syslog root% twistd -y finger11.tac --syslog --prefix=twistedfinger # use given prefix`
+```bash
+root% twistd -ny finger11.tac # just like before
+root% twistd -y finger11.tac # daemonize, keep pid in twistd.pid
+root% twistd -y finger11.tac --pidfile=finger.pid
+root% twistd -y finger11.tac --rundir=/
+root% twistd -y finger11.tac --chroot=/var
+root% twistd -y finger11.tac -l /var/log/finger.log
+root% twistd -y finger11.tac --syslog # just log to syslog
+root% twistd -y finger11.tac --syslog --prefix=twistedfinger # use given prefix
+```
 
-`# Read username, output from non-empty factory, drop connections # Use deferreds, to minimize synchronicity assumptions # Write application. Save in 'finger.tpy'  from twisted.application import internet, service from twisted.internet import protocol, reactor, defer from twisted.protocols import basic  class FingerProtocol(basic.LineReceiver): def lineReceived(self, user): d = self.factory.getUser(user)  def onError(err): return 'Internal error in server' d.addErrback(onError)  def writeResponse(message): self.transport.write(message + '\r\n') self.transport.loseConnection() d.addCallback(writeResponse)  class FingerFactory(protocol.ServerFactory): protocol = FingerProtocol  def __init__(self, **kwargs): self.users = kwargs  def getUser(self, user): return defer.succeed(self.users.get(user, "No such user"))  application = service.Application('finger', uid=1, gid=1) factory = FingerFactory(moshez='Happy and well') internet.TCPServer(79, factory).setServiceParent( service.IServiceCollection(application))`
+```python
+# Read username, output from non-empty factory, drop connections
+# Use deferreds, to minimize synchronicity assumptions
+# Write application. Save in 'finger.tpy'
+
+from twisted.application import internet, service
+from twisted.internet import protocol, reactor, defer
+from twisted.protocols import basic
+
+class FingerProtocol(basic.LineReceiver):
+    def lineReceived(self, user):
+        d = self.factory.getUser(user)
+
+        def onError(err):
+            return 'Internal error in server'
+        d.addErrback(onError)
+
+        def writeResponse(message):
+            self.transport.write(message + '\r\n')
+            self.transport.loseConnection()
+        d.addCallback(writeResponse)
+
+class FingerFactory(protocol.ServerFactory):
+    protocol = FingerProtocol
+
+    def __init__(self, **kwargs):
+        self.users = kwargs
+
+    def getUser(self, user):
+        return defer.succeed(self.users.get(user, "No such user"))
+
+application = service.Application('finger', uid=1, gid=1)
+factory = FingerFactory(moshez='Happy and well')
+internet.TCPServer(79, factory).setServiceParent(
+    service.IServiceCollection(application))
+```
 
 * * *
 

@@ -29,4 +29,36 @@ tags:
 
 有意思的是如果把这个问题反转一下，提出判定问题：给定想要的Problem Sets的数量，能否用这些给定的题目来构成呢？不难发现，这个问题是非常简单解决的，只要所给的题目能够在E、M、H三个Slot中都放置目标数量个题目即可。那么，在判定问题的基础上，我们可以直接在long long的范围内做二分查找来寻找最终解，附上代码：
 
-`class ProblemSets { private: bool check(long long cap, long long E, long long EM, long long M, long long MH, long long H) { if (H + MH < cap) return false; // check Hard problems if (E + EM < cap) return false; // check Easy problems  MH = H < cap ? MH - (cap - H) : MH; EM = E < cap ? EM - (cap - E) : EM; if (M + EM + MH < cap) return false; // check Medium problems return true; } public: long long maxSets(long long E, long long EM, long long M, long long MH, long long H) { long long l = 0, r = ~(1LL << 63);  while (l < r) { long long mid = (l + r + 1) / 2; if (check(mid, E, EM, M, MH, H)) { l = mid; } else { r = mid - 1; } }  return l; } };  `
+```cpp
+class ProblemSets
+{
+private:
+    bool check(long long cap, long long E, long long EM, long long M, long long MH, long long H)
+    {
+        if (H + MH < cap) return false;         // check Hard problems
+        if (E + EM < cap) return false;         // check Easy problems
+
+        MH = H < cap ? MH - (cap - H) : MH;
+        EM = E < cap ? EM - (cap - E) : EM;
+        if (M + EM + MH < cap) return false;    // check Medium problems
+        
+        return true;
+    }
+public:
+    long long maxSets(long long E, long long EM, long long M, long long MH, long long H)
+    {
+        long long l = 0, r = ~(1LL << 63);
+
+        while (l < r) {
+            long long mid = (l + r + 1) / 2;
+            if (check(mid, E, EM, M, MH, H)) {
+                l = mid;
+            } else {
+                r = mid - 1;
+            }
+        }
+
+        return l;
+    }
+};
+```

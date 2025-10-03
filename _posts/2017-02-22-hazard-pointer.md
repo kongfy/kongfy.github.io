@@ -62,7 +62,7 @@ PS：因为hazard pointer完整代码略有些长，不适合贴在文章内部�
 
 hazard pointer的使用是要结合具体的数据结构的，我们需要分析所要保护的数据结构的每一步操作，找出需要保护的内存对象并使用hazard pointer替换普通指针对危险的内存访问进行保护。还是以上次的lock-free队列来说，使用了hazard pointer后代码变为下面的样子：
 
-```
+```cpp
 template <typename T>
 void Queue<T>::enqueue(const T &data)
 {
@@ -148,7 +148,7 @@ hazard pointer的正确性在论文[1](#fn-1645-hp)中有非常完整的论述�
 
 这个要怎么做到呢？其实很简单：double check，代码如下：
 
-```
+```cpp
 template <typename T>
 bool HazardPointer<T>::acquire(const T* const *node)
 {
@@ -187,7 +187,7 @@ bool HazardPointer<T>::acquire(const T* const *node)
 
 另一个值得一提的点是对论文中对retire list执行扫描的过程可以做一点小小的“优化”：论文中的做法是先将所有线程的pointers组织成一个有序数组，然后在扫描retire list时对该数组做二分查找（时间复杂度为\\(O(\\log{n})\\)）；实际实现中可以采用一个更加激进的方法，把所有线程的pointers无视冲突的哈希到一个布尔数组上，然后对retire list中的每个元素都可以以\\(O(1)\\)的时间复杂度确认是否可以被释放，代码如下：
 
-```
+```cpp
 void HazardManager::scan(threadlocal &rdata)
 {
   rnode *p = rdata.rlist;
