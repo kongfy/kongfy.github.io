@@ -26,7 +26,7 @@ K-means算法是Ng引入的第一个非监督学习算法，所谓非监督学�
 
 以欧式空间为例，K-means算法的思想是为每一个类寻找空间中的中心点（centroid），使得所有的点距离自己所属类别的中心点的距离和相对较小。若输入有$m$个样本$x^{(i)}$，计算得$k$个类别，每个类别的中心点编号为$\\mu\_k$，对于第$i$个样本，其类别编号为$c^{(i)}$，则K-means算法的优化目标可以表示如下：
 
-$ \\displaystyle J(c^{(1)},\\dots,c^{(m)},\\mu\_1,\\dots,\\mu\_K)=\\frac{1}{m}\\sum\_{i=1}^{m}\\left \\| x^{(i)}-\\mu\_{c^{(i)}} \\right \\|^2 $
+\\[J(c^{(1)},\\dots,c^{(m)},\\mu\_1,\\dots,\\mu\_K)=\\frac{1}{m}\\sum\_{i=1}^{m}\\left \\| x^{(i)}-\\mu\_{c^{(i)}} \\right \\|^2\\]
 
 式子相当直观，K-means算法为了最小化优化目标，不断的重复Cluster assignment和Move centroid两步直到收敛，如下：
 

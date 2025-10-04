@@ -39,15 +39,15 @@ mathjax: true
 
 仔细分析规则，发现有子问题结构，令$f\[i,j\]$表示序列前$i$块饼干美味值总和的期望，而状态$j$表示剩余的饼干总数（$i \\le j \\le N$），不难写出如下的状态转移方程：
 
-$\\displaystyle f\[i,j\] = \\frac{1}{i} \\sum\_{k=1}^{i}{\\left( (d\[k\]+f\[k-1,j-1\]) \\times \\frac{k-1}{j-1} + d\[k\] \\times \\frac{j-k}{j-1}\\right) }\\quad (1 \\le i \\le j \\le N)$
+\\[f\[i,j\] = \\frac{1}{i} \\sum\_{k=1}^{i}{\\left( (d\[k\]+f\[k-1,j-1\]) \\times \\frac{k-1}{j-1} + d\[k\] \\times \\frac{j-k}{j-1}\\right) }\\quad (1 \\le i \\le j \\le N)\\]
 
 边界条件非常自然：
 
-$\\displaystyle f\[1,i\] = d\[1\]\\qquad (1 \\le i \\le N)$
+\\[f\[1,i\] = d\[1\]\\qquad (1 \\le i \\le N)\\]
 
 所求结果为：
 
-$\\displaystyle f\[N,N\]$
+\\[f\[N,N\]\\]
 
 有了状态转移方尺和边界条件后就可以非常轻松的写出动态规划代码了，如下（注意：上述方程中从1开始计数，在转换为C++程序时要留心）：
 

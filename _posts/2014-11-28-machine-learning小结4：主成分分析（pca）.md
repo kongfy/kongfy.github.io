@@ -48,11 +48,11 @@ Ng在这页slide上着重强调了PCA和线性回归的区别：线性回归的C
 
 在使用PCA算法之前，和之前讲过的几种学习算法相似，我们首先需要对样本进行预处理，预处理过程依然是feature scaling/mean normalization的方法，对于输入样本$x^{(1)},x^{(2)},\\dots,x^{(m)}$，求取每个属性的平均值：
 
-$\\displaystyle \\mu\_j=\\frac{1}{m} \\sum\_{i=1}^{m} x\_j^{(i)} $
+\\[\\mu\_j=\\frac{1}{m} \\sum\_{i=1}^{m} x\_j^{(i)}\\]
 
 然后对所有样本的各个属性进行替换：
 
-$\\displaystyle x\_j^{(i)}=\\frac{x\_j^{(i)}-\\mu\_j}{s\_j} $
+\\[x\_j^{(i)}=\\frac{x\_j^{(i)}-\\mu\_j}{s\_j}\\]
 
 其中$s\_j$表示属性$x\_j$的标准差。
 
@@ -75,11 +75,11 @@ Ng对PCA算法的讲解非常的概要，都浓缩在这个slide里：
 
 得到低维的线性空间后，降维的工作实际上是将原来线性空间中的向量投影到低维线性空间中，对于样本$x^{(i)}$，映射到低维空间投影$z^{(i)}$：
 
-$\\displaystyle z^{(i)}=U\_{reduce}^T\\times x^{(i)} $
+\\[z^{(i)}=U\_{reduce}^T\\times x^{(i)}\\]
 
 类似的，将降维后的样本映射回原空间如下：
 
-$\\displaystyle x\_{approx}^{(i)}=U\_{reduce}\\times z^{(i)} $
+\\[x\_{approx}^{(i)}=U\_{reduce}\\times z^{(i)}\\]
 
 这里使用$x\_{approx}$是因为在降维后损失了一定信息，即使映射回原空间也只是原先样本的近似而无法准确的还原。
 
@@ -111,7 +111,7 @@ $\\displaystyle x\_{approx}^{(i)}=U\_{reduce}\\times z^{(i)} $
 
 对于任意$m\\times n$的输入矩阵$A$，SVD分解结果为：
 
-$\\displaystyle A\_{\[m\\times n\]}=U\_{\[m\\times r\]}\\ \\Sigma\_{\[r\\times r\]}\\ (V\_{\[n\\times r\]})^T $
+\\[A\_{\[m\\times n\]}=U\_{\[m\\times r\]}\\ \\Sigma\_{\[r\\times r\]}\\ (V\_{\[n\\times r\]})^T\\]
 
 分解结果中$U$为左奇异向量（left singular vectors），$\\Sigma$为奇异值矩阵，$V$为右奇异向量（right singular vectors）。
 
@@ -125,13 +125,13 @@ SVD的另一种常见的应用场景在推荐系统中，以后有机会再写�
 
 ## 选择合适的k
 
-在数据降维中一个重要的问题是如何选择合适的$k$，即应该降到什么维度。一个典型的选择方式是“对数据降维，并且保留原数据99%的方差”，方差被认为是特征中包含信息多少的度量（有时被称为能量energy），形式化为选择最小的$k$，满足：
+在数据降维中一个重要的问题是如何选择合适的$k$，即应该降到什么维度。一个典型的选择方式是"对数据降维，并且保留原数据99%的方差"，方差被认为是特征中包含信息多少的度量（有时被称为能量energy），形式化为选择最小的$k$，满足：
 
-$\\displaystyle \\frac{\\frac{1}{m}\\sum\_{i=1}^{m}\\left \\| x^{(i)}-x\_{approx}^{(i)} \\right \\|^2}{\\frac{1}{m}\\sum\_{i=1}^{m}\\left \\| x^{(i)} \\right \\|^2}\\le 0.01 $
+\\[\\frac{\\frac{1}{m}\\sum\_{i=1}^{m}\\left \\| x^{(i)}-x\_{approx}^{(i)} \\right \\|^2}{\\frac{1}{m}\\sum\_{i=1}^{m}\\left \\| x^{(i)} \\right \\|^2}\\le 0.01\\]
 
 但是从小到大尝试$k$再计算上式验证似乎太复杂了，实际上我们可以利用SVD分解得到的矩阵$S$，把这个上面的过程简化为：
 
-$\\displaystyle \\frac{\\sum\_{i=1}^kS\_{ii}}{\\sum\_{i=1}^mS\_{ii}}\\ge0.99 $
+\\[\\frac{\\sum\_{i=1}^kS\_{ii}}{\\sum\_{i=1}^mS\_{ii}}\\ge0.99\\]
 
 美好的SVD，不是么...
 
