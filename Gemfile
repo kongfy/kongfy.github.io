@@ -1,8 +1,9 @@
 source "https://rubygems.org"
 
-gem "jekyll", "~> 4.3"
+# 使用 github-pages gem 以确保与 GitHub Pages 环境一致
+gem "github-pages", group: :jekyll_plugins
 
-# Minimal Mistakes 主题
+# 本地开发时可选安装主题（GitHub Pages 会使用 remote_theme）
 gem "minimal-mistakes-jekyll"
 
 group :jekyll_plugins do
@@ -13,6 +14,7 @@ group :jekyll_plugins do
   gem "jekyll-paginate"
   gem "jekyll-gist"
   gem "jemoji"
+  gem "jekyll-remote-theme"  # 支持 remote_theme
 end
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -2,7 +2,8 @@
 # 文档: https://mmistakes.github.io/minimal-mistakes/docs/configuration/
 
 # 主题设置
-theme: minimal-mistakes-jekyll
+# theme: minimal-mistakes-jekyll  # 本地开发使用
+remote_theme: mmistakes/minimal-mistakes  # GitHub Pages 部署使用
 minimal_mistakes_skin: "contrast" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # 站点设置
@@ -119,6 +120,7 @@ plugins:
   - jekyll-feed
   - jekyll-include-cache
   - jekyll-seo-tag
+  - jekyll-remote-theme  # 支持 remote_theme
 
 # 归档设置
 category_archive:

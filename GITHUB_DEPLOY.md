@@ -154,7 +154,11 @@ jobs:
 
 常见问题：
 - `Gemfile.lock` 版本不匹配：删除本地的 `Gemfile.lock`，重新 `bundle install`
-- 主题未找到：确保 `Gemfile` 中包含 `minimal-mistakes-jekyll`
+- **主题未找到错误**（`The minimal-mistakes-jekyll theme could not be found`）：
+  - 原因：GitHub Pages 默认构建不支持 `theme: minimal-mistakes-jekyll`
+  - 解决方案：在 `_config.yml` 中使用 `remote_theme: mmistakes/minimal-mistakes` 替代
+  - 确保 `plugins` 列表中包含 `jekyll-remote-theme`
+  - 确保 `Gemfile` 中包含 `github-pages` gem
 
 ### 2. 页面 404
 
