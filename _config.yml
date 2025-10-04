@@ -12,9 +12,9 @@ title_separator: "-"
 subtitle: ""
 name: "Fanyu Kong"
 description: "技术博客 - 分享编程、系统设计和算法相关内容"
-url: "https://your-domain.com" # 请替换为你的实际域名
+url: "https://kongfy.github.io" # 请替换为你的实际域名
 baseurl: ""
-repository: # GitHub username/repo-name
+repository: "kongfy/kongfy.github.io" # GitHub username/repo-name
 teaser: # 默认的缩略图，可以设置一个默认图片路径
 logo: # 站点 logo 路径
 masthead_title: # 覆盖站点标题，留空则显示 site.title
