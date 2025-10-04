@@ -194,3 +194,39 @@ blockquote {
   font-size: 1em;
 }
 
+/* ==========================================================================
+   主页文章列表样式优化
+   ========================================================================== */
+
+/* 
+ * 文章标题
+ * 影响范围：主页文章列表的标题
+ * 作用：调整标题样式，使其更醒目
+ */
+.archive__item-title {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  font-size: 1.5em;    // 标题字号
+  line-height: 1.3;
+  
+  a {
+    color: inherit;
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* 
+ * 文章摘要
+ * 影响范围：主页显示的文章摘要内容（<!--more--> 之前的内容）
+ * 作用：设置摘要的样式和行高，提升可读性
+ */
+.archive__item-excerpt {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-size: 1em;
+  line-height: 1.7;
+}

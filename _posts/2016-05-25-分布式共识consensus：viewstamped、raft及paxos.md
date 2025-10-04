@@ -216,7 +216,9 @@ Raft用来处理这种情况的对策很简单：以*leader*上的日志为准�
 <figure style="text-align: center;">
   <img src="/assets/images/raft3.jpg" alt="Raft中旧term日志覆盖问题" />
   <figcaption>Raft中旧term日志覆盖问题</figcaption>
-</figure> 因此，Raft约束**对于来自旧*term*的*log*项不能根据多数原则提交，而只能随着当前*term*的*log*项一起提交。**
+</figure>
+
+因此，Raft约束**对于来自旧*term*的*log*项不能根据多数原则提交，而只能随着当前*term*的*log*项一起提交。**
 
 ### 正确性
 

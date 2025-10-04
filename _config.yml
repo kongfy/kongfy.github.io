@@ -3,7 +3,7 @@
 
 # 主题设置
 theme: minimal-mistakes-jekyll
-minimal_mistakes_skin: "dirt" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin: "contrast" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # 站点设置
 locale: "zh-CN"

@@ -22,16 +22,18 @@ mathjax: true
 2. 在图$G^{rev}$上做**后序**的DFS，得到点遍历顺序
 3. 按照上一步中得到的遍历顺序，从大到小在原图$G$中通过DFS依次“拖”出强连通分支
 
-运行过程如下图例，$f(v)$代表点在$G^{rev}$的遍历结束时间，从9号点开始DFS。 <figure style="text-align: center;">
-  <img src="/assets/images/B0842D09-98C3-4F8C-B551-315CBAC0874E.jpg" alt="Exampl  e execution of the strongly connected components algorithm." />
-  <figcaption>Exampl e execution of the strongly connected components algorithm.</figcaption>
+运行过程如下图例，$f(v)$代表点在$G^{rev}$的遍历结束时间，从9号点开始DFS。
+
+<figure style="text-align: center;">
+  <img src="/assets/images/B0842D09-98C3-4F8C-B551-315CBAC0874E.jpg" alt="Example execution of the strongly connected components algorithm." />
+  <figcaption>Example execution of the strongly connected components algorithm.</figcaption>
 </figure>
 
 记得刚学习这个算法时一直有的一个疑惑：为什么在第一遍DFS时一定要在图$G^{rev}$上做么？难道不能通过在原图$G$上DFS的顺序**从小到大**的进行第二次DFS么？仔细研究算法正确性的证明，不难发现这个想法是错误的。
 
 该算法正确性证明的核心在于对于图$G$中任意两个相邻的强连通分支$C\_1$和$C\_2$且存在边$(i,j)$满足$i \\in C\_1 \\land j \\in C\_2$（在强连通分支的DAG中方向为$C\_1 \\to C\_2$），可以证明：
 
-$$\\displaystyle \\max\_{v\\in C\_1}f(v) < \\max\_{v\\in C\_2}f(v)$$
+$\\displaystyle \\max\_{v\\in C\_1}f(v) < \\max\_{v\\in C\_2}f(v)$
 
 \\(f(v)\\)代表点在$G^{rev}$的遍历结束时间，因此，在图G中具有最大$f(v)$的点一定为“sink” vertex。
 

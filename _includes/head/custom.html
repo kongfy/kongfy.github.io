@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ '/assets/css/syntax.css' | relative_url }}">
 
 <!-- MathJax 配置 -->
-{% if page.mathjax %}
+{% if page.mathjax or page.layout == 'home' %}
 <script>
   MathJax = {
     tex: {
@@ -16,6 +16,16 @@
     },
     options: {
       skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    },
+    startup: {
+      pageReady: () => {
+        return MathJax.startup.defaultPageReady().then(() => {
+          // 主页加载后，重新渲染数学公式
+          if (document.querySelector('.archive__item-excerpt')) {
+            MathJax.typesetPromise();
+          }
+        });
+      }
     }
   };
 </script>
