@@ -3,13 +3,13 @@
 
 # 主题设置
 theme: minimal-mistakes-jekyll
-minimal_mistakes_skin: "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin: "dirt" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # 站点设置
 locale: "zh-CN"
 title: "Kongfy's Blog"
 title_separator: "-"
-subtitle: "good good code, day day up!"
+subtitle: ""
 name: "Fanyu Kong"
 description: "技术博客 - 分享编程、系统设计和算法相关内容"
 url: "https://your-domain.com" # 请替换为你的实际域名

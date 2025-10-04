@@ -1,0 +1,110 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+search: false
+---
+
+@charset "utf-8";
+
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
+@import "minimal-mistakes"; // main partials
+
+/* ==========================================================================
+   自定义样式 - 字体优化
+   ========================================================================== */
+
+/* 中文字体优化 */
+body {
+  font-family: 
+    -apple-system, BlinkMacSystemFont,            // 系统默认字体
+    "Lucida Grande",                              // macOS 经典字体
+    "Hiragino Sans GB", "Hiragino Sans GB W3",    // 冬青黑体（macOS 中文）
+    "Microsoft YaHei",                            // 微软雅黑（Windows 中文）
+    "WenQuanYi Micro Hei",                        // 文泉驿微米黑（Linux 中文）
+    sans-serif;                                   // 后备字体
+  
+  // 字体渲染优化
+  -webkit-font-smoothing: antialiased;           // Webkit字体平滑
+  -moz-osx-font-smoothing: grayscale;            // Firefox字体平滑
+  text-rendering: optimizeLegibility;            // 优化易读性
+  font-feature-settings: "kern" 1;               // 启用字距调整
+  font-kerning: normal;                          // 字距调整
+}
+
+/* 代码字体优化 */
+code, pre, kbd, samp {
+  font-family: 
+    "SF Mono", Monaco, "Cascadia Code",          // 现代等宽字体
+    "Fira Code", "Roboto Mono", Menlo,           // 等宽英文字体
+    "PingFang SC", "Microsoft YaHei",            // 等宽中文字体
+    "Courier New", monospace;                    // 后备等宽字体
+}
+
+/* 正文字体大小调整 */
+html {
+  font-size: 16px;
+}
+
+/* 页面内容区域字体大小 */
+.page__content {
+  font-size: 1em;
+  
+  p, li, dl {
+    font-size: 1em; // 保持相对大小一致
+    line-height: 1.7; // 增加行高，提升可读性
+  }
+  
+  /* 标题字体大小微调 */
+  h1 {
+    font-size: 1.75em; // 稍微减小
+  }
+  
+  h2 {
+    font-size: 1.5em;
+  }
+  
+  h3 {
+    font-size: 1.25em;
+  }
+  
+  h4 {
+    font-size: 1.1em;
+  }
+}
+
+/* 文章列表的字体 */
+.archive__item-title {
+  font-size: 1em; // 减小文章标题
+}
+
+.archive__item-excerpt {
+  font-size: 1em; // 摘要字体
+}
+
+/* 侧边栏字体 */
+.sidebar {
+  font-size: 1em;
+}
+
+/* 导航栏字体 */
+.greedy-nav a {
+  font-size: 1.1em;
+}
+
+/* 代码块字体保持合理大小 */
+code {
+  font-size: 1em; // 增大行内代码字体
+}
+
+pre {
+  font-size: 1em; // 增大代码块字体
+  
+  code {
+    font-size: 1em; // pre 内的 code 保持相对大小
+  }
+}
+
+/* 引用块字体 */
+blockquote {
+  font-size: 1em;
+}
+
