@@ -15,7 +15,7 @@ Nanos的框架代码都可以在github上找到([点我](https://github.com/NJUO
 
 * * *
 
-正如[之前](/posts/2014-03-*-%e8%af%91%e8%ae%a1%e7%ae%97%e6%9c%ba%e5%90%af%e5%8a%a8%e8%bf%87%e7%a8%8b-how-computers-boot-up/ "[译]计算机启动过程 – How Computers Boot Up")提到的，在计算机的启动过程中当完成了POST之后，BIOS会从可启动磁盘中读出头512个字节(MBR)并将其载入内存地址0x7c00的位置并开始执行，MBR中的代码通常被称为bootloader，负责将操作系统内核载入到内存中。在Nanos中，bootloader极其简单，仅由MBR中的512字节组成(即仅包含stage 1)，麻雀虽小五脏俱全，Nanos的bootloader完成了bootloader所需要做的所有基本任务：为操作系统内核设置运行环境、载入内核到内存、跳转到内核开始执行。
+正如[之前](/2014-03-24-译计算机启动过程-how-computers-boot-up/)提到的，在计算机的启动过程中当完成了POST之后，BIOS会从可启动磁盘中读出头512个字节(MBR)并将其载入内存地址0x7c00的位置并开始执行，MBR中的代码通常被称为bootloader，负责将操作系统内核载入到内存中。在Nanos中，bootloader极其简单，仅由MBR中的512字节组成(即仅包含stage 1)，麻雀虽小五脏俱全，Nanos的bootloader完成了bootloader所需要做的所有基本任务：为操作系统内核设置运行环境、载入内核到内存、跳转到内核开始执行。
 
 下面具体分析一下Nanos的bootloader是如何完成的。首先看一下bootloader的源文件目录结构：
 

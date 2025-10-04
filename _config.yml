@@ -142,13 +142,13 @@ defaults:
     values:
       layout: single
       author_profile: true
-      read_time: true
+      read_time: false
       comments: true
-      share: true
-      related: true
+      share: false
+      related: false
       show_date: true
-      toc: true # 启用目录
-      toc_sticky: true # 目录固定
+      toc: false # 启用目录
+      toc_sticky: false # 目录固定
 
 # Markdown 处理
 markdown: kramdown
@@ -163,7 +163,7 @@ kramdown:
   enable_coderay: false
 
 # 固定链接
-permalink: /:categories/:title/
+permalink: /:year-:month-:day-:title/
 paginate: 10 # 每页文章数
 paginate_path: /page:num/
 timezone: Asia/Shanghai
