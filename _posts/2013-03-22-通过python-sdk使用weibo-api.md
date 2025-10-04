@@ -2,7 +2,7 @@
 title: "通过python SDK使用weibo API"
 date: 2013-03-22
 categories: 
-  - "python-2"
+  - "python"
 tags: 
   - "python"
 ---

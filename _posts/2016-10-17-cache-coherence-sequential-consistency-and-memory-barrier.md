@@ -66,7 +66,7 @@ MESI这四个字母分别代表了每一个cache line可能处于的四种状态
 
 图中所列出的状态变化都值得仔细考量，为了下文叙述方便，我在这里重点描述其中一种情况：多个CPU都持有同一cache line，初始状态为“Shared”，当其中一个CPU想要修改该cache line的内容时，它向其他所有CPU发送“Invalidate”消息，其他CPU收到消息以后必须将该cache line的状态修改为“Invalid”，随后回复“Invalidate Acknowledge”消息给发送方CPU，当发送方CPU收到所有的“Invalidate Acknowledge”消息后，就可以将该cache line修改为“Exclusive”状态并执行数据修改了。
 
-上述过程实际是一次cache line“所有权”的获取过程，其他的状态过程切换见RCU一哥书中的表述[1](#fn-1558-perfbook)。
+上述过程实际是一次cache line"所有权"的获取过程，其他的状态过程切换见RCU一哥书中的表述[^perfbook]。
 
 ### False sharing
 
@@ -589,5 +589,4 @@ Trade off无处不在，对CPU设计人员也是一样，如果使用更多的Tr
 
 ## 参考资料
 
-
-2. Is Parallel Programming Hard, And, If So, What Can You Do About It? [↩](#fnref-1558-perfbook)
+[^perfbook]: Is Parallel Programming Hard, And, If So, What Can You Do About It?

@@ -6,6 +6,7 @@ categories:
 tags: 
   - "c"
   - "lock-free"
+mathjax: true
 ---
 
 上一篇文章中实现了一个lock-free的队列，但是有一个问题：内存无法被安全的回收。那么，这次就来把这缺失的一环补上：hazard pointer，一种lock-free对象的内存回收机制。
@@ -135,7 +136,7 @@ bool Queue<T>::dequeue(T &data)
 ## 正确性保证
 
 
-hazard pointer的正确性在论文[1](#fn-1645-hp)中有非常完整的论述，我就挑其中一个我认为非常重要的点来解释为什么hazard pointer可以正确的工作。
+hazard pointer的正确性在论文[^hp]中有非常完整的论述，我就挑其中一个我认为非常重要的点来解释为什么hazard pointer可以正确的工作。
 
 考虑这种情况：
 
@@ -225,7 +226,7 @@ void HazardManager::scan(threadlocal &rdata)
 ## 其他方法
 
 
-Hazard Pointer虽然很好，但并不是解决这一问题的唯一方法。McKenney在论文[2](#fn-1645-fast)中将这类算法分为两类：阻塞和非阻塞的(McKenney只讨论lockless的概念，lockfree算法属于其中非阻塞类)。
+Hazard Pointer虽然很好，但并不是解决这一问题的唯一方法。McKenney在论文[^fast]中将这类算法分为两类：阻塞和非阻塞的(McKenney只讨论lockless的概念，lockfree算法属于其中非阻塞类)。
 
 阻塞算法的代表是Quiescent-State-Based Reclamation(QSBR)，Linux内核中广泛使用的RCU（read-copy-update）就属于此类（之后可能也会写篇文章介绍？）；非阻塞算法的代表就是本文所描述的Hazard Pointer，以及Lock-Free Reference Counting。
 
@@ -233,7 +234,6 @@ McKenney作为RCU维护者，必然要指出Hazard Pointer的痛处：需要的�
 
 ## 参考资料
 
+[^hp]: Michael M M. Hazard pointers: Safe memory reclamation for lock-free objects\[J\]. IEEE Transactions on Parallel and Distributed Systems, 2004, 15(6): 491-504.
 
-2. Michael M M. Hazard pointers: Safe memory reclamation for lock-free objects\[J\]. IEEE Transactions on Parallel and Distributed Systems, 2004, 15(6): 491-504. [↩](#fnref-1645-hp)
-
-4. Hart T E, McKenney P E, Brown A D. Making lockless synchronization fast: Performance implications of memory reclamation\[C\]//Parallel and Distributed Processing Symposium, 2006. IPDPS 2006. 20th International. IEEE, 2006: 10 pp. [↩](#fnref-1645-fast)
+[^fast]: Hart T E, McKenney P E, Brown A D. Making lockless synchronization fast: Performance implications of memory reclamation\[C\]//Parallel and Distributed Processing Symposium, 2006. IPDPS 2006. 20th International. IEEE, 2006: 10 pp.

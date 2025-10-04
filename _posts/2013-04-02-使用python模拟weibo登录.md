@@ -2,7 +2,7 @@
 title: "使用python模拟weibo登录"
 date: 2013-04-02
 categories: 
-  - "python-2"
+  - "python"
 tags: 
   - "python"
 ---

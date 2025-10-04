@@ -23,10 +23,7 @@ struct RandomListNode {
 
 这个链表看起来大概是这个样子：
 
-<figure style="text-align: center;">
-  <img src="/assets/images/0.png" alt="带有随机指针的链表" />
-  <figcaption>带有随机指针的链表</figcaption>
-</figure>
+![带有随机指针的链表](/assets/images/0.png)
 
 这个随机指针对链表的拷贝造成了不小的麻烦...
 
@@ -39,18 +36,16 @@ struct RandomListNode {
 而最为巧妙的，也是不太容易想到的一种方法可以使用O(n)的时间复杂度，并且在不是用额外空间的情况下解决这个问题。步骤如下：
 
 1. 对链表进行遍历，对每个节点，复制一个新节点，并将其插入到链表中该节点后面的位置上
-<figure style="text-align: center;">
-  <img src="/assets/images/1.png" alt="Step 1" />
-  <figcaption>Step 1</figcaption>
-</figure>3. 再次对链表进行遍历，k = 1...n，将2k节点的random指针指向(2k - 1)节点的random指针所指向节点的后继节点
-<figure style="text-align: center;">
-  <img src="/assets/images/2.png" alt="Step 2" />
-  <figcaption>Step 2</figcaption>
-</figure>5. 最后一次对链表进行遍历，k = 1...n，将2k节点顺序抽出组成新链表
-<figure style="text-align: center;">
-  <img src="/assets/images/3.png" alt="Step3" />
-  <figcaption>Step3</figcaption>
-</figure>
+
+   ![Step 1](/assets/images/1.png)
+
+2. 再次对链表进行遍历，k = 1...n，将2k节点的random指针指向(2k - 1)节点的random指针所指向节点的后继节点
+
+   ![Step 2](/assets/images/2.png)
+
+3. 最后一次对链表进行遍历，k = 1...n，将2k节点顺序抽出组成新链表
+
+   ![Step 3](/assets/images/3.png)
 
 ```cpp
 class Solution

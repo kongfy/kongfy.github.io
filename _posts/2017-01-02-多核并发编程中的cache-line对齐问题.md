@@ -102,7 +102,7 @@ final: FFFFFFFF00000000
 
 如果你看过我的[前一篇文章](/2016-10-17-cache-coherence-sequential-consistency-and-memory-barrier/)，那你应该会很容易理解这个现象：Cache-Coherence的基本单元就是cache line，为了写内存，CPU必须Exclusive的占有这个cache line，而如果一个变量分布在两个不同的cache line上，那么cache line的争用过程是没有原子性保证的。读的过程也是类似的。
 
-这一点在Intel的文档[1](#fn-1610-intel)中也得到了验证：
+这一点在Intel的文档[^intel]中也得到了验证：
 
 > Intel 64 memory ordering guarantees that for each of the following memory-access instructions, the constituent memory operation appears to execute as a single memory access regardless of memory type:
 > 
@@ -111,7 +111,9 @@ final: FFFFFFFF00000000
 > 3. Instructions that read or write a doubleword (4 bytes) whose address is aligned on a 4 byte boundary.
 > 4. Instructions that read or write a quadword (8 bytes) whose address is aligned on an 8 byte boundary.
 > 
-> All locked instructions (the implicitly locked xchg instruction and other read-modify-write instructions with a lock prefix) are an indivisible and uninterruptible sequence of load(s) followed by store(s) regardless of memory type and alignment. **Other instructions may be implemented with multiple memory accesses**. From a memory- ordering point of view, **there are no guarantees regarding the relative order in which the constituent memory accesses are made**. There is also no guarantee that the constituent operations of a store are executed in the same order as the constituent operations of a load.
+> All locked instructions (the implicitly locked xchg instruction and other read-modify-write instructions with a lock prefix) are an indivisible and uninterruptible sequence of load(s) followed by store(s) regardless of memory type and alignment. 
+>
+> **Other instructions may be implemented with multiple memory accesses**. From a memory- ordering point of view, **there are no guarantees regarding the relative order in which the constituent memory accesses are made**. There is also no guarantee that the constituent operations of a store are executed in the same order as the constituent operations of a load.
 
 可以看到Intel只保证了满足对齐规则的变量的访存操作原子性，这样的对齐规则保证变量不会跨越多个cache line。
 
@@ -121,5 +123,4 @@ final: FFFFFFFF00000000
 
 ## 参考资料
 
-
-2. Intel® 64 Architecture Memory Ordering White Paper [↩](#fnref-1610-intel)
+[^intel]: Intel® 64 Architecture Memory Ordering White Paper

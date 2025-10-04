@@ -2,7 +2,7 @@
 title: "Twisted和Reactor模式"
 date: 2014-11-30
 categories: 
-  - "python-2"
+  - "python"
 tags: 
   - "python"
   - "twisted"

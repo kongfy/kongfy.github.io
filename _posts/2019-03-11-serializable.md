@@ -78,9 +78,25 @@ PS：隔离级别和分布式系统中的Consistency类似，都是一种向性�
 
 ### ANSI隔离级别
 
-ANSI SQL-92标准中基于事务并发执行过程中可能出现的三种导致数据错误的现象（Phenomena）定义了一套隔离级别[1](#fn-1743-sql92)：
+ANSI SQL-92标准中基于事务并发执行过程中可能出现的三种导致数据错误的现象（Phenomena）定义了一套隔离级别[^sql92]：
 
-> 1) P1 ("Dirty read"): SQL-transaction T1 modifies a row. SQL- transaction T2 then reads that row before T1 performs a COMMIT. If T1 then performs a ROLLBACK, T2 will have read a row that was never committed and that may thus be considered to have never existed. 2) P2 ("Non-repeatable read"): SQL-transaction T1 reads a row. SQL- transaction T2 then modifies or deletes that row and performs a COMMIT. If T1 then attempts to reread the row, it may receive the modified value or discover that the row has been deleted. 3) P3 ("Phantom"): SQL-transaction T1 reads the set of rows N that satisfy some . SQL-transaction T2 then executes SQL-statements that generate one or more rows that satisfy the used by SQL-transaction T1. If SQL-transaction T1 then repeats the initial read with the same , it obtains a different collection of rows.
+> 1) P1 ("Dirty read"): SQL-transaction T1 modifies a row. SQL-
+>    transaction T2 then reads that row before T1 performs a COMMIT.
+>    If T1 then performs a ROLLBACK, T2 will have read a row that was
+>    never committed and that may thus be considered to have never
+>    existed.
+>
+> 2) P2 ("Non-repeatable read"): SQL-transaction T1 reads a row. SQL-
+>    transaction T2 then modifies or deletes that row and performs
+>    a COMMIT. If T1 then attempts to reread the row, it may receive
+>    the modified value or discover that the row has been deleted.
+>
+> 3) P3 ("Phantom"): SQL-transaction T1 reads the set of rows N
+>    that satisfy some \<search condition\>. SQL-transaction T2 then
+>    executes SQL-statements that generate one or more rows that
+>    satisfy the \<search condition\> used by SQL-transaction T1. If
+>    SQL-transaction T1 then repeats the initial read with the same
+>    \<search condition\>, it obtains a different collection of rows.
 
 标准中按照这三种现象的容忍程度不同，定义出了4个不同的隔离级别，其中P1、P2、P3都不能出现的隔离级别即为最高的隔离级别Serializable：
 
@@ -90,7 +106,7 @@ ANSI隔离级别试图定义出一套实现无关的隔离级别，但这个尝�
 
 ### A Critique of ANSI SQL Isolation Levels
 
-95年的这篇论文[2](#fn-1743-berenson)指出了ANSI隔离级别的问题，首先，是用英文文字描述隔离级别的不严谨，容易产生歧义，按照ANSI文档描述，将P1、P2、P3描述为异常（anomaly）：
+95年的这篇论文[^berenson]指出了ANSI隔离级别的问题，首先，是用英文文字描述隔离级别的不严谨，容易产生歧义，按照ANSI文档描述，将P1、P2、P3描述为异常（anomaly）：
 
 **A1**: w1\[x\]...r2\[x\]...(a1 and c2 in either order) **(Dirty Read)** **A2**: r1\[x\]...w2\[x\]...c2...r1\[x\]...c1 **(Fuzzy or Non-Repeatable Read)** **A3**: r1\[P\]...w2\[y in P\]...c2....r1\[P\]...c1 **(Phantom)**
 
@@ -110,7 +126,7 @@ ANSI隔离级别试图定义出一套实现无关的隔离级别，但这个尝�
 
 ### Generalized Isolation Level Definitions
 
-到了2000年，Ayda终结了隔离级别的讨论，提出了完全实现无关的隔离级别定义[3](#fn-1743-adya)。
+到了2000年，Ayda终结了隔离级别的讨论，提出了完全实现无关的隔离级别定义[^adya]。
 
 这篇论文“重新定义”了ANSI隔离级别，但是和上面提到的论文不同，Ayda没有继续走老路，去分析并发执行的事务产生的异常，而是回归到了事务的本质，通过事务之间的依赖关系，来定义完全实现无关的隔离级别。
 
@@ -128,7 +144,7 @@ ANSI隔离级别试图定义出一套实现无关的隔离级别，但这个尝�
 
 再翻出上面提到过的例子，如果排除掉P0，则这样的调度是不允许的，但是PL-1则允许，可见PL-1的定义更加准确。
 
-在Ayda的博士论文[4](#fn-1743-adya_ext)中，更是用事务依赖关系的理论完整的描述了各类隔离级别：
+在Ayda的博士论文[^adya_ext]中，更是用事务依赖关系的理论完整的描述了各类隔离级别：
 
 [![](/assets/images/adya.png)](/assets/images/adya.png)
 
@@ -139,7 +155,7 @@ ANSI隔离级别试图定义出一套实现无关的隔离级别，但这个尝�
 
 由于真正实现无关的隔离级别标准常年缺席，ANSI隔离级别定义又模糊不清，各个数据库对隔离级别的实现真是五花八门，乱七八糟...
 
-正如Peter Bailis[5](#fn-1743-peter)所说，现实中的数据库系统没有几个实现了真正的Serializable，即使他们做了这样的保证：
+正如Peter Bailis[^peter]所说，现实中的数据库系统没有几个实现了真正的Serializable，即使他们做了这样的保证：
 
 [![](/assets/images/peter_balis.png)](/assets/images/peter_balis.png)
 
@@ -155,7 +171,7 @@ ANSI隔离级别试图定义出一套实现无关的隔离级别，但这个尝�
 
 好的一点是MySQL的Serializable使用的是strict-2PL的实现，确实做到了名副其实的Serializable。但是Repeatable Read的行为就让人完全摸不到头脑了。
 
-例如这个测试[6](#fn-1743-hermitage)中提到的，在初始状态如下的数据库中：
+例如这个测试[^hermitage]中提到的，在初始状态如下的数据库中：
 
 ```sql
 create table test (id int primary key, value int) engine=innodb;
@@ -228,15 +244,14 @@ commit; -- T2
 
 ## 参考资料
 
+[^sql92]: SQL92
 
-2. SQL92 [↩](#fnref-1743-sql92)
+[^berenson]: Berenson H, Bernstein P, Gray J, et al. A critique of ANSI SQL isolation levels\[C\]//ACM SIGMOD Record. ACM, 1995, 24(2): 1-10.
 
-4. Berenson H, Bernstein P, Gray J, et al. A critique of ANSI SQL isolation levels\[C\]//ACM SIGMOD Record. ACM, 1995, 24(2): 1-10. [↩](#fnref-1743-berenson)
+[^adya]: Adya A, Liskov B, O'Neil P. Generalized isolation level definitions\[C\]//Proceedings of 16th International Conference on Data Engineering (Cat. No. 00CB37073). IEEE, 2000: 67-78.
 
-6. Adya A, Liskov B, O'Neil P. Generalized isolation level definitions\[C\]//Proceedings of 16th International Conference on Data Engineering (Cat. No. 00CB37073). IEEE, 2000: 67-78. [↩](#fnref-1743-adya)
+[^adya_ext]: Adya A. Weak consistency: a generalized theory and optimistic implementations for distributed transactions\[J\]. 1999.
 
-8. Adya A. Weak consistency: a generalized theory and optimistic implementations for distributed transactions\[J\]. 1999. [↩](#fnref-1743-adya_ext)
+[^peter]: [When is "ACID" ACID? Rarely.](http://www.bailis.org/blog/when-is-acid-acid-rarely/)
 
-10. [When is "ACID" ACID? Rarely.](http://www.bailis.org/blog/when-is-acid-acid-rarely/) [↩](#fnref-1743-peter)
-
-12. [Testing MySQL transaction isolation levels](https://github.com/ept/hermitage/blob/master/mysql.md) [↩](#fnref-1743-hermitage)
+[^hermitage]: [Testing MySQL transaction isolation levels](https://github.com/ept/hermitage/blob/master/mysql.md)
