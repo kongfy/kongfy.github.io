@@ -111,6 +111,15 @@ exclude:
   - README
   - tmp
   - backup
+  - README.md
+  - CODE_HIGHLIGHT_GUIDE.md
+  - GITHUB_DEPLOY.md
+  - HOME_LAYOUT_GUIDE.md
+  - LATEX_BLOCK_FORMULA_FIX.md
+  - MATHJAX_SETUP.md
+  - MIGRATION_README.md
+  - QUICKSTART.md
+  - THEME_README.md
 
 # 插件
 plugins:
