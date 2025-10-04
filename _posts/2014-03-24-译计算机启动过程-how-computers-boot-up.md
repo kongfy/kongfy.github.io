@@ -11,7 +11,7 @@ tags:
 
 * * *
 
-先前的文章描述了Intel系列计算机的[主板和存储地址映射](/2014-03-29-译主板芯片集和存储地址映射-motherboard-chipsets-and-the-memory-map/)，在此基础上我们来看看计算机启动的初始阶段。计算机的启动是一个复杂、多阶段并且相当有趣的事情。下图描述了整个计算机启动的过程：
+先前的文章描述了Intel系列计算机的[主板和存储地址映射](/2014/03/译主板芯片集和存储地址映射-motherboard-chipsets-and-the-memory-map/)，在此基础上我们来看看计算机启动的初始阶段。计算机的启动是一个复杂、多阶段并且相当有趣的事情。下图描述了整个计算机启动的过程：
 
 <figure style="text-align: center;">
   <img src="/assets/images/55E52855-DA54-4925-98DD-E45A9F000583.jpg" alt="计算机启动过程" />

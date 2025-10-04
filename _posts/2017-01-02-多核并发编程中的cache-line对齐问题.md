@@ -100,7 +100,7 @@ final: FFFFFFFF00000000
 
 出现这种结果的原因其实很简单，我在程序中设置了特殊的对齐，把这个变量放在了跨越两个cacheline的位置（仔细看代码中高亮的部分）。这样的设置会引发一个反直觉的事实：**CPU的一条访存指令是分成两个访存操作执行的**。
 
-如果你看过我的[前一篇文章](/2016-10-17-cache-coherence-sequential-consistency-and-memory-barrier/)，那你应该会很容易理解这个现象：Cache-Coherence的基本单元就是cache line，为了写内存，CPU必须Exclusive的占有这个cache line，而如果一个变量分布在两个不同的cache line上，那么cache line的争用过程是没有原子性保证的。读的过程也是类似的。
+如果你看过我的[前一篇文章](/2016/10/cache-coherence-sequential-consistency-and-memory-barrier/)，那你应该会很容易理解这个现象：Cache-Coherence的基本单元就是cache line，为了写内存，CPU必须Exclusive的占有这个cache line，而如果一个变量分布在两个不同的cache line上，那么cache line的争用过程是没有原子性保证的。读的过程也是类似的。
 
 这一点在Intel的文档[^intel]中也得到了验证：
 

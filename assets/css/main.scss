@@ -5,105 +5,191 @@ search: false
 
 @charset "utf-8";
 
-@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
-@import "minimal-mistakes"; // main partials
+/* 导入主题皮肤样式和核心样式 */
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // 主题配色方案
+@import "minimal-mistakes"; // Minimal Mistakes 主题的核心样式文件
 
 /* ==========================================================================
    自定义样式 - 字体优化
    ========================================================================== */
 
-/* 中文字体优化 */
+/* 
+ * 全局字体设置
+ * 影响范围：整个网站的所有文字内容（包括导航、正文、侧边栏等）
+ * 作用：设置中英文混排的最佳字体显示效果
+ */
 body {
   font-family: 
-    -apple-system, BlinkMacSystemFont,            // 系统默认字体
+    -apple-system, BlinkMacSystemFont,            // 系统默认字体（iOS/macOS Safari）
     "Lucida Grande",                              // macOS 经典字体
-    "Hiragino Sans GB", "Hiragino Sans GB W3",    // 冬青黑体（macOS 中文）
-    "Microsoft YaHei",                            // 微软雅黑（Windows 中文）
-    "WenQuanYi Micro Hei",                        // 文泉驿微米黑（Linux 中文）
-    sans-serif;                                   // 后备字体
+    "Hiragino Sans GB", "Hiragino Sans GB W3",    // 冬青黑体（macOS 中文显示，美观清晰）
+    "Microsoft YaHei",                            // 微软雅黑（Windows 中文显示）
+    "WenQuanYi Micro Hei",                        // 文泉驿微米黑（Linux 中文显示）
+    sans-serif;                                   // 后备无衬线字体
   
-  // 字体渲染优化
-  -webkit-font-smoothing: antialiased;           // Webkit字体平滑
-  -moz-osx-font-smoothing: grayscale;            // Firefox字体平滑
-  text-rendering: optimizeLegibility;            // 优化易读性
-  font-feature-settings: "kern" 1;               // 启用字距调整
-  font-kerning: normal;                          // 字距调整
+  /* 
+   * 字体渲染优化
+   * 影响范围：所有文字的显示质量
+   * 作用：使文字边缘更平滑，在高清屏幕上显示效果更好
+   */
+  -webkit-font-smoothing: antialiased;           // Chrome/Safari 浏览器字体反锯齿
+  -moz-osx-font-smoothing: grayscale;            // Firefox macOS 字体平滑处理
+  text-rendering: optimizeLegibility;            // 优化文本易读性（自动调整字距）
+  font-feature-settings: "kern" 1;               // 启用 OpenType 字距调整特性
+  font-kerning: normal;                          // 正常字距调整（字母间距自动优化）
 }
 
-/* 代码字体优化 */
+/* 
+ * 代码字体优化
+ * 影响范围：
+ *   - code: 行内代码（如文字中的 `变量名`）
+ *   - pre: 代码块
+ *   - kbd: 键盘按键显示（如 <kbd>Ctrl</kbd>）
+ *   - samp: 示例输出文本
+ * 作用：使用等宽字体，让代码对齐美观，易于阅读
+ */
 code, pre, kbd, samp {
   font-family: 
-    "SF Mono", Monaco, "Cascadia Code",          // 现代等宽字体
-    "Fira Code", "Roboto Mono", Menlo,           // 等宽英文字体
-    "PingFang SC", "Microsoft YaHei",            // 等宽中文字体
-    "Courier New", monospace;                    // 后备等宽字体
+    "SF Mono", Monaco, "Cascadia Code",          // macOS 系统等宽字体，支持连字
+    "Fira Code", "Roboto Mono", Menlo,           // 现代编程字体（Fira Code 支持连字符）
+    "PingFang SC", "Microsoft YaHei",            // 中文字体（确保中文注释正常显示）
+    "Courier New", monospace;                    // 传统等宽字体作为后备
 }
 
-/* 正文字体大小调整 */
+/* 
+ * 根字体大小设置（基准字号）
+ * 影响范围：整个网站的字体大小基准
+ * 作用：设置基础字号为 16px，所有使用 em/rem 的元素都以此为基准计算
+ * 说明：1rem = 16px，1em = 父元素字号的倍数
+ */
 html {
-  font-size: 16px;
+  font-size: 16px;  // 浏览器默认字号，适合阅读
 }
 
-/* 页面内容区域字体大小 */
+/* 
+ * 文章正文内容区域
+ * 影响范围：文章主体内容区域（博客文章的正文部分）
+ * 作用：统一设置正文和各级标题的字号和行高
+ */
 .page__content {
-  font-size: 1em;
+  font-size: 1em;  // 继承 html 的 16px
   
+  /* 
+   * 段落、列表、定义列表
+   * 影响范围：文章中的段落文字、无序/有序列表、定义列表
+   * 作用：设置合适的行高，增加阅读舒适度
+   */
   p, li, dl {
-    font-size: 1em; // 保持相对大小一致
-    line-height: 1.7; // 增加行高，提升可读性
+    font-size: 1em;      // 16px，与基准字号一致
+    line-height: 1.7;    // 行高为字号的 1.7 倍（约 27px），段落间距更舒适
   }
   
-  /* 标题字体大小微调 */
+  /* 
+   * 一级标题（文章内的主标题）
+   * 影响范围：Markdown 中的 # 标题，通常是文章的章节标题
+   * 作用：28px (1.75 × 16px)，突出重要章节
+   */
   h1 {
-    font-size: 1.75em; // 稍微减小
+    font-size: 1.75em;
   }
   
+  /* 
+   * 二级标题
+   * 影响范围：Markdown 中的 ## 标题，通常是子章节标题
+   * 作用：24px (1.5 × 16px)
+   */
   h2 {
     font-size: 1.5em;
   }
   
+  /* 
+   * 三级标题
+   * 影响范围：Markdown 中的 ### 标题，通常是小节标题
+   * 作用：20px (1.25 × 16px)
+   */
   h3 {
     font-size: 1.25em;
   }
   
+  /* 
+   * 四级标题
+   * 影响范围：Markdown 中的 #### 标题，最小的标题层级
+   * 作用：17.6px (1.1 × 16px)，略大于正文
+   */
   h4 {
     font-size: 1.1em;
   }
 }
 
-/* 文章列表的字体 */
+/* 
+ * 文章列表标题
+ * 影响范围：首页、分类页、标签页、归档页的文章标题列表
+ * 作用：16px，使标题大小适中，列表更紧凑
+ */
 .archive__item-title {
-  font-size: 1em; // 减小文章标题
+  font-size: 1em;
 }
 
+/* 
+ * 文章摘要
+ * 影响范围：文章列表中显示的摘要/简介文字
+ * 作用：16px，与标题保持一致的字号
+ */
 .archive__item-excerpt {
-  font-size: 1em; // 摘要字体
+  font-size: 1em;
 }
 
-/* 侧边栏字体 */
+/* 
+ * 侧边栏
+ * 影响范围：左侧或右侧边栏（作者信息、目录、相关文章等）
+ * 作用：16px，保持与正文一致的字号
+ */
 .sidebar {
   font-size: 1em;
 }
 
-/* 导航栏字体 */
+/* 
+ * 顶部导航栏链接
+ * 影响范围：页面顶部的导航菜单（如：Home, About, Categories, Tags 等）
+ * 作用：17.6px (1.1 × 16px)，略大于正文，更容易点击
+ */
 .greedy-nav a {
   font-size: 1.1em;
 }
 
-/* 代码块字体保持合理大小 */
+/* 
+ * 行内代码
+ * 影响范围：文章中用反引号包裹的代码，如：`variable`、`function()`
+ * 作用：16px，与正文字号一致，便于在段落中阅读
+ */
 code {
-  font-size: 1em; // 增大行内代码字体
+  font-size: 1em;
 }
 
+/* 
+ * 代码块容器
+ * 影响范围：Markdown 中的代码块（三个反引号包裹的多行代码）
+ * 作用：16px，保持代码的可读性
+ */
 pre {
-  font-size: 1em; // 增大代码块字体
+  font-size: 1em;
   
+  /* 
+   * 代码块内的代码文字
+   * 影响范围：pre 标签内的 code 标签
+   * 作用：继承 pre 的字号，避免嵌套导致字号变化
+   */
   code {
-    font-size: 1em; // pre 内的 code 保持相对大小
+    font-size: 13px;
   }
 }
 
-/* 引用块字体 */
+/* 
+ * 引用块
+ * 影响范围：Markdown 中的引用（> 开头的文字）
+ * 作用：16px，通常会显示为带左侧竖线的引用样式
+ * 示例：技术文档中的注意事项、重要提示、引用他人的话等
+ */
 blockquote {
   font-size: 1em;
 }

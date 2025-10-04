@@ -148,8 +148,8 @@ defaults:
       share: false
       related: false
       show_date: true
-      toc: false # 启用目录
-      toc_sticky: false # 目录固定
+      toc: false
+      toc_sticky: false
 
 # Markdown 处理
 markdown: kramdown
@@ -162,9 +162,22 @@ kramdown:
   toc_levels: 1..6
   smart_quotes: lsquo,rsquo,ldquo,rdquo
   enable_coderay: false
+  syntax_highlighter: rouge  # 使用 Rouge 语法高亮器
+  syntax_highlighter_opts:
+    # Rouge 代码高亮主题
+    # 可选: base16, base16.dark, base16.light, base16.monokai, base16.solarized, 
+    #      colorful, github, gruvbox, gruvbox.light, igorpro, magritte, 
+    #      molokai, monokai, monokai.sublime, pastie, thankful_eyes, tulip
+    css_class: 'highlight'
+    default_lang: text
+    span:
+      line_numbers: false
+    block:
+      line_numbers: false
+      start_line: 1
 
 # 固定链接
-permalink: /:year-:month-:day-:title/
+permalink: /:year/:month/:title/
 paginate: 10 # 每页文章数
 paginate_path: /page:num/
 timezone: Asia/Shanghai
