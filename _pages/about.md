@@ -3,27 +3,13 @@ permalink: /about/
 title: "关于"
 layout: single
 author_profile: true
+comments: true
 ---
 
-## 关于本站
+## 关于我
 
-这是 Kongfy 的技术博客，主要分享：
+Kongfy是我名字的缩写组合，虽然缩写方式比较奇怪且读音不明，不过用的时间长了，看顺眼了就懒得改了。
 
-- C/C++ 编程
-- 系统设计与架构
-- 分布式系统
-- 算法与数据结构
-- Linux 内核
-- 机器学习
+毕业于南京大学计算机系，目前是帝都码农一枚，从事分布式数据库的开发工作。
 
-## 关于作者
-
-**Fanyu Kong**
-
-good good code, day day up!
-
-## 联系方式
-
-Email: njukongfy@gmail.com
-
-
+在路上，加油。

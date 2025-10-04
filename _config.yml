@@ -26,7 +26,7 @@ excerpt_separator: "<!--more-->"
 comments:
   provider: "disqus" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom"
   disqus:
-    shortname: "your-disqus-shortname" # 请替换为你的 Disqus shortname
+    shortname: "kongfy" # 请替换为你的 Disqus shortname
 
 # 搜索
 search: true # 启用搜索功能
