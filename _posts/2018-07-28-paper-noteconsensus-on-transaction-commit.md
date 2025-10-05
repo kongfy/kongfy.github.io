@@ -6,6 +6,7 @@ categories:
   - "distributed-system"
 tags: 
   - "paxos"
+disqus_identifier: "1703 http://blog.kongfy.com/?p=1703"
 ---
 
 这篇论文的作者实在太吓人了，Jim Gray和Leslie Lamport，两个领域的扛把子。论文介绍的内容叫Paxos Commit，是用分布式共识算法解决分布式事务的原子提交问题，不愧是这两位大佬写出来的文章哈哈。

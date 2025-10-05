@@ -9,7 +9,7 @@ tags:
   - "线性回归"
   - "逻辑回归"
 mathjax: true
-disqus_identifier: “447”
+disqus_identifier: "447 http://blog.kongfy.com/?p=447"
 ---
 
 <figure style="text-align: center;">
