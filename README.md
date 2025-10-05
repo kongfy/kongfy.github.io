@@ -98,7 +98,6 @@ bundle exec jekyll build
 - **主题使用**: 查看 [THEME_README.md](THEME_README.md)
 - **快速入门**: 查看 [QUICKSTART.md](QUICKSTART.md)
 - **迁移详情**: 查看 [MIGRATION_README.md](MIGRATION_README.md)
-- **Disqus评论迁移**: 查看 [DISQUS_URL_MAPPING.md](DISQUS_URL_MAPPING.md)
 - **GitHub部署**: 查看 [GITHUB_DEPLOY.md](GITHUB_DEPLOY.md)
 - **代码高亮**: 查看 [CODE_HIGHLIGHT_GUIDE.md](CODE_HIGHLIGHT_GUIDE.md)
 - **MathJax配置**: 查看 [MATHJAX_SETUP.md](MATHJAX_SETUP.md)
