@@ -9,7 +9,7 @@ mathjax: true
 斯坦福在coursera上的博弈论课程又开放了，这么高大上的课程怎么能错过呢？现在课程已经过半，回过头来对前几周的内容做个小结。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/842972-14349115-640-360.jpg" alt="真实的博弈" />
+  <img src="/assets/images/842972-14349115-640-360.jpg" alt="真实的博弈" width="640" height="360" />
   <figcaption>真实的博弈</figcaption>
 </figure>
 
@@ -37,7 +37,7 @@ mathjax: true
 举个栗子，将“石头-剪子-布”游戏展现为Matrix如下：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/matching-pennies.jpg" alt="石头-剪子-布" />
+  <img src="/assets/images/matching-pennies.jpg" alt="石头-剪子-布" width="550" height="322" />
   <figcaption>石头-剪子-布</figcaption>
 </figure>
 
@@ -106,7 +106,7 @@ Nash在1950年证明了所有有穷的(finite)的game都存在Nash equilibrium�
 Ignacio Palacios-Heurta在2003年的论文“Professionals Play Minimax”中对1417场西班牙、英国、意大利的FIFA联赛中出现的点球进行了统计，得出下面的game：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/penalty-kicks.jpg" alt="点球“大战”" />
+  <img src="/assets/images/penalty-kicks.jpg" alt="点球“大战”" width="530" height="155" />
   <figcaption>点球“大战”</figcaption>
 </figure>
 
@@ -115,14 +115,14 @@ Ignacio Palacios-Heurta在2003年的论文“Professionals Play Minimax”中对
 很明显可以看出在这个game中不存在pure strategy nash equilibrium（双方总可以通过选择相反方向获得更高的回报），那么我们来寻找它的mixed strategy nash equilibrium。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/penalty-kicks-solve.png" alt="求解纳什均衡" />
+  <img src="/assets/images/penalty-kicks-solve.png" alt="求解纳什均衡" width="846" height="461" />
   <figcaption>求解纳什均衡</figcaption>
 </figure>
 
 下图是我们所求得的mixed strategy nash equilibrium，可以看到和真实统计得到的结果非常接近！
 
 <figure style="text-align: center;">
-  <img src="/assets/images/penalty-kicks-data.jpg" alt="数据对比" />
+  <img src="/assets/images/penalty-kicks-data.jpg" alt="数据对比" width="711" height="182" />
   <figcaption>数据对比</figcaption>
 </figure>
 

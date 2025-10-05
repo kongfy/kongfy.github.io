@@ -12,7 +12,7 @@ mathjax: true
 主成分分析（PCA）是一种通常用来做数据降维的非监督学习算法，下图是数据降维的直观说明：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/fig_pca_principal_component_analysis.png" alt="Principal Component Analysis" />
+  <img src="/assets/images/fig_pca_principal_component_analysis.png" alt="Principal Component Analysis" width="1079" height="428" />
   <figcaption>Principal Component Analysis</figcaption>
 </figure>
 
@@ -38,7 +38,7 @@ mathjax: true
 PCA是一种常见的数据降维算法，其核心思想非常的简单：寻找一个低维的超平面，使所有样本和其在该低维超平面上的投影间的距离和最小，如下图：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/23796B6B-7ECE-468A-A1B6-E7EFE1ADEF5B.jpg" alt="PCA is not linear regression" />
+  <img src="/assets/images/23796B6B-7ECE-468A-A1B6-E7EFE1ADEF5B.jpg" alt="PCA is not linear regression" width="1170" height="624" />
   <figcaption>PCA is not linear regression</figcaption>
 </figure>
 
@@ -61,7 +61,7 @@ Ng在这页slide上着重强调了PCA和线性回归的区别：线性回归的C
 Ng对PCA算法的讲解非常的概要，都浓缩在这个slide里：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/243B08FC-6FFC-4351-A677-5B0FAB218904.jpg" alt="Principal Component Analysis (PCA) algorithm summary" />
+  <img src="/assets/images/243B08FC-6FFC-4351-A677-5B0FAB218904.jpg" alt="Principal Component Analysis (PCA) algorithm summary" width="1251" height="477" />
   <figcaption>Principal Component Analysis (PCA) algorithm summary</figcaption>
 </figure>
 
@@ -84,14 +84,14 @@ Ng对PCA算法的讲解非常的概要，都浓缩在这个slide里：
 这里使用$x\_{approx}$是因为在降维后损失了一定信息，即使映射回原空间也只是原先样本的近似而无法准确的还原。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/5BA0587B-59CF-424A-B530-F3225356AA1A.jpg" alt="向量映射" />
+  <img src="/assets/images/5BA0587B-59CF-424A-B530-F3225356AA1A.jpg" alt="向量映射" width="1156" height="670" />
   <figcaption>向量映射</figcaption>
 </figure>
 
 下图是一个示例，将2维数据降维到1维（直线）后的映射关系，红色代表数据在低维的投影：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/0514D0CD-212F-4CFB-9465-B0EB6DBC25BB.jpg" alt="Dimensionality Reduction" />
+  <img src="/assets/images/0514D0CD-212F-4CFB-9465-B0EB6DBC25BB.jpg" alt="Dimensionality Reduction" width="474" height="474" />
   <figcaption>Dimensionality Reduction</figcaption>
 </figure>
 
@@ -142,14 +142,14 @@ SVD的另一种常见的应用场景在推荐系统中，以后有机会再写�
 这次Ng的实验中展示了一个使用PCA作为人脸检测预处理的例子，使用的人脸数据看上去是这样的：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/90B96A4B-3ABB-45DC-9307-1F238D58478A.jpg" alt="Original faces" />
+  <img src="/assets/images/90B96A4B-3ABB-45DC-9307-1F238D58478A.jpg" alt="Original faces" width="420" height="435" />
   <figcaption>Original faces</figcaption>
 </figure>
 
 每一个人脸图像的分辨率为36\*36，每个像素作为一个灰度特征值则我们将每个人脸图片作为一个1024维的样本进行处理，进行PCA降维至100维，映射回原始空间进行可视化得到了下面的效果：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/628C5AE5-306B-4D09-9D84-DB5BAC487DDF.jpg" alt="Recovered faces" />
+  <img src="/assets/images/628C5AE5-306B-4D09-9D84-DB5BAC487DDF.jpg" alt="Recovered faces" width="420" height="435" />
   <figcaption>Recovered faces</figcaption>
 </figure>
 

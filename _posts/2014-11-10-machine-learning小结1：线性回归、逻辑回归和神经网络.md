@@ -12,7 +12,7 @@ mathjax: true
 ---
 
 <figure style="text-align: center;">
-  <img src="/assets/images/CE58CE85-71A0-493C-ACCA-4EBEAE917603.jpg" alt="machine learning" />
+  <img src="/assets/images/CE58CE85-71A0-493C-ACCA-4EBEAE917603.jpg" alt="machine learning" width="500" height="640" />
   <figcaption>Coursera上machine learning课程的图标</figcaption>
 </figure>
 
@@ -37,7 +37,7 @@ mathjax: true
 ### 算法概要
 
 <figure style="text-align: center;">
-  <img src="/assets/images/C090DAA6-96C6-4517-A650-F4D4EBA4A045.jpg" alt="Linear Regression" />
+  <img src="/assets/images/C090DAA6-96C6-4517-A650-F4D4EBA4A045.jpg" alt="Linear Regression" width="632" height="474" />
   <figcaption>Linear Regression</figcaption>
 </figure>
 
@@ -50,7 +50,7 @@ mathjax: true
 Cost function所表示的是对应参数$\\theta$刻画的Hypothesis函数与真实数据的距离，最小化这个距离可以使我们的模型和真实值更加接近。同时，通过增加高次项特征，我们可以使模型更加复杂。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/D32D48BB-8141-4051-A1DB-4465C9054A91.jpg" alt="Polynomial regression" />
+  <img src="/assets/images/D32D48BB-8141-4051-A1DB-4465C9054A91.jpg" alt="Polynomial regression" width="629" height="471" />
   <figcaption>Polynomial regression</figcaption>
 </figure>
 
@@ -63,14 +63,14 @@ Cost function所表示的是对应参数$\\theta$刻画的Hypothesis函数与真
 可以看到，梯度下降的思想非常的简单：每次迭代中向梯度最大的方向按照learning rate$\\alpha$下降，直到到达整个函数的局部/全局最优点，Ng的slides中的示意图很好的表示了这个思想：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/1A7706DD-2E06-4371-924B-DCD1D4EBB381.jpg" alt="Gradient descent" />
+  <img src="/assets/images/1A7706DD-2E06-4371-924B-DCD1D4EBB381.jpg" alt="Gradient descent" width="1067" height="556" />
   <figcaption>Gradient descent</figcaption>
 </figure>
 
 通过不断的调整参数，使其不断的朝着Cost function下降的方向改变，最终达到一个最小点。在线性回归中，由于Cost function没有局部最优解，所以梯度下降一定会得到全局最优解。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/E4D41A4C-F48E-47EF-B9AE-27B29CCA51C8.jpg" alt="Gradient descent in linear regression" />
+  <img src="/assets/images/E4D41A4C-F48E-47EF-B9AE-27B29CCA51C8.jpg" alt="Gradient descent in linear regression" width="620" height="462" />
   <figcaption>Gradient descent in linear regression</figcaption>
 </figure>
 
@@ -81,7 +81,7 @@ Cost function所表示的是对应参数$\\theta$刻画的Hypothesis函数与真
 当多个特征的取值范围不同并且相差很大时，会给梯度下降带来不小的麻烦，梯度下降过程会变得非常的缓慢，因此在多个特征取值范围相差较大时，我们首先应该对这些特征进行缩放以确保他们具有相同的取值范围。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/CF26D801-A17F-4CF8-892C-7A128BDEAD10.jpg" alt="Feature scaling" />
+  <img src="/assets/images/CF26D801-A17F-4CF8-892C-7A128BDEAD10.jpg" alt="Feature scaling" width="1209" height="574" />
   <figcaption>Feature scaling</figcaption>
 </figure>
 
@@ -98,7 +98,7 @@ Cost function所表示的是对应参数$\\theta$刻画的Hypothesis函数与真
 唯一的区别在于外层的sigmoid function，详情戳[这里](http://en.wikipedia.org/wiki/Sigmoid_function "Sigmoid function")。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/5B807B59-5930-47C7-8341-27D524ABBA1B.jpg" alt="Sigmoid function" />
+  <img src="/assets/images/5B807B59-5930-47C7-8341-27D524ABBA1B.jpg" alt="Sigmoid function" width="569" height="396" />
   <figcaption>Sigmoid function</figcaption>
 </figure>
 
@@ -111,7 +111,7 @@ Cost function看上去复杂，实际上如果仔细分析，其实函数表示�
 之后可以和线性回归一样，采用梯度下降或其他方法来寻找合适的参数$\\theta$使Cost function最小化，得到训练后的模型。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/291F8223-4629-4D43-BDE3-CEF9E3E786D3.jpg" alt="Logistic regression" />
+  <img src="/assets/images/291F8223-4629-4D43-BDE3-CEF9E3E786D3.jpg" alt="Logistic regression" width="629" height="472" />
   <figcaption>Logistic regression</figcaption>
 </figure>
 
@@ -122,7 +122,7 @@ Cost function看上去复杂，实际上如果仔细分析，其实函数表示�
 \\[\\max \_i h\_\\theta^{(i)}(x)\\]
 
 <figure style="text-align: center;">
-  <img src="/assets/images/C36E2BAD-B94E-4736-A88B-713E41523470.jpg" alt="One-vs-all" />
+  <img src="/assets/images/C36E2BAD-B94E-4736-A88B-713E41523470.jpg" alt="One-vs-all" width="1227" height="710" />
   <figcaption>One-vs-all</figcaption>
 </figure>
 
@@ -133,7 +133,7 @@ Cost function看上去复杂，实际上如果仔细分析，其实函数表示�
 接下来需要讨论一个前面一直避而不谈的问题：Bias和Variance。这两个词意思都不是很直白，简单来说，high Bias的含义就是模型太过于简单，不能很好对训练集进行学习，属于under-fitting；而high Variance则相反，代表了模型太过于复杂，甚至拟合了训练集中的噪声，属于over-fitting，虽然training error很低但是泛化误差大，会有很高的test error。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/C24570FC-0A66-4F28-BAD5-C70BB71F24D0.jpg" alt="Bias vs Variance" />
+  <img src="/assets/images/C24570FC-0A66-4F28-BAD5-C70BB71F24D0.jpg" alt="Bias vs Variance" width="622" height="404" />
   <figcaption>Bias vs Variance</figcaption>
 </figure>
 
@@ -169,7 +169,7 @@ Regularization parameter的作用相当于对每一个参数增加了惩罚，�
 ### 神经元
 
 <figure style="text-align: center;">
-  <img src="/assets/images/C8DC0939-2233-469B-86B5-DD7779D6BCBF.jpg" alt="Neuron model" />
+  <img src="/assets/images/C8DC0939-2233-469B-86B5-DD7779D6BCBF.jpg" alt="Neuron model" width="1201" height="474" />
   <figcaption>Neuron model</figcaption>
 </figure>
 
@@ -180,7 +180,7 @@ Regularization parameter的作用相当于对每一个参数增加了惩罚，�
 ### 神经网络
 
 <figure style="text-align: center;">
-  <img src="/assets/images/6657A266-DF61-4F08-937D-6B08528D94A7.jpg" alt="Neural network" />
+  <img src="/assets/images/6657A266-DF61-4F08-937D-6B08528D94A7.jpg" alt="Neural network" width="1080" height="676" />
   <figcaption>Neural network</figcaption>
 </figure>
 
@@ -209,7 +209,7 @@ Regularization parameter的作用相当于对每一个参数增加了惩罚，�
 整体的后向传播算法就是对每一个训练样本执行上面的过程，并不断积累$a\_j^{(l)}\\delta\_i^{(l+1)}$（略过复杂的数学证明）如下：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/53C728D0-9321-4ACD-8D6F-920FCB720AD8.jpg" alt="Backpropagation" />
+  <img src="/assets/images/53C728D0-9321-4ACD-8D6F-920FCB720AD8.jpg" alt="Backpropagation" width="1211" height="693" />
   <figcaption>Backpropagation</figcaption>
 </figure>
 
@@ -224,21 +224,21 @@ Regularization parameter的作用相当于对每一个参数增加了惩罚，�
 Ng课程的编程作业中给出了一个蛮好玩的例子：识别手写数字。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/9888D333-93C6-4833-A31D-7C6DD63EDDCF.jpg" alt="numbers" />
+  <img src="/assets/images/9888D333-93C6-4833-A31D-7C6DD63EDDCF.jpg" alt="numbers" width="420" height="420" />
   <figcaption>numbers</figcaption>
 </figure>
 
 数字识别过程首先将20\*20的数字图片转换为400维的灰度向量输入神经网络，使用下面结构的神经网络进行训练，输入层有401个节点（包括1个Bias节点），隐藏层包含25个神经元，输出层有10个神经元对应10个数字类别，最终获得了非常赞的效果~
 
 <figure style="text-align: center;">
-  <img src="/assets/images/823006AE-89BD-477B-835F-DAA7B8D9EC14.jpg" alt="Neural network model" />
+  <img src="/assets/images/823006AE-89BD-477B-835F-DAA7B8D9EC14.jpg" alt="Neural network model" width="535" height="321" />
   <figcaption>Neural network model</figcaption>
 </figure>
 
 下图对训练好的隐藏层25个神经元参数进行了可视化，可以看到每个神经元都训练出了一个更加复杂的特征，神经网络就是通过不断训练出这些比原始灰度特征更加复杂的特征才能得到如此优秀的效果。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/99BA29D7-B7AE-4628-A926-ADE03298FFCC.jpg" alt="Hidden layer" />
+  <img src="/assets/images/99BA29D7-B7AE-4628-A926-ADE03298FFCC.jpg" alt="Hidden layer" width="420" height="420" />
   <figcaption>Hidden layer</figcaption>
 </figure>
 

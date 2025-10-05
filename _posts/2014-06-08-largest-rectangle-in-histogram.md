@@ -7,7 +7,15 @@ tags:
   - "leetcode"
 ---
 
-> Given n non-negative integers representing the histogram's bar height where the width of each bar is 1, find the area of largest rectangle in the histogram. [![histogram](/assets/images/histogram.png)](/assets/images/histogram.png) Above is a histogram where width of each bar is 1, given height = \[2,1,5,6,2,3\]. [![histogram_area](/assets/images/histogram_area.png)](/assets/images/histogram_area.png) The largest rectangle is shown in the shaded area, which has area = 10 unit. For example, Given height = \[2,1,5,6,2,3\], return 10.
+> Given n non-negative integers representing the histogram's bar height where the width of each bar is 1, find the area of largest rectangle in the histogram. 
+> 
+> [![histogram](/assets/images/histogram.png)](/assets/images/histogram.png) 
+> 
+> Above is a histogram where width of each bar is 1, given height = \[2,1,5,6,2,3\]. 
+> 
+> [![histogram_area](/assets/images/histogram_area.png)](/assets/images/histogram_area.png) 
+> 
+> The largest rectangle is shown in the shaded area, which has area = 10 unit. For example, Given height = \[2,1,5,6,2,3\], return 10.
 
 题目链接在[这里](https://oj.leetcode.com/problems/largest-rectangle-in-histogram/)
 

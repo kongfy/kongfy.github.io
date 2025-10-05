@@ -12,7 +12,7 @@ mathjax: true
 上一篇文章中实现了一个lock-free的队列，但是有一个问题：内存无法被安全的回收。那么，这次就来把这缺失的一环补上：hazard pointer，一种lock-free对象的内存回收机制。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/hp.png" alt="hazard pointer" />
+  <img src="/assets/images/hp.png" alt="hazard pointer" width="541" height="487" />
   <figcaption>hazard pointer</figcaption>
 </figure>
 

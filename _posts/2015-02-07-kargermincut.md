@@ -9,7 +9,7 @@ mathjax: true
 ---
 
 <figure style="text-align: center;">
-  <img src="/assets/images/kargers-algorithm-3.png" alt="Cut in an undirected graph" />
+  <img src="/assets/images/kargers-algorithm-3.png" alt="Cut in an undirected graph" width="550" height="326" />
   <figcaption>Cut in an undirected graph</figcaption>
 </figure>
 

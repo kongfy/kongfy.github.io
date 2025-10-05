@@ -93,7 +93,7 @@ start:
 lgdt指令实际上设置了gdtr寄存器，指明了GDT在内存中的位置。lgdt命令需要GDT描述符的地址作为操作数，GDT描述符的结构如下：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/Gdtr.png" alt="GDT描述符" />
+  <img src="/assets/images/Gdtr.png" alt="GDT描述符" width="465" height="204" />
   <figcaption>GDT描述符</figcaption>
 </figure>
 
@@ -119,14 +119,14 @@ gdtdesc:                           # GDT描述符
 可以看到gdtdesc起始的内存中存放了GDT描述符，而具体的段描述符表则存放在标号gdt开始的内存单元中。每一个段描述符占8字节，其结构如下：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/GDT_Entry.png" alt="段描述符" />
+  <img src="/assets/images/GDT_Entry.png" alt="段描述符" width="512" height="192" />
   <figcaption>段描述符</figcaption>
 </figure>
 
 段描述符中Base字段表示该段的段基址(32位线性地址)，Limit字段表示该段可寻址的最大单元(注意：这里的单元可能是1byte，也可能是一个页，见Gr位)。Flags和Access Byte要稍微复杂些：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/Gdt_bits.png" alt="Flags & Access Byte" />
+  <img src="/assets/images/Gdt_bits.png" alt="Flags & Access Byte" width="427" height="115" />
   <figcaption>Flags & Access Byte</figcaption>
 </figure>
 
@@ -169,7 +169,7 @@ gdtdesc:                           # GDT描述符
 回到主线，现在我们已经切换到了保护模式，并跳转到start32处开始执行。这里值得注意的一点是最后执行的ljmp指令，宏GDT\_ENTRY只是简单的将参数n左移三位，这是因为在保护模式中段寄存器中并不像实模式那样直接存放段基址，而是存放了一个叫做段选择子的结构来指出选择的段，段选择子结构如下：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/selector.jpg" alt="段选择子" />
+  <img src="/assets/images/selector.jpg" alt="段选择子" width="712" height="183" />
   <figcaption>段选择子</figcaption>
 </figure>
 

@@ -25,7 +25,7 @@ mathjax: true
 运行过程如下图例，$f(v)$代表点在$G^{rev}$的遍历结束时间，从9号点开始DFS。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/B0842D09-98C3-4F8C-B551-315CBAC0874E.jpg" alt="Example execution of the strongly connected components algorithm." />
+  <img src="/assets/images/B0842D09-98C3-4F8C-B551-315CBAC0874E.jpg" alt="Example execution of the strongly connected components algorithm." width="843" height="191" />
   <figcaption>Example execution of the strongly connected components algorithm.</figcaption>
 </figure>
 
@@ -44,7 +44,7 @@ mathjax: true
 显然这是不对的...反例见下图中强连通分支{9，6，3}和{8，5，2}，$f'(3)=1$比{8，5，2}中的完成时间都要小，如果从该点开始“拖”强连通分支得到的是错误的结果{9，6，3，8，5，2}。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/9A6FEF4E-FD08-4AF3-89BC-398920C58BAB.jpg" alt="遍历顺序" />
+  <img src="/assets/images/9A6FEF4E-FD08-4AF3-89BC-398920C58BAB.jpg" alt="遍历顺序" width="536" height="210" />
   <figcaption>遍历顺序</figcaption>
 </figure>
 

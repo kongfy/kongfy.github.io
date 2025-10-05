@@ -20,7 +20,7 @@ mathjax: true
 这篇文章主要总结一下我个人认为是整个分布式系统中最为重要的问题（没有之一）：**分布式共识（Consensus）**。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/committee-meeting.jpg" alt="达成共识" />
+  <img src="/assets/images/committee-meeting.jpg" alt="达成共识" width="747" height="514" />
   <figcaption>达成共识</figcaption>
 </figure>
 
@@ -62,7 +62,7 @@ PS：我在学习过程中是以《分布式系统：概念与设计》[1](#fn-1
 分布式共识问题的定义如下图所示：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/consensus.jpg" alt="分布式共识问题" />
+  <img src="/assets/images/consensus.jpg" alt="分布式共识问题" width="654" height="305" />
   <figcaption>分布式共识问题</figcaption>
 </figure>
 
@@ -90,7 +90,7 @@ PS：我在学习过程中是以《分布式系统：概念与设计》[1](#fn-1
 分布式系统中对共识问题的直接应用常常是在多副本状态机（不太确定这个翻译对不对）的场景中出现的。多副本状态机是指多台机器具有完全相同的状态，并且运行有完全相同的确定性状态机。通过使用这样的状态机，可以解决很多分布式系统中的容错问题，因为多副本状态机通常可以容忍\\(\\lfloor \\frac{N}{2}\\rfloor\\)进程故障，且所有正常运行的副本都完全一致，所以，可以使用多副本状态机来实现需要避免单点故障的组件，如集中式的选主或是互斥算法中的协调者（coordinator），如图所示：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/leader_election.png" alt="高可用“单点”的集中式架构" />
+  <img src="/assets/images/leader_election.png" alt="高可用“单点”的集中式架构" width="500" height="446" />
   <figcaption>高可用“单点”的集中式架构</figcaption>
 </figure>
 
@@ -99,7 +99,7 @@ PS：我在学习过程中是以《分布式系统：概念与设计》[1](#fn-1
 虽然有很多不同的多副本状态机实现，但其基本实现模式是类似的：状态机的每个副本上都保存有完全相同的操作日志，保证所有副本状态机按照相同的顺序执行操作，这样由于状态机是确定性的，则一定会得到相同的状态，如下图：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/RSM.jpg" alt="多副本状态机" />
+  <img src="/assets/images/RSM.jpg" alt="多副本状态机" width="485" height="268" />
   <figcaption>多副本状态机</figcaption>
 </figure>
 
@@ -137,7 +137,7 @@ VR算法适用于允许故障-停止的异步系统中，并且VR不要求可靠
 这个处理过程如下图所示：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/vr.jpg" alt="VR正常执行流程" />
+  <img src="/assets/images/vr.jpg" alt="VR正常执行流程" width="500" height="287" />
   <figcaption>VR正常执行流程</figcaption>
 </figure>
 
@@ -198,7 +198,7 @@ Raft中所有的*follower*需要定期接收到来自*leader*的心跳消息，�
 当完成*leader election*后，Raft进入新的*term*开始工作， *leader*接受到client的请求后，会为该操作生成一条*log*项，并同时记录该项的*index*（表明该项在*log*中的位置）和*term*，如下图：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/raft1.jpg" alt="Raft中的log" />
+  <img src="/assets/images/raft1.jpg" alt="Raft中的log" width="480" height="468" />
   <figcaption>Raft中的log</figcaption>
 </figure>
 
@@ -207,14 +207,14 @@ Raft中所有的*follower*需要定期接收到来自*leader*的心跳消息，�
 在正常运行中以上的过程就足够了，然而在考虑到各类故障的影响，各个副本上的*log*可能会出现各种不一致的情况，如下图：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/raft2.jpg" alt="log不一致" />
+  <img src="/assets/images/raft2.jpg" alt="log不一致" width="500" height="561" />
   <figcaption>log不一致</figcaption>
 </figure>
 
 Raft用来处理这种情况的对策很简单：以*leader*上的日志为准，将与*leader*不一致的日志进行重写（这个过程比较繁琐，但思路是简单的，通过不断向前检查*follower*上*log*项，直到找到分叉点，然后进行修正）。这样的重写使得旧*term*中遗留的*log*项可能出现被覆盖丢失的情况，如下图：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/raft3.jpg" alt="Raft中旧term日志覆盖问题" />
+  <img src="/assets/images/raft3.jpg" alt="Raft中旧term日志覆盖问题" width="494" height="588" />
   <figcaption>Raft中旧term日志覆盖问题</figcaption>
 </figure>
 
@@ -225,7 +225,7 @@ Raft用来处理这种情况的对策很简单：以*leader*上的日志为准�
 Raft的完整的正确性证明在论文中推倒的非常详细，我实在做不出什么精简，其核心证明过程在于在整个算法中保证下图中的几点性质：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/raft4.jpg" alt="Raft中的Safety保证" />
+  <img src="/assets/images/raft4.jpg" alt="Raft中的Safety保证" width="511" height="448" />
   <figcaption>Raft中的Safety保证</figcaption>
 </figure>
 

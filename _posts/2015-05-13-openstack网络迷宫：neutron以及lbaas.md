@@ -10,7 +10,7 @@ mathjax: true
 ---
 
 <figure style="text-align: center;">
-  <img src="/assets/images/IMG_5155.jpg" alt="一团糟 - 我对OpenStack网络实现的第一感觉" />
+  <img src="/assets/images/IMG_5155.jpg" alt="一团糟 - 我对OpenStack网络实现的第一感觉" width="1024" height="768" />
   <figcaption>"一团糟" - 我对OpenStack网络实现的第一感觉</figcaption>
 </figure>
 
@@ -48,7 +48,7 @@ OpenStack就是开源软件的堆叠，它的网络模块也不例外：Neutron�
 Neutron中对网络抽象的最核心的概念是**Network**、**Port**和**Subnet**，关系如下图：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/concepts.png" alt="Neutron抽象网络概念" />
+  <img src="/assets/images/concepts.png" alt="Neutron抽象网络概念" width="814" height="317" />
   <figcaption>Neutron抽象网络概念</figcaption>
 </figure>
 
@@ -68,7 +68,7 @@ Neutron本身只负责实现网络抽象API，充分采用了插件化的设计�
 总的来说，插件分为两类：Core Plugin和Service Plugin。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/modules.png" alt="Neutron插件结构" />
+  <img src="/assets/images/modules.png" alt="Neutron插件结构" width="918" height="328" />
   <figcaption>Neutron插件结构</figcaption>
 </figure>
 
@@ -85,7 +85,7 @@ Service Plugin则是基于Core Plugin提供的功能来提供额外的服务，�
 下图展示是Neutron网络实现的最核心的思路，注意图中将整个OpenStack视为整体，忽略了物理机之间的边界：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/logical-network.png" alt="不考虑物理机边界时的Neutron网络实现" />
+  <img src="/assets/images/logical-network.png" alt="不考虑物理机边界时的Neutron网络实现" width="599" height="512" />
   <figcaption>不考虑物理机边界时的Neutron网络实现</figcaption>
 </figure>
 
@@ -102,7 +102,7 @@ br-int 是集成网桥，在逻辑概念上，它是跨越整个OpenStack的内�
 Neutron可以采用三种方法来完成这一任务：VLAN、GRE和VXLAN，分别对应三种Tenant Network类型，每一个用户创建的Tenant Network根据其类型决定内部网络采用什么样的方式来跨越物理机的界限。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/D7F8423F-D72A-40EB-BC4A-756866317992.png" alt="OpenStack集群标准网络部署图" />
+  <img src="/assets/images/D7F8423F-D72A-40EB-BC4A-756866317992.png" alt="OpenStack集群标准网络部署图" width="778" height="569" />
   <figcaption>OpenStack集群标准网络部署图</figcaption>
 </figure>
 
@@ -113,7 +113,7 @@ Neutron可以采用三种方法来完成这一任务：VLAN、GRE和VXLAN，分�
 通过VLAN来连接分散在不同物理机中不同的租户网络实际上和nova-network的VLANManager在想法上是一脉相承的，都是为每一个租户网络分配一个物理交换机上的VLAN，在连接所有节点的同时通过不同的VLAN保证了租户网络的隔离性。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/network-2.png" alt="VLAN模式网络" />
+  <img src="/assets/images/network-2.png" alt="VLAN模式网络" width="781" height="579" />
   <figcaption>VLAN模式网络</figcaption>
 </figure>
 
@@ -128,7 +128,7 @@ Neutron可以采用三种方法来完成这一任务：VLAN、GRE和VXLAN，分�
 GRE和VXLAN的方式原理上非常相似，都是通过三层隧道的方法将虚拟交换机的报文用三层协议封装，发送给隧道对应端后再由对端将三层报文脱掉得到原报文后转交给虚拟网络，下面以GRE为例进行说明。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/network-3.png" alt="GRE模式网络" />
+  <img src="/assets/images/network-3.png" alt="GRE模式网络" width="781" height="573" />
   <figcaption>GRE模式网络</figcaption>
 </figure>
 
@@ -171,7 +171,7 @@ GRE和VXLAN的方式原理上非常相似，都是通过三层隧道的方法将
 在Juno版本之前，三层网络的所有服务：包括虚拟路由器、DHCP等等都部署在Network Node上（Juno版本推出了Distributed Virtual Router功能，用来解决Network Node的单点故障问题并减轻数据中心网络中不必要的数据传输，这些内容超出了本文的讨论范围，感兴趣的同学可以看看[这个](https://www.youtube.com/watch?v=4CKSm3bwv78)）。虚拟路由器的实现实际上可以说是非常“朴素”的，Neutron在网络节点上创建对应虚拟路由器接口的Internal Port，将这些设备接入br-int设置VLAN tag（Tenant Network）或者直接接入br-ex（External Network），实际负责包转发的就是Network Node的内核本身，为了防止网络地址重叠，要把虚拟路由器相关的这些Internal Port放进独立的网络Namespace中。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/8B56059D-567D-4C06-8753-F075C00EE3CB.jpg" alt="demo虚拟网络拓扑" />
+  <img src="/assets/images/8B56059D-567D-4C06-8753-F075C00EE3CB.jpg" alt="demo虚拟网络拓扑" width="898" height="534" />
   <figcaption>demo虚拟网络拓扑</figcaption>
 </figure>
 
@@ -329,7 +329,7 @@ Floating IP即外网可访问的IP地址，可以绑定到Tenant Network的任�
 在结束对Neutron虚拟网络的实现之前，还有一个必须要提到的部分：虚拟机的安全组和访问规则。这是整个Neutron虚拟网络实现中比较tricky的部分，为什么这么说呢？请看下图：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/33112565-CE51-4895-B067-652BCE4832A6.jpg" alt="“多余”的网桥？" />
+  <img src="/assets/images/33112565-CE51-4895-B067-652BCE4832A6.jpg" alt="“多余”的网桥？" width="697" height="469" />
   <figcaption>“多余”的网桥？</figcaption>
 </figure>
 
@@ -391,7 +391,7 @@ neutron-openvswi-sg-fallback  all  -- anywhere             anywhere             
 根据负载均衡的特点，社区在OpenStack中把负载均衡抽象成下面的概念：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/lbaas1.png" alt="OpenStack的负载均衡模型" />
+  <img src="/assets/images/lbaas1.png" alt="OpenStack的负载均衡模型" width="757" height="382" />
   <figcaption>OpenStack的负载均衡模型</figcaption>
 </figure>
 
@@ -400,7 +400,7 @@ neutron-openvswi-sg-fallback  all  -- anywhere             anywhere             
 实现的网络逻辑如下图所示：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/lbaas2.png" alt="负载均衡网络示意图" />
+  <img src="/assets/images/lbaas2.png" alt="负载均衡网络示意图" width="865" height="463" />
   <figcaption>负载均衡网络示意图</figcaption>
 </figure>
 

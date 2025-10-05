@@ -19,7 +19,9 @@ tags:
 
 **EXC\_BAD\_ACCESS**这个错误应该是相当普遍也很让人头疼的问题了，按照字面意思理解就是说代码访问了不应该访问的内存地址，类似于C中的悬空指针，即使设置了All Exceptions BreakPoint，也没办法定位到错误的位置——这很合理，毕竟错误发生的地址是"Bad"...
 
-观察发生错误发生错误的线程的stack trace如下： [![objc_msgSend](/assets/images/A1F21BB4-2A5E-4386-848C-492A0653A8FA.jpg)](/assets/images/A1F21BB4-2A5E-4386-848C-492A0653A8FA.jpg)
+观察发生错误发生错误的线程的stack trace如下：  
+
+[![objc_msgSend](/assets/images/A1F21BB4-2A5E-4386-848C-492A0653A8FA.jpg)](/assets/images/A1F21BB4-2A5E-4386-848C-492A0653A8FA.jpg)
 
 有进展！看来导致应用Crash的罪魁祸首就是这个objc\_msgSend函数！这个函数是Objective-C中的runtime消息发送实现，我们所使用的 \[MyClass function\] 这样的“函数调用”在Objective-C中实际上都是在运行时由Objective-C使用消息传递来实现的，就像这样： objc\_msgSend(MyClass, @selector(function)) 。也就是说我的问题是由于在运行时给一个不存在的对象发送了消息所以导致了Crash。
 

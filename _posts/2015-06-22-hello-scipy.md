@@ -10,7 +10,7 @@ tags:
 “学而时习之，不亦乐乎”，利用放假几天时间，简单复习了一下之前学习的Machine Learning课程，并且用刚上手没两天的SciPy重新完成了大部分Ng的课后作业，SciPy真的非常好用~
 
 <figure style="text-align: center;">
-  <img src="/assets/images/scipy.jpg" alt="SciPy" />
+  <img src="/assets/images/scipy.jpg" alt="SciPy" width="818" height="269" />
   <figcaption>SciPy</figcaption>
 </figure>
 

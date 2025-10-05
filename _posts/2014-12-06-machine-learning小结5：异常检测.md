@@ -21,7 +21,7 @@ mathjax: true
 首先复习一下[高斯分布（正态分布）](http://en.wikipedia.org/wiki/Normal_distribution "高斯分布")：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/Empirical_Rule.png" alt="Gaussion distribution" />
+  <img src="/assets/images/Empirical_Rule.png" alt="Gaussion distribution" width="769" height="558" />
   <figcaption>Gaussion distribution</figcaption>
 </figure>
 
@@ -34,7 +34,7 @@ mathjax: true
 下图是对两个特征的样本进行异常检测的结果，红色圈出的是检测出的异常样本：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/66E71180-425A-49BB-BE66-754319028DEC.jpg" alt="Gaussian distribution contours" />
+  <img src="/assets/images/66E71180-425A-49BB-BE66-754319028DEC.jpg" alt="Gaussian distribution contours" width="628" height="475" />
   <figcaption>Gaussian distribution contours</figcaption>
 </figure>
 
@@ -55,7 +55,7 @@ mathjax: true
 [多变量高斯分布](http://en.wikipedia.org/wiki/Multivariate_normal_distribution)可以发现不同特征间的关联，但是计算开销更高。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/28EBDC63-CA44-48BF-A28D-FB2550412262.jpg" alt="Multivariate Gaussian" />
+  <img src="/assets/images/28EBDC63-CA44-48BF-A28D-FB2550412262.jpg" alt="Multivariate Gaussian" width="1261" height="665" />
   <figcaption>Multivariate Gaussian</figcaption>
 </figure>
 
@@ -64,7 +64,7 @@ mathjax: true
 那么，如果某个特征不服从高斯分布该怎么办呢？答案是对特征进行变换，让新特征的分布更像高斯分布。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/B16AE4EC-B5AA-42C6-BEE5-36F531A056C4.jpg" alt="Non-gaussian features" />
+  <img src="/assets/images/B16AE4EC-B5AA-42C6-BEE5-36F531A056C4.jpg" alt="Non-gaussian features" width="1222" height="666" />
   <figcaption>Non-gaussian features</figcaption>
 </figure>
 
@@ -84,7 +84,7 @@ F1 score实际上另外两种评价标准：精度（precision）和召回率（
 两种度量存在Trade off的关系，有可能通过降低其中一个为代价来提高另一个：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/92C2E408-20CB-4026-89DA-60A6E29B6190.jpg" alt="Trading off precision and recall" />
+  <img src="/assets/images/92C2E408-20CB-4026-89DA-60A6E29B6190.jpg" alt="Trading off precision and recall" width="1247" height="694" />
   <figcaption>Trading off precision and recall</figcaption>
 </figure>
 

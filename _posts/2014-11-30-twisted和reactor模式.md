@@ -11,7 +11,7 @@ tags:
 因为项目关系，接触学习了大名鼎鼎的Python网络编程框架Twised，Twisted是以高性能为目标的异步（event-driven）网络编程框架。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/518wm5u3TjL.jpg" alt="Twisted book" />
+  <img src="/assets/images/518wm5u3TjL.jpg" alt="Twisted book" width="379" height="500" />
   <figcaption>Twisted book</figcaption>
 </figure>
 
@@ -49,7 +49,7 @@ tags:
 因此我们将这样的异步模式称为Reactor模式，例如在iOS开发中的Run Loop概念，实际上非常类似于Reactor loop，主线程的Run Loop监听屏幕UI事件，一旦发生UI事件则执行对应的事件处理代码，还可以通过GCD等方式产生事件至主线程执行。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/event_model.png" alt="Event model" />
+  <img src="/assets/images/event_model.png" alt="Event model" width="524" height="364" />
   <figcaption>Event model</figcaption>
 </figure>
 
@@ -71,7 +71,7 @@ reactor是Twisted程序中的单例对象。
 Factory如名字所暗示的，是抽象工厂。在Twisted中把一个工厂对象绑定到特定的端口中，当连接到来，Twisted使用该工厂创建工厂指定的Protocol对象，Protocol对象表明了连接的处理流程（协议），每个Protocol对象按照预定的协议处理连接，当连接关闭后销毁。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/protocols-1.png" alt="Factory and Protocol" />
+  <img src="/assets/images/protocols-1.png" alt="Factory and Protocol" width="474" height="352" />
   <figcaption>Factory and Protocol</figcaption>
 </figure>
 
@@ -137,7 +137,7 @@ print "Finished"
 当我们想执行一个异步操作时，我们可以使用Deferred来代替数据立即返回。Deferred的含义是：你想要的数据还没有到，不过你可以告诉我你接下来想要执行的操作，当我得到数据以后会调用你想要执行的函数。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/deferred-process.png" alt="Deferred process" />
+  <img src="/assets/images/deferred-process.png" alt="Deferred process" width="240" height="382" />
   <figcaption>Deferred process</figcaption>
 </figure>
 

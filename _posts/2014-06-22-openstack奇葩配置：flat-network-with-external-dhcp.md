@@ -24,7 +24,7 @@ OpenStack似乎没有针对这种情况的网络模式（即使FlatManager也不
 首先我们要按照标准的Flat网络模型配置计算节点网络：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/generic-bridge-config-2.png" alt="Flat网络模型" />
+  <img src="/assets/images/generic-bridge-config-2.png" alt="Flat网络模型" width="255" height="296" />
   <figcaption>Flat网络模型</figcaption>
 </figure>
 

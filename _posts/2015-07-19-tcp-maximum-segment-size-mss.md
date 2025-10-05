@@ -15,7 +15,7 @@ tags:
 下图中看到的是TCP连接发送和接收的过程示意图，最大报文段长度（MSS）的作用是限制在TCP层产生的报文段的最大长度（当然要在滑动窗口允许的前提下）。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/ipov.fig88.epsi_.gif" alt="TCP发送接收过程图" />
+  <img src="/assets/images/ipov.fig88.epsi_.gif" alt="TCP发送接收过程图" width="495" height="353" />
   <figcaption>TCP发送接收过程图</figcaption>
 </figure>
 

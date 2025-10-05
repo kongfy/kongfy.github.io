@@ -16,7 +16,7 @@ tags:
 作为开始，我们先来看一下现在的Intel体系的计算机是如何连接起来的。下图中包含了主板中的主要部件：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/6D264DDD-CB93-47A6-995E-B18F84AA12FC.jpg" alt="主板示意图，北桥和南桥构成了芯片组" />
+  <img src="/assets/images/6D264DDD-CB93-47A6-995E-B18F84AA12FC.jpg" alt="主板示意图，北桥和南桥构成了芯片组" width="668" height="468" />
   <figcaption>主板示意图，北桥和南桥构成了芯片组</figcaption>
 </figure>
 
@@ -31,7 +31,7 @@ tags:
 当北桥接收到一个物理地址请求，北桥会决定这个请求该转向哪里：内存？还是显卡？北桥根据存储地址映射表来决定。对物理存储地址的每一个区域，存储地址映射表都知道究竟是哪一个设备拥有这些地址。大部分的地址都映射到内存中，但当地址不属于内存时，存储地址映射表会告诉芯片组哪个设备该响应这些地址的请求。这种将地址分配到其他设备的映射导致了在老式PC存储中640KB到1MB之间的空洞，而保留给显卡和PCI设备的地址又造城了一个更大的空洞，这也是为什么32位操作系统[不能完全使用4GB内存的原因](http://support.microsoft.com/kb/929605)。在Linux中/proc/iomem文件清楚的列出了这些被映射的地址。下图展示了Intel PC的前4GB地址空间中典型的映射关系：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/1BD64BA1-2A96-4289-B293-9587881FE0AF.jpg" alt="Intel体系中前4GB存储空间的布局情况" />
+  <img src="/assets/images/1BD64BA1-2A96-4289-B293-9587881FE0AF.jpg" alt="Intel体系中前4GB存储空间的布局情况" width="285" height="604" />
   <figcaption>Intel体系中前4GB存储空间的布局情况</figcaption>
 </figure>
 

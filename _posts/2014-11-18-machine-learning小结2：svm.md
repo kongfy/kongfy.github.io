@@ -16,7 +16,7 @@ mathjax: true
 在实践中，SVM也的确是一种非常流行的“黑盒”学习算法，下图为SVM标志性的概念图：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/Svm_max_sep_hyperplane_with_margin-e1417223870925.png" alt="Support Vector Machine" />
+  <img src="/assets/images/Svm_max_sep_hyperplane_with_margin-e1417223870925.png" alt="Support Vector Machine" width="464" height="500" />
   <figcaption>Support Vector Machine</figcaption>
 </figure>
 
@@ -42,7 +42,7 @@ SVM也是一种线性模型，为了与之前讲的几个线性模型分类器�
 上面的式子比起之前的形式更清楚的说明了SVM到底在做什么：通过最小化$\\frac{1}{2} {\\left \\| \\theta \\right \\|}^2$，SVM实际上是在寻找合适的$\\theta$使得在各个训练样本$x^{(i)}$上获得更大的投影来满足限制条件，这也对应了更大的margin（所以SVM也叫Large margin classifier）,简单来说，SVM的目标不仅使找到可以分开正反类别的超平面，而且希望能找个“最好”的超平面，即距离正反类别样本距离最远的超平面，如下图：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/69F86EE6-78B5-4620-A038-29D1A22D507D.jpg" alt="Larger margin" />
+  <img src="/assets/images/69F86EE6-78B5-4620-A038-29D1A22D507D.jpg" alt="Larger margin" width="1208" height="379" />
   <figcaption>Larger margin</figcaption>
 </figure>
 
@@ -57,14 +57,14 @@ SVM也是一种线性模型，为了与之前讲的几个线性模型分类器�
 其中$C$是惩罚系数，后面的两项中$cost\_1$和$cost\_0$实际上是[Hinge loss](http://en.wikipedia.org/wiki/Hinge_loss "Hinge loss")函数：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/945126A2-3160-49B1-B4C2-5C9CB6EAA0C9.jpg" alt="Hinge Loss" />
+  <img src="/assets/images/945126A2-3160-49B1-B4C2-5C9CB6EAA0C9.jpg" alt="Hinge Loss" width="1083" height="273" />
   <figcaption><a href="http://en.wikipedia.org/wiki/Hinge_loss" title="Hinge loss">Hinge Loss</a></figcaption>
 </figure>
 
 到这里我们已经得到了线性核的SVM，训练个线性分类器看看效果：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/0A148944-9317-4BDA-BCB4-591148F131BE.jpg" alt="Linear Kernel" />
+  <img src="/assets/images/0A148944-9317-4BDA-BCB4-591148F131BE.jpg" alt="Linear Kernel" width="630" height="475" />
   <figcaption>Linear Kernel</figcaption>
 </figure>
 
@@ -75,7 +75,7 @@ SVM也是一种线性模型，为了与之前讲的几个线性模型分类器�
 SVM的核（Kernel），本质上是把低维空间的样本映射到高维空间，在低维空间线性不可分的样本在高维空间可能会变为线性可分的，见下图：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/77B83BE4-C6A6-4302-AEAD-CA9B85B3AF27.jpg" alt="Linearity v.s. dimensionality" />
+  <img src="/assets/images/77B83BE4-C6A6-4302-AEAD-CA9B85B3AF27.jpg" alt="Linearity v.s. dimensionality" width="1038" height="505" />
   <figcaption>Linearity v.s. dimensionality</figcaption>
 </figure>
 
@@ -90,7 +90,7 @@ SVM的核（Kernel），本质上是把低维空间的样本映射到高维空�
 在使用Gaussian kernel时要注意不要忘记做feature scaling！否则会导致规模较小的特征被忽略，相信这不会是你想要的结果。 直到最后Ng也没有将SVM具体是如何运行的，只是说虽然特征维度很高，但只要Kernel满足“Mercer's Theorem”，SVM的运算过程是非常有效的，看来SVM确实很适合被当做“黑盒”来使用...训练一个高斯核SVM分类器看看效果：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/82396B3F-C2F1-4F64-9DA3-CAB0C9BF250C.jpg" alt="Gaussian kernel" />
+  <img src="/assets/images/82396B3F-C2F1-4F64-9DA3-CAB0C9BF250C.jpg" alt="Gaussian kernel" width="630" height="474" />
   <figcaption>Gaussian kernel</figcaption>
 </figure>
 
@@ -101,7 +101,7 @@ SVM的核（Kernel），本质上是把低维空间的样本映射到高维空�
 在实际使用SVM时，以Gaussian kernel为例，需要选择合适的参数$C$和$\\sigma$：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/61FBC408-0CBA-441A-917B-361D374CE8B9.jpg" alt="SVM parameters" />
+  <img src="/assets/images/61FBC408-0CBA-441A-917B-361D374CE8B9.jpg" alt="SVM parameters" width="1199" height="662" />
   <figcaption>SVM parameters</figcaption>
 </figure>
 
@@ -114,14 +114,14 @@ SVM的核（Kernel），本质上是把低维空间的样本映射到高维空�
 因为SVM是Ng课程中讲的最后一个监督学习算法，所以Ng在之后还给出了对问题如何选择合适的学习模型的建议：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/13E72658-771D-489A-9233-17FA9120AE8E.jpg" alt="Model selection" />
+  <img src="/assets/images/13E72658-771D-489A-9233-17FA9120AE8E.jpg" alt="Model selection" width="1257" height="621" />
   <figcaption>Model selection</figcaption>
 </figure>
 
 在另一门课程mmds中，也给出了SVM和决策树模型之间的选择建议，一并贴出留念：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/B4E78099-7ADE-4C93-86DA-537E411F870A.jpg" alt="SVM vs Decision Tree" />
+  <img src="/assets/images/B4E78099-7ADE-4C93-86DA-537E411F870A.jpg" alt="SVM vs Decision Tree" width="1152" height="699" />
   <figcaption>SVM vs Decision Tree</figcaption>
 </figure>
 

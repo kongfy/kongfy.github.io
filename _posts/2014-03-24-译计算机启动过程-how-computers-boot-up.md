@@ -14,7 +14,7 @@ tags:
 先前的文章描述了Intel系列计算机的[主板和存储地址映射](/2014/03/译主板芯片集和存储地址映射-motherboard-chipsets-and-the-memory-map/)，在此基础上我们来看看计算机启动的初始阶段。计算机的启动是一个复杂、多阶段并且相当有趣的事情。下图描述了整个计算机启动的过程：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/55E52855-DA54-4925-98DD-E45A9F000583.jpg" alt="计算机启动过程" />
+  <img src="/assets/images/55E52855-DA54-4925-98DD-E45A9F000583.jpg" alt="计算机启动过程" width="674" height="242" />
   <figcaption>计算机启动过程</figcaption>
 </figure>
 
@@ -29,7 +29,7 @@ tags:
 主板会保证在reset vector处的指令是一条到BIOS程序入口的跳转指令。在主板芯片组的存储地址映射作用下，所有的存储地址都对应有CPU需要的正确的内容。这些地址都被映射到了包含有BIOS的闪存中，而此时RAM中存在的只是一些无用的随机值。有关存储区域的一个示例如下图：
 
 <figure style="text-align: center;">
-  <img src="/assets/images/79CF14EF-A63E-4B19-9E51-7416099D1DFB.jpg" alt="启动时的重要内存区域" />
+  <img src="/assets/images/79CF14EF-A63E-4B19-9E51-7416099D1DFB.jpg" alt="启动时的重要内存区域" width="337" height="547" />
   <figcaption>启动时的重要内存区域</figcaption>
 </figure>
 
@@ -40,7 +40,7 @@ tags:
 假设我们的可启动设备为硬盘，则BIOS程序会读取硬盘的开头512个字节（第一个扇区），这512个字节被称为[主引导记录(Master Boot Record - MBR)](http://en.wikipedia.org/wiki/Master_boot_record "MBR")，MBR通常包含两个必不可少的部分：一个很小的操作系统各异的引导程序和磁盘的分区表。不过BIOS并不关心这些，BIOS只是简单的把MBR的内容载入到内存地址0x7c00的位置并且跳转到这一地址开始执行MBR中的指令。
 
 <figure style="text-align: center;">
-  <img src="/assets/images/6C14B5AE-6E9C-421F-8278-88720E722CF4.jpg" alt="主引导记录（MBR）" />
+  <img src="/assets/images/6C14B5AE-6E9C-421F-8278-88720E722CF4.jpg" alt="主引导记录（MBR）" width="616" height="235" />
   <figcaption>主引导记录（MBR）</figcaption>
 </figure>
 
