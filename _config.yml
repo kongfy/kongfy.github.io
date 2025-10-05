@@ -120,12 +120,6 @@ exclude:
   - MIGRATION_README.md
   - QUICKSTART.md
   - THEME_README.md
-  - DISQUS_MIGRATION_GUIDE.md
-  - DEPLOYMENT_CHECKLIST.md
-  - CUSTOM_DOMAIN_SETUP.md
-  - QUICK_REFERENCE.md
-  - generate-disqus-map.sh
-  - disqus-url-map.csv
 
 # 插件
 plugins:
