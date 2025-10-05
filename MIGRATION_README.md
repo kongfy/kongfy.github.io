@@ -68,17 +68,22 @@ jekyll-blog/
    bundle install
    ```
 
-2. **配置 Disqus**:
-   编辑 `_config.yml` 文件，将 `your-disqus-shortname` 替换为你的 Disqus shortname：
+2. **配置已完成** ✅:
+   博客已完成基本配置：
    ```yaml
-   disqus:
-     shortname: your-disqus-shortname
-   ```
-
-3. **更新网站 URL**:
-   编辑 `_config.yml` 文件，将 `your-domain.com` 替换为你的实际域名：
-   ```yaml
-   url: "https://your-domain.com"
+   # ✅ 已配置
+   url: "https://blog.kongfy.com"
+   repository: "kongfy/kongfy.github.io"
+   minimal_mistakes_skin: "contrast"
+   
+   comments:
+     provider: "disqus"
+     disqus:
+       shortname: "kongfy"
+   
+   author:
+     name: "Fanyu Kong"
+     github: "https://github.com/kongfy"
    ```
 
 ### 本地预览
@@ -179,11 +184,15 @@ theme: minima
 - [x] Jekyll 基本结构创建
 - [x] Disqus 评论系统集成
 - [x] 配置文件创建
-- [ ] 更新 Disqus shortname
-- [ ] 更新网站域名
+- [x] ✅ 更新 Disqus shortname (kongfy)
+- [x] ✅ 更新网站域名 (blog.kongfy.com)
+- [x] ✅ 配置 Minimal Mistakes 主题 (contrast skin)
+- [x] ✅ 添加作者GitHub链接
+- [x] ✅ 生成 Disqus URL 映射文件
 - [ ] 本地测试
 - [ ] 部署到生产环境
-- [ ] 设置 301 重定向
+- [ ] 上传 Disqus URL 映射文件
+- [ ] 设置 301 重定向（如需要）
 - [ ] 更新搜索引擎站点地图
 
 ## 技术支持
@@ -195,7 +204,21 @@ theme: minima
 ## 原始数据备份
 
 原始文件保存在：
-- WordPress XML: `/Users/kongfy/blog/kongfy039sblog.wordpress.2025-10-01.xml`
+- WordPress XML: `backup/kongfy039sblog.wordpress.2025-10-01.xml`
 
 建议妥善保存这些备份文件。
+
+## 当前主题配置 ✅
+
+- **主题**: Minimal Mistakes (远程主题)
+- **皮肤**: contrast (高对比度)
+- **特性**:
+  - ✅ 响应式设计
+  - ✅ 文章搜索
+  - ✅ 分类和标签归档
+  - ✅ 代码高亮 (Rouge)
+  - ✅ MathJax 数学公式支持
+  - ✅ Disqus 评论系统
+  - ✅ 社交链接 (GitHub)
+  - ✅ SEO 优化
 

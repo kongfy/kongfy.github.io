@@ -2,17 +2,25 @@
 
 ## 快速开始
 
-### 1. 配置 Disqus (重要!)
+### 1. 当前配置状态 ✅
 
-编辑 `_config.yml` 文件，更新以下内容：
+博客已完成配置，可以直接使用：
 
 ```yaml
-# 替换为你的 Disqus shortname
-disqus:
-  shortname: your-disqus-shortname
+# ✅ 已配置
+url: "https://blog.kongfy.com"
+repository: "kongfy/kongfy.github.io"
 
-# 替换为你的实际域名
-url: "https://your-domain.com"
+# ✅ Disqus评论已配置
+comments:
+  provider: "disqus"
+  disqus:
+    shortname: "kongfy"
+
+# ✅ 作者信息已配置
+author:
+  name: "Fanyu Kong"
+  github: "https://github.com/kongfy"
 ```
 
 ### 2. 安装依赖
@@ -70,13 +78,16 @@ bundle exec jekyll build
 2. 导入项目
 3. Vercel 会自动检测 Jekyll 并配置构建设置
 
-## 迁移完成的内容
+## 已完成的配置
 
 ✅ **63 篇文章** - 全部转换为 Markdown 格式  
 ✅ **193 张图片** - 已保存到 `assets/images/`  
-✅ **Disqus 评论** - 已集成到文章模板  
+✅ **Disqus 评论** - 已配置 (shortname: kongfy)  
 ✅ **内部链接** - 已修复为相对路径  
 ✅ **SEO 优化** - 已配置 Jekyll SEO 插件  
+✅ **GitHub链接** - 已添加到作者信息和页脚  
+✅ **自定义域名** - blog.kongfy.com  
+✅ **主题** - Minimal Mistakes (contrast skin)  
 
 ## 常见问题
 

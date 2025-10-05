@@ -20,46 +20,43 @@ blog/
 
 ## 🚀 快速开始
 
-### 1. 配置个人信息
+### 1. 当前配置状态 ✅
 
-编辑 `_config.yml` 文件，更新以下内容：
+博客已完成基本配置：
 
 ```yaml
 # 基本信息
 title: "Kongfy's Blog"
-url: "https://your-domain.com"  # 替换为你的域名
+url: "https://blog.kongfy.com"  # ✅ 已配置自定义域名
+repository: "kongfy/kongfy.github.io"
+minimal_mistakes_skin: "contrast"  # 高对比度主题
 
 # Disqus 评论
 comments:
   provider: "disqus"
   disqus:
-    shortname: "your-disqus-shortname"  # 替换
+    shortname: "kongfy"  # ✅ 已配置
 
 # 作者信息
 author:
   name: "Fanyu Kong"
-  avatar: # 添加头像路径
+  avatar: "/assets/images/avatar.png"
   bio: "good good code, day day up!"
+  location: "Beijing, China"
   email: "njukongfy@gmail.com"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/kongfy"  # ✅ 已添加
 ```
 
-### 2. 选择主题皮肤
-
-在 `_config.yml` 中修改：
-
-```yaml
-minimal_mistakes_skin: "default"
-```
-
-可选：`default`, `air`, `aqua`, `contrast`, `dark`, `dirt`, `neon`, `mint`, `plum`, `sunrise`
-
-### 3. 安装依赖
+### 2. 安装依赖
 
 ```bash
 bundle install
 ```
 
-### 4. 本地预览
+### 3. 本地预览
 
 ```bash
 bundle exec jekyll serve
@@ -67,7 +64,7 @@ bundle exec jekyll serve
 
 访问 `http://localhost:4000` 查看博客。
 
-### 5. 构建生产版本
+### 4. 构建生产版本
 
 ```bash
 bundle exec jekyll build
@@ -101,6 +98,10 @@ bundle exec jekyll build
 - **主题使用**: 查看 [THEME_README.md](THEME_README.md)
 - **快速入门**: 查看 [QUICKSTART.md](QUICKSTART.md)
 - **迁移详情**: 查看 [MIGRATION_README.md](MIGRATION_README.md)
+- **Disqus评论迁移**: 查看 [DISQUS_URL_MAPPING.md](DISQUS_URL_MAPPING.md)
+- **GitHub部署**: 查看 [GITHUB_DEPLOY.md](GITHUB_DEPLOY.md)
+- **代码高亮**: 查看 [CODE_HIGHLIGHT_GUIDE.md](CODE_HIGHLIGHT_GUIDE.md)
+- **MathJax配置**: 查看 [MATHJAX_SETUP.md](MATHJAX_SETUP.md)
 
 ## 🌐 部署选项
 
@@ -167,21 +168,30 @@ main:
 ## 🔧 常见问题
 
 ### 如何更换主题皮肤？
-编辑 `_config.yml`，修改 `minimal_mistakes_skin` 的值。
+编辑 `_config.yml`，修改 `minimal_mistakes_skin` 的值。当前使用 `contrast` 主题。
+可选：`default`, `air`, `aqua`, `contrast`, `dark`, `dirt`, `neon`, `mint`, `plum`, `sunrise`
 
 ### 如何添加社交链接？
-编辑 `_config.yml` 中的 `author.links` 部分。
+编辑 `_config.yml` 中的 `author.links` 和 `footer.links` 部分。当前已配置GitHub链接。
+
+### Disqus评论迁移
+如需迁移旧域名的评论，使用 `disqus-url-mapper.csv` 文件：
+1. 登录 [Disqus Admin](https://disqus.com/admin/)
+2. 进入 Community → Migration Tools → URL Mapper
+3. 上传 `disqus-url-mapper.csv` 文件
 
 ### 如何启用 Google Analytics？
 编辑 `_config.yml` 中的 `analytics` 部分。
 
 ### 如何自定义样式？
-创建 `/assets/css/custom.scss` 文件并添加自定义 CSS。
+创建 `/assets/css/main.scss` 或修改 `_sass` 目录中的样式文件。
 
 ## 📧 联系方式
 
 - 作者: Fanyu Kong
 - Email: njukongfy@gmail.com
+- GitHub: https://github.com/kongfy
+- 博客: https://blog.kongfy.com
 
 ## 🔗 相关链接
 

@@ -6,7 +6,6 @@ categories:
 tags: 
   - "oceanbase"
   - "paxos"
-disqus_identifier: "1724 http://blog.kongfy.com/?p=1724"
 ---
 
 Paxos被公认是难度很高的分布式共识算法，一方面是体现在理解其算法正确性的难度上，而另一方，体现在工程实现的复杂度上。在将Paxos算法运用在工程实践的过程会遇到各种各样的问题，本文要探讨的“幽灵复现”问题，就是其中一例。
