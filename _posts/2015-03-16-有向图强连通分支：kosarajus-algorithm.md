@@ -235,8 +235,6 @@ int main(int argc, char *argv[])
 
 好吧，我承认我就是为了凑数的...
 
-* * *
-
 ## 参考资料
 
 - Algorithms: Design and Analysis, Part 1 by Tim Roughgarden on Coursera

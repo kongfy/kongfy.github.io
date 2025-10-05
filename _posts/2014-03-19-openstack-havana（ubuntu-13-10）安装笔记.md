@@ -10,15 +10,11 @@ mathjax: true
 
 安装配置OpenStack最好的资料是OpenStack的[官方安装指南](http://docs.openstack.org/havana/install-guide/install/apt/content/)，我就是按照官方指南一步一步进行的，虽然基于的操作系统版本不同（指南中使用的是Ubuntu 12.04），所幸没有遇到什么诡异的问题，不废话了，整个过程记录如下。
 
-* * *
-
 ## 安装环境
 
 > 操作系统：Ubuntu 13.10 配置机器数：1（单点安装） 机器网卡数量：2 Hypervisor类型：KVM
 
 <!--more-->
-
-* * *
 
 ## 安装顺序
 
@@ -36,8 +32,6 @@ OpenStack主要包括Identity Service、Image Service、Compute Service、Dashbo
 3. Compute Service(nova)
 4. Dashboard(horizon)
 5. Block Storage(cinder)
-
-* * *
 
 ## 一些约定
 
@@ -61,8 +55,6 @@ OpenStack主要包括Identity Service、Image Service、Compute Service、Dashbo
 ```bash
 $ openssl rand -hex 5
 ```
-
-* * *
 
 ## 基础服务
 
@@ -95,8 +87,6 @@ $ reboot
 $ apt-get install rabbitmq-server
 $ rabbitmqctl change_password guest RABBIT_PASS
 ```
-
-* * *
 
 ## 安装Identity Service
 
@@ -164,8 +154,6 @@ $ keystone endpoint-create \
 ```
 
 [验证keystone是否可以正常工作](http://docs.openstack.org/havana/install-guide/install/apt/content/keystone-verify.html)
-
-* * *
 
 ## 安装Image Service
 
@@ -251,8 +239,6 @@ $ initctl restart glance-api
 ```
 
 [验证glance是否正常工作](http://docs.openstack.org/havana/install-guide/install/apt/content/glance-verify.html)
-
-* * *
 
 ## 安装Compute Service(Controller部分)
 
@@ -351,8 +337,6 @@ $ initctl restart nova-conductor
 $ initctl restart nova-novncproxy
 ```
 
-* * *
-
 ## 安装Compute Service(Compute Node部分)
 
 这一部分内容安装的是nova运行在compute node上的部分，如果为单节点安装，需要跳过与Controller重复的部分
@@ -426,8 +410,6 @@ $ nova network-create vmnet --fixed-range-v4=10.0.0.0/24 \
   --bridge=br100 --multi-host=T
 ```
 
-* * *
-
 ## 安装Dashboard
 
 安装apache2
@@ -452,8 +434,6 @@ OPENSTACK_HOST = "localhost"
 ```
 
 一切顺利的话现在就可以通过访问 http://localhost/horizon 使用OpenStack了
-
-* * *
 
 ## 安装Block Storage
 
@@ -570,8 +550,6 @@ $ initctl restart cinder-volume
 $ initctl restart tgt
 ```
 
-* * *
-
 ## 虚拟机的ping和SSH
 
 刚安装完成OpenStack后启动instance，你会发现在宿主机上也无法ping通虚拟机ip，并且无法使用ssh登录虚拟机。这是因为OpenStack的安全组设置默认不允许非虚拟机局域网内的input流量，可以通过在Horizon中修改instance所属的安全组（默认为default组）设置或是执行下面的命令来允许icmp和ssh流量进入虚拟机：
@@ -587,8 +565,6 @@ $ nova secgroup-add-rule default tcp 22 22 0.0.0.0/0
 $ iptables -A nova-compute-inst-9 -p icmp -j ACCEPT
 $ iptables -A nova-compute-inst-9 -p tcp -m tcp --dport 22 -j ACCEPT
 ```
-
-* * *
 
 ## 外网访问
 

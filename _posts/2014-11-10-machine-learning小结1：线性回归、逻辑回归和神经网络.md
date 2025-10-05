@@ -26,8 +26,6 @@ mathjax: true
 
 <!--more-->
 
-* * *
-
 ## 线性回归（Linear regression）
 
 ### 符号表示
@@ -85,8 +83,6 @@ Cost function所表示的是对应参数$\\theta$刻画的Hypothesis函数与真
   <figcaption>Feature scaling</figcaption>
 </figure>
 
-* * *
-
 ## 逻辑回归（Logistic regression）
 
 在线性回归的基础上解释逻辑回归非常的简单。逻辑回归和名字所暗示的不同，逻辑回归是一个分类算法！首先讨论二分类的情况，即判断样本$x$是否属于正类型。
@@ -126,8 +122,6 @@ Cost function看上去复杂，实际上如果仔细分析，其实函数表示�
   <figcaption>One-vs-all</figcaption>
 </figure>
 
-* * *
-
 ## Bias、Variance以及Regularization
 
 接下来需要讨论一个前面一直避而不谈的问题：Bias和Variance。这两个词意思都不是很直白，简单来说，high Bias的含义就是模型太过于简单，不能很好对训练集进行学习，属于under-fitting；而high Variance则相反，代表了模型太过于复杂，甚至拟合了训练集中的噪声，属于over-fitting，虽然training error很低但是泛化误差大，会有很高的test error。
@@ -159,8 +153,6 @@ Regularization parameter的作用相当于对每一个参数增加了惩罚，�
 - 收集更多的训练数据集
 - 减少特征
 - 增大$\\lambda$
-
-* * *
 
 ## 神经网络（Neural network）
 
@@ -242,13 +234,9 @@ Ng课程的编程作业中给出了一个蛮好玩的例子：识别手写数字
   <figcaption>Hidden layer</figcaption>
 </figure>
 
-* * *
-
 ## 参考资料
 
 - Machine Learning by Andrew Ng on Coursera
-
-* * *
 
 ## 啰嗦两句
 

@@ -221,8 +221,6 @@ int main(int argc, char *argv[])
 
 使用的[测试数据](/assets/images/kargerMinCut.txt)
 
-* * *
-
 ## 参考资料
 
 - 《Algorithm Design》 Jon Kleinberg, Eva Tardos

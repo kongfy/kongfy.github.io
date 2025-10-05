@@ -14,8 +14,6 @@ mathjax: true
 
 <!--more-->
 
-* * *
-
 ## 异常检测
 
 首先复习一下[高斯分布（正态分布）](http://en.wikipedia.org/wiki/Normal_distribution "高斯分布")：
@@ -68,8 +66,6 @@ mathjax: true
   <figcaption>Non-gaussian features</figcaption>
 </figure>
 
-* * *
-
 ## F1 score
 
 到这里为止我们都回避了一个重要的问题，如何选定合适的\\(\\epsilon\\)？
@@ -93,8 +89,6 @@ F1 score是精度和召回率的[调和均值](http://en.wikipedia.org/wiki/Harm
 \\[F\_1 = \\frac{2 \\times precision \\times recall}{precision + recall}\\]
 
 在异常检测算法中，我们通过在验证集上尝试$\\epsilon$，并通过F1 score对模型进行评估来得到较好的参数$\\epsilon$。
-
-* * *
 
 ## 参考资料
 

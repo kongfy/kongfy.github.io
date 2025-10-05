@@ -228,8 +228,6 @@ bootmain(void) {
 
 运行到这里，bootloader终于完成了使命，功成身退了。
 
-* * *
-
 ### 参考资料
 
 - [OSDev Wiki](http://wiki.osdev.org/Main_Page "OSDev")

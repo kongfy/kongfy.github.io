@@ -378,8 +378,6 @@ neutron-openvswi-sg-fallback  all  -- anywhere             anywhere             
 
 本文到这里可以说达到了阶段性的胜利：完成了Neutron Core Plugin的讨论，探索了Neutron是如何完成虚拟的2&3层网络的。如果你依然感觉一头雾水...我只能深表抱歉，你可以参照官方文档和我下面给出的参考资料来更加详细的了解这部分内容。 ^o^
 
-* * *
-
 ## 11\. LBaaS
 
 本文的最后一部分内容，介绍一下OpenStack提供的负载均衡服务：LBaaS，这个项目目前属于Neutron项目中，作为Neutron的一个Service Plugin。
@@ -450,8 +448,6 @@ backend 49717bc1-204c-42a8-9cc2-46db88a70365
 ```
 
 Bingo!
-
-* * *
 
 ## 参考资料
 
