@@ -13,7 +13,7 @@ title_separator: "-"
 subtitle: ""
 name: "Fanyu Kong"
 description: "技术博客 - 分享编程、系统设计和算法相关内容"
-url: "https://kongfy.github.io" # 请替换为你的实际域名
+url: "http://blog.kongfy.com" # 请替换为你的实际域名
 baseurl: ""
 repository: "kongfy/kongfy.github.io" # GitHub username/repo-name
 teaser: # 默认的缩略图，可以设置一个默认图片路径

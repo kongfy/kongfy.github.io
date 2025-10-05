@@ -31,8 +31,8 @@ mathjax: true
 这次我们先关注Normal form game，形式化定义一个可终止(Finite)的\\(n\\)主体的game为：\\(\\langle N, A, u\\rangle\\)：
 
 - **Players**：\\(N= \\left\\{ 1,\\dots,n \\right\\} \\)表示参与博弈的主体，以\\(i\\)作为索引
-- **Actions**：\\(A\_i\\)表示Player \\(i\\)可以采取的Actions集合，定义action profile为\\(a=(a\_1,\\dots,a\_n)\\in A=A\_1\\times \\dots \\times A\_n\\)，表示一组可能出现的情况
-- **Payoffs**：\\(u\_i\\)表示Player \\(i\\)的utility function，用来计算特定action profile下Player \\(i\\)可以获取的回报：\\(u\_i(a), a\\in A\\)
+- **Actions**：\\(A_i\\)表示Player \\(i\\)可以采取的Actions集合，定义action profile为\\(a=(a_1,\dots,a_n)\in A=A_1\times \dots \times A_n\\)，表示一组可能出现的情况
+- **Payoffs**：\\(u_i\\)表示Player \\(i\\)的utility function，用来计算特定action profile下Player \\(i\\)可以获取的回报：\\(u_i(a), a\in A\\)
 
 举个栗子，将“石头-剪子-布”游戏展现为Matrix如下：
 
@@ -41,23 +41,28 @@ mathjax: true
   <figcaption>石头-剪子-布</figcaption>
 </figure>
 
-游戏中\\(N=\\{1,2\\}\\)，\\(A\_1=A\_2=\\{Rock, Paper, Scissors\\}\\)，对应的Payoffs写在表格中，当\\(a=\\{Paper, Paper\\}\\)时，\\(u\_1(a)=u\_2(a)=0\\)，表示平局。
+游戏中\\(N=\\{1,2\\}\\)，\\(A_1=A_2=\\{Rock, Paper, Scissors\\}\\)，对应的Payoffs写在表格中，当\\(a=\\{Paper, Paper\\}\\)时，\\(u_1(a)=u_2(a)=0\\)，表示平局。
 
 ## Strategy
 
 
-除了Actions，game中还有一个重要的概念：Strategy。Strategy表示了Player如何使用Actions的“策略”，形式上来讲，对Player \\(i\\)有strategy \\(s\_i\\)，代表Actions集合\\(A\_i\\)上的一个概率分布。
+除了Actions，game中还有一个重要的概念：Strategy。Strategy表示了Player如何使用Actions的"策略"，形式上来讲，对Player \\(i\\)有strategy \\(s_i\\)，代表Actions集合\\(A_i\\)上的一个概率分布。
 
 大体上可以将所有strategy分为两种：
 
-- **pure strategy**：是一种特殊情况，在集合\\(A\_i\\)中仅有一项概率为正（为1？），这种情况下该strategy即确定了使用某一Action
+- **pure strategy**：是一种特殊情况，在集合\\(A_i\\)中仅有一项概率为正（为1？），这种情况下该strategy即确定了使用某一Action
 - **mixed strategy**：混合策略引入了随机性，strategy按一定概率使用不同的Actions
 
-对于Player \\(i\\)，\\(S\_i\\)表示其所有可用的strategy的集合，和Actions类似定义strategy profile \\(s=(s\_1,\\dots ,s\_n)\\in S=S\_1\\times \\dots \\times S\_n\\)，表示一组在游戏中各个Player使用的strategy。
+对于Player \\(i\\)，\\(S_i\\)表示其所有可用的strategy的集合，和Actions类似定义strategy profile \\(s=(s_1,\dots ,s_n)\in S=S_1\times \dots \times S_n\\)，表示一组在游戏中各个Player使用的strategy。
 
 因为有了strategy的概念，我们需要一个新的能够针对给定strategy profile计算回报的utility function，由于不是单一Action，我们需要将头脑切换至概率模式研究下面的公式：
 
-$ \\begin{aligned} u\_i(s)=&\\sum\_{a \\in A}u\_i(a)Pr(a|s)\\\\ Pr(a|s)=&\\prod\_{j \\in N}s\_j(a\_j) \\end{aligned} $
+$$
+\begin{aligned} 
+u_i(s) &= \sum_{a \in A}u_i(a)Pr(a|s) \\ 
+Pr(a|s) &= \prod_{j \in N}s_j(a_j) 
+\end{aligned}
+$$
 
 看上去很复杂，实际上可以按照概率论中期望值的感觉来理解：如果用这样的strategy profile进行大量试验，某个Player期望获得的Payoff是多少？
 
@@ -66,28 +71,28 @@ $ \\begin{aligned} u\_i(s)=&\\sum\_{a \\in A}u\_i(a)Pr(a|s)\\\\ Pr(a|s)=&\\prod\
 
 既然是game，那么每个Player都希望自己可以赢（获得尽可能高的Payoff），由此引出了best response的概念。
 
-**在pure strategy中**，假如Player \\(i\\)已经知道了其他Players的行动\\(a\_{-i}=\\langle a\_1,\\dots,a\_{i-1},a\_{i+1},\\dots,a\_n \\rangle\\)，那么他可以根据情况做出best response \\(BR(a\_{-i})\\)，定义如下：
+**在pure strategy中**，假如Player \\(i\\)已经知道了其他Players的行动\\(a_{-i}=\langle a_1,\dots,a_{i-1},a_{i+1},\dots,a_n \rangle\\)，那么他可以根据情况做出best response \\(BR(a_{-i})\\)，定义如下：
 
-\\\[ a\_i^\* \\in BR(a\_{-i}) \\iff \\forall a\_i \\in A\_i,u\_i(a\_i^\*,a\_{-i}) \\geq u\_i(a\_i,a\_{-i}) \\\]
+$$a_i^* \in BR(a_{-i}) \iff \forall a_i \in A_i, u_i(a_i^*,a_{-i}) \geq u_i(a_i,a_{-i})$$
 
-**在mixed strategy中**，同样类似的如果Player \\(i\\)已经知道了其他Players的strategy \\(s\_{-i}=\\langle s\_1,\\dots,s\_{i-1},s\_{i+1},\\dots,s\_n \\rangle\\)，那么他可以根据情况做出best response \\(BR(s\_{-i})\\)，定义如下：
+**在mixed strategy中**，同样类似的如果Player \\(i\\)已经知道了其他Players的strategy \\(s_{-i}=\langle s_1,\dots,s_{i-1},s_{i+1},\dots,s_n \rangle\\)，那么他可以根据情况做出best response \\(BR(s_{-i})\\)，定义如下：
 
-\\\[ s\_i^\* \\in BR(s\_{-i}) \\iff \\forall s\_i \\in S\_i,u\_i(s\_i^\*,s\_{-i}) \\geq u\_i(s\_i,s\_{-i}) \\\]
+$$s_i^* \in BR(s_{-i}) \iff \forall s_i \in S_i, u_i(s_i^*,s_{-i}) \geq u_i(s_i,s_{-i})$$
 
 ## Nash equilibrium
 
 
-然而在实际的博弈过程中，任何一个Player实际上并不知道他的对手们会采用什么样的action \\(a\_{-i}\\)（或者strategy \\(s\_{-i}\\)），但是经过实践验证，在这样的博弈过程中Players为了争取最大化Payoffs，Players之间相互的制约关系导致他们所做的选择会逐渐趋向于形成“稳定”的action profile(或stategy profile)，这样的profiles就是Nash equilibrium。
+然而在实际的博弈过程中，任何一个Player实际上并不知道他的对手们会采用什么样的action \\(a_{-i}\\)（或者strategy \\(s_{-i}\\)），但是经过实践验证，在这样的博弈过程中Players为了争取最大化Payoffs，Players之间相互的制约关系导致他们所做的选择会逐渐趋向于形成"稳定"的action profile(或stategy profile)，这样的profiles就是Nash equilibrium。
 
 Nash equilibrium具有的特征是：**所有Player采用的action（或者strategy）都是best response。**这意味着任何Player都没有办法采用其他的方法来获得更好的Payoff了。
 
 形式化来讲，**对于pure strategy**：
 
-\\\[ a=\\langle a\_1,\\dots,a\_n\\rangle\\ \\text{is a ("pure strategy") Nash equilibrium} \\iff \\forall i,a\_i\\in BR(a\_{-i}). \\\]
+$$a=\langle a_1,\dots,a_n\rangle\ \text{is a ("pure strategy") Nash equilibrium} \iff \forall i, a_i\in BR(a_{-i}).$$
 
 **对于mixed strategy**：
 
-\\\[ s=\\langle s\_1,\\dots,s\_n\\rangle\\ \\text{is a ("mixed strategy") Nash equilibrium} \\iff \\forall i,s\_i\\in BR(s\_{-i}). \\\]
+$$s=\langle s_1,\dots,s_n\rangle\ \text{is a ("mixed strategy") Nash equilibrium} \iff \forall i, s_i\in BR(s_{-i}).$$
 
 Nash在1950年证明了所有有穷的(finite)的game都存在Nash equilibrium。但要注意，这个证明针对于mixed strategy nash equilibrium，**并不一定存在pure strategy nash equilibrium**。
 
