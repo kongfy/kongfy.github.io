@@ -13,7 +13,7 @@ title_separator: "-"
 subtitle: ""
 name: "Fanyu Kong"
 description: "技术博客 - 分享编程、系统设计和算法相关内容"
-url: "http://blog.kongfy.com" # 请替换为你的实际域名
+url: "https://blog.kongfy.com" # 自定义域名
 baseurl: ""
 repository: "kongfy/kongfy.github.io" # GitHub username/repo-name
 teaser: # 默认的缩略图，可以设置一个默认图片路径
@@ -120,6 +120,12 @@ exclude:
   - MIGRATION_README.md
   - QUICKSTART.md
   - THEME_README.md
+  - DISQUS_MIGRATION_GUIDE.md
+  - DEPLOYMENT_CHECKLIST.md
+  - CUSTOM_DOMAIN_SETUP.md
+  - QUICK_REFERENCE.md
+  - generate-disqus-map.sh
+  - disqus-url-map.csv
 
 # 插件
 plugins:
