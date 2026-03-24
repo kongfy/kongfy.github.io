@@ -14,6 +14,10 @@ toc: false
 toc_sticky: false
 ---
 
+<div style="text-align: center; margin: 2em 0;">
+  <img src="/assets/images/openclaw-weixin-title.jpg" alt="OpenClaw weixin 插件修复题图" style="max-width: 100%; height: auto;">
+</div>
+
 微信的龙虾插件在存活了一个周末以后，随着openclaw新版本升级挂了，先别急着删插件，在AI coding时代，最方便的做法是直接打开codex，用gpt-5.4模型要求他修复openclaw升级报错就可以了，后面附上稳定无情的bug修复机器codex给我的完整修复报告:
 
 <!--more-->
@@ -59,16 +63,16 @@ import ... from "openclaw/plugin-sdk";
 
 相关文件包括：
 
-- [index.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/index.ts)
-- [src/channel.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/channel.ts)
-- [src/log-upload.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/log-upload.ts)
-- [src/util/logger.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/util/logger.ts)
-- [src/auth/accounts.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/auth/accounts.ts)
-- [src/auth/pairing.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/auth/pairing.ts)
-- [src/runtime.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/runtime.ts)
-- [src/monitor/monitor.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/monitor/monitor.ts)
-- [src/messaging/process-message.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/messaging/process-message.ts)
-- [src/messaging/send.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/messaging/send.ts)
+- `index.ts`
+- `src/channel.ts`
+- `src/log-upload.ts`
+- `src/util/logger.ts`
+- `src/auth/accounts.ts`
+- `src/auth/pairing.ts`
+- `src/runtime.ts`
+- `src/monitor/monitor.ts`
+- `src/messaging/process-message.ts`
+- `src/messaging/send.ts`
 
 接着对比两个本地插件：
 
@@ -87,7 +91,7 @@ import ... from "openclaw/plugin-sdk";
 为了让插件至少能解析宿主 SDK，在插件依赖目录下补了一个符号链接：
 
 ```text
-/Users/kongfy/.openclaw/extensions/openclaw-weixin/node_modules/openclaw
+openclaw-weixin/node_modules/openclaw
 -> /opt/homebrew/lib/node_modules/openclaw
 ```
 
@@ -139,7 +143,7 @@ TypeError: resolvePreferredOpenClawTmpDir is not a function
 
 新增文件：
 
-- [src/openclaw-bridge.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/openclaw-bridge.ts)
+- `src/openclaw-bridge.ts`
 
 这个文件负责两件事：
 
@@ -176,16 +180,16 @@ TypeError: resolvePreferredOpenClawTmpDir is not a function
 
 修改文件如下：
 
-- [index.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/index.ts)
-- [src/log-upload.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/log-upload.ts)
-- [src/util/logger.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/util/logger.ts)
-- [src/channel.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/channel.ts)
-- [src/auth/accounts.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/auth/accounts.ts)
-- [src/auth/pairing.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/auth/pairing.ts)
-- [src/runtime.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/runtime.ts)
-- [src/monitor/monitor.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/monitor/monitor.ts)
-- [src/messaging/process-message.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/messaging/process-message.ts)
-- [src/messaging/send.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/messaging/send.ts)
+- `index.ts`
+- `src/log-upload.ts`
+- `src/util/logger.ts`
+- `src/channel.ts`
+- `src/auth/accounts.ts`
+- `src/auth/pairing.ts`
+- `src/runtime.ts`
+- `src/monitor/monitor.ts`
+- `src/messaging/process-message.ts`
+- `src/messaging/send.ts`
 
 这一步之后，插件代码不再直接耦合新版宿主的顶层导出面，而是通过桥接层与宿主交互。
 
@@ -193,7 +197,7 @@ TypeError: resolvePreferredOpenClawTmpDir is not a function
 
 桥接层接入后，还修过一次小路径问题：
 
-- [src/util/logger.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/util/logger.ts)
+- `src/util/logger.ts`
 
 这里最初桥接路径写得不一致，后来统一调整为稳定的相对路径写法，避免不同文件层级下的引用歧义。
 
@@ -233,25 +237,25 @@ TypeError: resolvePreferredOpenClawTmpDir is not a function
 
 新增：
 
-- [src/openclaw-bridge.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/openclaw-bridge.ts)
+- `src/openclaw-bridge.ts`
 
 修改：
 
-- [index.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/index.ts)
-- [src/log-upload.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/log-upload.ts)
-- [src/util/logger.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/util/logger.ts)
-- [src/channel.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/channel.ts)
-- [src/auth/accounts.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/auth/accounts.ts)
-- [src/auth/pairing.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/auth/pairing.ts)
-- [src/runtime.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/runtime.ts)
-- [src/monitor/monitor.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/monitor/monitor.ts)
-- [src/messaging/process-message.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/messaging/process-message.ts)
-- [src/messaging/send.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/messaging/send.ts)
+- `index.ts`
+- `src/log-upload.ts`
+- `src/util/logger.ts`
+- `src/channel.ts`
+- `src/auth/accounts.ts`
+- `src/auth/pairing.ts`
+- `src/runtime.ts`
+- `src/monitor/monitor.ts`
+- `src/messaging/process-message.ts`
+- `src/messaging/send.ts`
 
 运行时补充：
 
 ```text
-/Users/kongfy/.openclaw/extensions/openclaw-weixin/node_modules/openclaw
+openclaw-weixin/node_modules/openclaw
 -> /opt/homebrew/lib/node_modules/openclaw
 ```
 
@@ -269,6 +273,6 @@ TypeError: resolvePreferredOpenClawTmpDir is not a function
 
 ## 后续建议
 
-1. 如果 `openclaw-weixin` 后续继续维护，保留 [src/openclaw-bridge.ts](/Users/kongfy/.openclaw/extensions/openclaw-weixin/src/openclaw-bridge.ts) 作为唯一宿主兼容入口。
+1. 如果 `openclaw-weixin` 后续继续维护，保留 `src/openclaw-bridge.ts` 作为唯一宿主兼容入口。
 2. 如果未来再升级 OpenClaw，优先检查桥接层是否仍覆盖所有被插件使用的 SDK 符号。
 3. 如果插件未来发布正式版本，最好在包层面明确宿主 SDK 兼容策略，而不是继续依赖本地软链接。
