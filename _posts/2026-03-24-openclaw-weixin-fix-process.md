@@ -10,11 +10,13 @@ tags:
   - "Codex"
   - "插件"
   - "兼容性"
-toc: true
-toc_sticky: true
+toc: false
+toc_sticky: false
 ---
 
 微信的龙虾插件在存活了一个周末以后，随着openclaw新版本升级挂了，先别急着删插件，在AI coding时代，最方便的做法是直接打开codex，用gpt-5.4模型要求他修复openclaw升级报错就可以了，后面附上稳定无情的bug修复机器codex给我的完整修复报告:
+
+<!--more-->
 
 ## 背景
 
