@@ -10,8 +10,8 @@ tags:
   - "Codex"
   - "插件"
   - "兼容性"
-toc: true
-toc_sticky: true
+toc: false
+toc_sticky: false
 ---
 
 <div style="text-align: center; margin: 2em 0;">
