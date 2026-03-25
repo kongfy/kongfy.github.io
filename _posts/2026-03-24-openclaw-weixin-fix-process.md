@@ -1,5 +1,5 @@
 ---
-title: "拯救Openclaw微信插件"
+title: "OpenClaw 升级后，weixin 插件挂了：一次兼容性修复过程"
 date: 2026-03-24
 categories:
   - "工具"
@@ -10,119 +10,66 @@ tags:
   - "Codex"
   - "插件"
   - "兼容性"
-toc: false
-toc_sticky: false
+toc: true
+toc_sticky: true
 ---
 
 <div style="text-align: center; margin: 2em 0;">
   <img src="/assets/images/openclaw-weixin-title.jpg" alt="OpenClaw weixin 插件修复题图" style="max-width: 100%; height: auto;">
 </div>
 
-微信的龙虾插件在存活了一个周末以后，随着openclaw新版本升级挂了，先别急着删插件，在AI coding时代，最方便的做法是直接打开codex，用gpt-5.4模型要求他修复openclaw升级报错就可以了，后面附上稳定无情的bug修复机器codex给我的完整修复报告:
+相信所有折腾过插件的人都知道，这种问题最烦的地方，不是报错本身，而是它通常不会只给你一个报错。你刚把第一个坑填上，第二个坑就从别的地方冒出来，像是在跟你说：别高兴太早。
+
+这次 OpenClaw 一升级，`weixin` 插件就直接躺平了。最后是我拿 Codex 一点一点把它扶起来的。过程谈不上优雅，甚至有点像拿铁丝捅下水道，但它刚好说明了一件事：**插件和宿主之间的边界一旦变了，最先炸的通常不是业务逻辑，而是运行时入口。**
 
 <!--more-->
 
-## 背景
+## 先看现象
 
-OpenClaw 升级后，`openclaw-weixin` 插件在新版本环境下无法正常加载。本文只记录 `openclaw-weixin` 本身的排查和修复过程，不涉及其他插件或配置问题。
-
-## 现象
-
-在插件加载阶段，`openclaw-weixin` 先后暴露出两类错误：
-
-第一类错误：
+最早冒出来的错误很普通：
 
 ```text
 PluginLoadFailureError: plugin load failed: openclaw-weixin:
 Error: Cannot find module 'openclaw/plugin-sdk'
 ```
 
-第二类错误：
+表面上看，这就是个模块找不到的问题。可如果只是这样，事情反而好办了。
+
+把这个坑填上之后，错误立刻换了一副面孔：
 
 ```text
 TypeError: resolvePreferredOpenClawTmpDir is not a function
 ```
 
-这说明问题并不是单一语法错误，而是插件与新版宿主 SDK 的运行时兼容性断裂。
+这时候基本就能判断出来了：**不是单纯找不到模块，而是新版 OpenClaw 的 SDK 导出面已经变了。** 插件还按老接口写着，宿主已经换了门牌号。你说它不崩，谁崩？
 
-## 调试目标
+## 第一层：先把它扶起来
 
-1. 让 `openclaw-weixin` 在当前 OpenClaw 版本下重新可加载。
-2. 尽量少改插件逻辑，只修复宿主 SDK 兼容层。
-3. 不改业务行为，不顺手重构。
+我先去看了 `openclaw-weixin` 的源码，发现它有不少地方直接从 `openclaw/plugin-sdk` 里拿类型和运行时函数。
 
-## 第一阶段：确认插件为何找不到 `openclaw/plugin-sdk`
+这类写法在旧版本里没问题，但升级之后就不一定了。原因也很直接：插件按本地扩展目录加载时，它自己的依赖树里并没有宿主包，自然也就解析不到 `openclaw/plugin-sdk`。
 
-先检查 `openclaw-weixin` 源码，发现插件多处直接从：
+所以第一步不是改业务逻辑，而是先把运行时入口打通。办法不复杂：在插件的 `node_modules` 下补一个指向宿主包的符号链接，让它至少能把模块解析起来。
 
-```ts
-import ... from "openclaw/plugin-sdk";
-```
+这么做的目的很明确：
 
-导入类型和运行时函数。
+- 不动插件业务代码
+- 不复制宿主包
+- 先把“模块找不到”这个致命问题消掉
 
-相关文件包括：
+这一步之后，第一类报错确实没了。但事情并没有结束，只是从“找不到”变成了“找到了也不会用”。说白了，坑是填上了，坑底还有坑。
 
-- `index.ts`
-- `src/channel.ts`
-- `src/log-upload.ts`
-- `src/util/logger.ts`
-- `src/auth/accounts.ts`
-- `src/auth/pairing.ts`
-- `src/runtime.ts`
-- `src/monitor/monitor.ts`
-- `src/messaging/process-message.ts`
-- `src/messaging/send.ts`
+## 第二层：问题不在模块名，而在导出面
 
-接着对比两个本地插件：
-
-- `lossless-claw`
-- `openclaw-weixin`
-
-发现关键差异：
-
-- `lossless-claw/node_modules` 中存在 `openclaw`
-- `openclaw-weixin/node_modules` 中不存在 `openclaw`
-
-这意味着 `openclaw-weixin` 被按本地扩展目录加载时，运行时模块解析无法在它自己的依赖树内找到宿主包，因此第一次失败是模块解析失败，而不是函数本身不存在。
-
-## 第一处修复：补宿主包链接
-
-为了让插件至少能解析宿主 SDK，在插件依赖目录下补了一个符号链接：
-
-```text
-openclaw-weixin/node_modules/openclaw
--> /opt/homebrew/lib/node_modules/openclaw
-```
-
-这一步的作用很明确：
-
-1. 不改插件源码
-2. 不复制宿主包
-3. 只让插件运行时能找到 `openclaw/plugin-sdk`
-
-补完链接后，原来的 “Cannot find module `openclaw/plugin-sdk`” 错误消失了，但立刻暴露出下一层兼容性问题。
-
-## 第二阶段：确认不是“模块缺失”，而是“SDK 导出面变化”
-
-补完链接后再次测试，出现新的错误：
+第二个报错已经把根因说得很直白了：
 
 ```text
 TypeError: resolvePreferredOpenClawTmpDir is not a function
 ```
 
-这说明：
+也就是说，`openclaw/plugin-sdk` 这个入口虽然还在，但里面能直接拿到的顶层导出已经少了。以前插件习惯从顶层顺手拿函数，现在这些能力被拆到了更明确的公开子路径里。
 
-- `openclaw/plugin-sdk` 模块已经能被找到
-- 但插件依赖的某些顶层导出，在新版里已经不再从顶层导出
-
-随后检查新版 `openclaw` 主包的 `exports`，确认：
-
-- `./plugin-sdk` 入口还存在
-- 但顶层导出已经非常少
-- 许多原来可从顶层取到的运行时函数，被拆到新的公开子路径中
-
-进一步核对后，发现 `openclaw-weixin` 依赖的函数分散到了这些模块：
+对照新版宿主的公开入口后，能看到 `openclaw-weixin` 依赖的运行时能力分散到了这些模块里：
 
 - `openclaw/plugin-sdk/core`
 - `openclaw/plugin-sdk/diffs`
@@ -131,148 +78,66 @@ TypeError: resolvePreferredOpenClawTmpDir is not a function
 - `openclaw/plugin-sdk/msteams`
 - `openclaw/plugin-sdk/text-runtime`
 
-因此根因不是某一个函数被删除，而是：
+也就是说，问题不是某一个函数被删了，而是旧版插件还在盯着 `openclaw/plugin-sdk` 的老入口不放。新版里这些能力还在，只是门牌号换了。
 
-`openclaw-weixin` 依赖了旧版 `openclaw/plugin-sdk` 的顶层导出面；升级后这些运行时能力仍存在，但公开入口已经迁移。
+## 怎么修才不至于后面继续冒坑
 
-## 第二处修复：增加本地兼容桥接层
+这时候有两个路子：
 
-如果直接在每个文件里分别改成新版子路径，会让兼容性逻辑散落在整个插件中，后续维护成本很高。
+1. 看到哪里报错就改哪里
+2. 先做一个统一的兼容桥接层
 
-因此采用了集中收口的方式：新增一个本地桥接文件。
+我选了后者。原因也简单：**逐个函数热修很容易变成打地鼠，修完一个又冒一个；兼容层收口之后，后面再升级宿主，改一处就够了。**这事儿要是硬拆开修，最后大概率就是一堆补丁贴来贴去，看着就头大。
 
-新增文件：
+所以我新增了一个本地桥接文件，把插件需要的类型和运行时函数统一从新版公开子路径重新导出。插件源码本身不再直接耦合新版宿主的顶层导出，而是都从这个桥接层拿东西。
 
-- `src/openclaw-bridge.ts`
+这样改完以后，结构就清楚了：
 
-这个文件负责两件事：
+- 插件业务代码只关心自己要什么
+- 桥接层负责对接宿主 SDK 的变化
+- 未来 OpenClaw 再升级，优先改桥接层，而不是全仓库搜替换
 
-1. 统一重新导出插件需要的类型
-2. 从新版公开子路径重新导出运行时函数
+这一步看起来只是多了一个文件，但实际上把维护边界重新划了一遍。很多兼容性问题，修到最后都不是“把错误消灭”，而是“把变化隔离开”。
 
-桥接层导出的主要内容如下。
+## 中间还踩了个小坑
 
-类型：
+桥接层接上之后，还顺手修过一次路径问题。这个不算大事，但很典型：
 
-- `ChannelAccountSnapshot`
-- `ChannelPlugin`
-- `OpenClawConfig`
-- `OpenClawPluginApi`
-- `PluginRuntime`
-- `ReplyPayload`
+- 某个文件里桥接引用路径写得不一致
+- 不同层级下的相对路径容易让人看花眼
+- 最后统一调整成稳定的写法
 
-运行时函数：
+这类问题往往不会改变业务行为，但会在你最不想继续折腾的时候，默默再给你添一个小绊子。内心是崩溃的，但也只能老老实实改掉，不然它就专挑你最烦的时候给你添堵。
 
-- `buildChannelConfigSchema`
-- `normalizeAccountId`
-- `resolvePreferredOpenClawTmpDir`
-- `resolveDirectDmAuthorizationOutcome`
-- `resolveSenderCommandAuthorizationWithRuntime`
-- `createTypingCallbacks`
-- `withFileLock`
-- `stripMarkdown`
+## 为什么不一个个热修
 
-这些符号分别从新版的公开子路径重新导出。
+如果只是为了让它马上跑起来，逐个函数补洞当然也能做。但这次我刻意没有这么干，主要有三个原因：
 
-## 第三处修复：把插件源码统一切到桥接层
+- 依赖旧顶层导出的不止一个函数
+- 逐个修很容易在下一个启动点继续炸
+- 兼容层集中之后，后续维护成本最低
 
-建立桥接层后，把所有原来直接从 `openclaw/plugin-sdk` 顶层读取内容的文件，统一改成从本地桥接模块读取。
+换言之，这次真正修的不是某一个报错，而是插件和宿主之间的接口契约。
 
-修改文件如下：
+这个判断很重要。很多系统故障表面上看是“代码坏了”，实际上是“边界变了”。你如果只盯着报错文本，很容易把问题修成一堆补丁；你如果先看接口怎么断的，修法就会干净很多。
+## 最后结果
 
-- `index.ts`
-- `src/log-upload.ts`
-- `src/util/logger.ts`
-- `src/channel.ts`
-- `src/auth/accounts.ts`
-- `src/auth/pairing.ts`
-- `src/runtime.ts`
-- `src/monitor/monitor.ts`
-- `src/messaging/process-message.ts`
-- `src/messaging/send.ts`
-
-这一步之后，插件代码不再直接耦合新版宿主的顶层导出面，而是通过桥接层与宿主交互。
-
-## 中途遇到的小问题
-
-桥接层接入后，还修过一次小路径问题：
-
-- `src/util/logger.ts`
-
-这里最初桥接路径写得不一致，后来统一调整为稳定的相对路径写法，避免不同文件层级下的引用歧义。
-
-这一步没有改变业务逻辑，只是把桥接引用路径修正到正确位置。
-
-## 为什么没有直接“逐个函数热修”
-
-这次没有采用“哪里报错修哪里”的方式，而是先把根因归类后统一收口，原因有三个：
-
-1. 插件依赖的旧顶层导出不止一个
-2. 如果只按报错逐个修，很容易每修一处再暴露下一处
-3. 兼容层集中后，未来再升级 OpenClaw 时只需要改一个桥接文件
-
-换句话说，这次改动的重点不是重写插件，而是把插件对宿主 SDK 的依赖入口做了一次兼容封装。
-
-## 最终验证
-
-修复完成后，重启网关服务，让新插件代码生效。之后通过 `openclaw status` 验证插件状态。
-
-最终状态中，`openclaw-weixin` 显示为：
+修完之后，重启网关服务，让新插件代码重新生效。再用 `openclaw status` 看状态，`openclaw-weixin` 已经恢复正常：
 
 - `Enabled: ON`
 - `State: OK`
 
-这说明：
-
-1. 插件已经成功被宿主发现
-2. 插件已经完成加载
-3. 旧版顶层 SDK 依赖导致的崩溃已被修复
-
-同时，最新启动日志中已不再出现：
+同时，启动日志里那两个烦人的错误也不再出现了：
 
 - `Cannot find module 'openclaw/plugin-sdk'`
 - `resolvePreferredOpenClawTmpDir is not a function`
 
-## 本次修改清单
+事情到这里就算收工。
 
-新增：
+## 这次修复说明了什么
 
-- `src/openclaw-bridge.ts`
+我自己最直接的感受是：**插件兼容性问题，往往不是“功能坏了”，而是“宿主升级了，但插件还没跟上”。**
 
-修改：
+而 Codex 在这次修复里最有价值的地方，也不是替我写了多少代码，而是它很快把问题拆成了两层：先把模块解析接通，再把 SDK 的导出面接上。路线对了，后面就是体力活。
 
-- `index.ts`
-- `src/log-upload.ts`
-- `src/util/logger.ts`
-- `src/channel.ts`
-- `src/auth/accounts.ts`
-- `src/auth/pairing.ts`
-- `src/runtime.ts`
-- `src/monitor/monitor.ts`
-- `src/messaging/process-message.ts`
-- `src/messaging/send.ts`
-
-运行时补充：
-
-```text
-openclaw-weixin/node_modules/openclaw
--> /opt/homebrew/lib/node_modules/openclaw
-```
-
-## 最终根因总结
-
-`openclaw-weixin` 的问题本质上是两层：
-
-1. 插件自身依赖树里缺少宿主包入口，导致运行时无法解析 `openclaw/plugin-sdk`
-2. 插件仍按旧版方式依赖 `openclaw/plugin-sdk` 顶层导出，而新版 SDK 已把这些运行时 API 拆分到公开子模块
-
-对应修复也分两层：
-
-1. 先让插件运行时能找到宿主包
-2. 再通过桥接层把旧依赖方式迁移到新版公开子路径
-
-## 后续建议
-
-1. 如果 `openclaw-weixin` 后续继续维护，保留 `src/openclaw-bridge.ts` 作为唯一宿主兼容入口。
-2. 如果未来再升级 OpenClaw，优先检查桥接层是否仍覆盖所有被插件使用的 SDK 符号。
-3. 如果插件未来发布正式版本，最好在包层面明确宿主 SDK 兼容策略，而不是继续依赖本地软链接。
+说白了，这类活儿就像修水管。真正麻烦的，往往不是漏水本身，而是你得先搞清楚，漏的是哪一段。
